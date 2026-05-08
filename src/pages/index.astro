@@ -1,7 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { info } from '../lib/data';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import InfoStrip from '../components/InfoStrip.astro';
+import Floors from '../components/Floors.astro';
+import Gallery from '../components/Gallery.astro';
+import MapCTA from '../components/MapCTA.astro';
+import Footer from '../components/Footer.astro';
 ---
 <BaseLayout>
-  <pre style="padding:24px">{JSON.stringify(info, null, 2)}</pre>
+  <Header />
+  <Hero />
+  <InfoStrip />
+  <Floors />
+  <Gallery />
+  <MapCTA />
+  <Footer />
 </BaseLayout>
