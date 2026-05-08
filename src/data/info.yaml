@@ -1,0 +1,21 @@
+name: market may
+tagline: 달콤한 커피 · 따뜻한 브런치 · 모닝 베이글 · 신선한 드립백
+address: 경상북도 구미시 남통동 공원로 22
+phone: 054-457-5020
+hours:
+  weekday: "10:00 - 22:00"
+  closed: "매주 월요일 휴무 / 매월 마지막주 월·화 휴무"
+instagram: https://www.instagram.com/market.may_/
+floors:
+  - code: 2F
+    name: BRUNCH
+    description: 조용한 창가 좌석에서 즐기는 브런치
+  - code: 1F
+    name: MARKET
+    description: 베이글 · 빵 · 드립백 테이크아웃
+  - code: BF
+    name: SEMINAR
+    description: 모임과 세미나를 위한 공간
+kakaoMap:
+  embedSrc: ""
+  directionsUrl: ""

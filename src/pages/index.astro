@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { info } from '../lib/data';
 ---
 <BaseLayout>
-  <p style="padding:24px">market may — 빌드 진행 중</p>
+  <pre style="padding:24px">{JSON.stringify(info, null, 2)}</pre>
 </BaseLayout>

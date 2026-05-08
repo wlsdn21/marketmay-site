@@ -1,0 +1,12 @@
+# 메뉴 데이터는 추후 사용자 제공 시 채움. 1차 빌드는 빈 카테고리로 시작.
+categories:
+  - name: 커피
+    items: []
+  - name: 브런치
+    items: []
+  - name: 베이글
+    items: []
+  - name: 빵
+    items: []
+  - name: 드립백
+    items: []
