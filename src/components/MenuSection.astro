@@ -1,0 +1,70 @@
+---
+import type { MenuCategory } from '../lib/data';
+interface Props { category: MenuCategory }
+const { category } = Astro.props;
+---
+<section class="menu-section">
+  <h2 class="menu-cat">{category.name}</h2>
+  {category.items.length === 0 ? (
+    <p class="menu-empty">메뉴 준비 중입니다.</p>
+  ) : (
+    <ul class="menu-list">
+      {category.items.map((item) => (
+        <li class="menu-item">
+          <div class="menu-item-head">
+            <span class="menu-item-name">{item.name}</span>
+            <span class="menu-item-dots"></span>
+            <span class="menu-item-price">{item.price.toLocaleString()}원</span>
+          </div>
+          {item.description && <p class="menu-item-desc">{item.description}</p>}
+        </li>
+      ))}
+    </ul>
+  )}
+</section>
+
+<style>
+.menu-section {
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border);
+}
+.menu-section:last-child { border-bottom: 0; }
+.menu-cat {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--brand);
+  margin-bottom: 24px;
+}
+.menu-empty {
+  color: var(--text-mute);
+  font-size: 14px;
+  font-style: italic;
+}
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu-item {
+  padding: 12px 0;
+}
+.menu-item-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 15px;
+}
+.menu-item-name { font-weight: 500; }
+.menu-item-dots {
+  flex: 1;
+  border-bottom: 1px dotted var(--border);
+  transform: translateY(-4px);
+}
+.menu-item-price { color: var(--text-mute); }
+.menu-item-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin: 4px 0 0;
+}
+</style>
