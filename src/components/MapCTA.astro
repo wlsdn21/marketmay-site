@@ -1,0 +1,76 @@
+---
+import { info } from '../lib/data';
+const { kakaoMap } = info;
+const containerId = `daumRoughmapContainer${kakaoMap.timestamp}`;
+const directionsUrl = kakaoMap.directionsUrl || `https://map.kakao.com/?q=${encodeURIComponent(info.address)}`;
+---
+<section id="location" class="map-section">
+  <div class="container">
+    <div class="label">LOCATION</div>
+    <h2 class="map-title">오시는 길</h2>
+    <p class="map-address">{info.address}</p>
+    <div class="map-frame">
+      <div id={containerId} class="root_daum_roughmap root_daum_roughmap_landing"></div>
+    </div>
+    <a class="map-cta" href={directionsUrl} target="_blank" rel="noopener">카카오맵에서 길찾기 →</a>
+  </div>
+</section>
+
+<script is:inline charset="UTF-8" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+<script is:inline define:vars={{ kakaoMap }}>
+  (function () {
+    function init() {
+      if (typeof window.daum === 'undefined' || !window.daum.roughmap) {
+        setTimeout(init, 100);
+        return;
+      }
+      new window.daum.roughmap.Lander({
+        timestamp: kakaoMap.timestamp,
+        key: kakaoMap.key,
+        mapWidth: String(kakaoMap.width),
+        mapHeight: String(kakaoMap.height),
+      }).render();
+    }
+    init();
+  })();
+</script>
+
+<style>
+.map-section {
+  padding: var(--space-section) 0;
+  text-align: center;
+  background: var(--bg);
+}
+.map-title {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 500;
+  color: var(--brand);
+  margin: 8px 0 12px;
+}
+.map-address {
+  color: var(--text-mute);
+  font-size: 15px;
+  margin: 0 0 32px;
+}
+.map-frame {
+  margin: 0 auto 24px;
+  display: flex;
+  justify-content: center;
+}
+.map-cta {
+  display: inline-block;
+  background: var(--brand);
+  color: #fff !important;
+  padding: 14px 28px;
+  border-radius: 4px;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.map-cta:hover { opacity: 0.9; }
+
+/* Daum roughmap default container width override (responsive) */
+.map-frame :global(.root_daum_roughmap) {
+  max-width: 100%;
+}
+</style>
