@@ -1,0 +1,55 @@
+---
+import { info } from '../lib/data';
+---
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="brand">{info.name}</a>
+    <nav class="nav">
+      <a href="/menu">menu</a>
+      <a href="#location" class="cta">오시는 길</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+.header {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+}
+.brand {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  letter-spacing: 0.5px;
+}
+.nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  font-size: 14px;
+}
+.nav a {
+  color: var(--text-mute);
+  transition: color 0.15s;
+}
+.nav a:hover { color: var(--text); }
+.cta {
+  background: var(--brand);
+  color: #fff !important;
+  padding: 8px 14px;
+  border-radius: 4px;
+}
+.cta:hover { color: #fff !important; opacity: 0.9; }
+@media (max-width: 480px) {
+  .nav { gap: 14px; }
+  .nav a { font-size: 13px; }
+}
+</style>
