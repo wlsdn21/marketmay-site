@@ -1,12 +1,244 @@
-# 메뉴 데이터는 추후 사용자 제공 시 채움. 1차 빌드는 빈 카테고리로 시작.
+# 메뉴 데이터 (출처: 2026-04 KDS 카테고리별 분석)
+# 가격은 4월 평균 판매 단가 기준 — 필요시 수동 조정
+
 categories:
   - name: 커피
-    items: []
+    items:
+      - name: (I)아메리카노
+        price: 5000
+      - name: 아메리카노
+        price: 5000
+      - name: 라떼8
+        price: 5700
+      - name: (I)바닐라라떼
+        price: 6200
+      - name: (I)라떼8
+        price: 5700
+      - name: 마스카포네딸기라떼
+        price: 7000
+      - name: 녹차라떼
+        price: 5900
+      - name: 바닐라라떼
+        price: 6200
+      - name: cold brew
+        price: 5500
+      - name: 마로치노
+        price: 6800
+      - name: (I)아인슈페너
+        price: 6400
+      - name: 카푸치노
+        price: 5700
+      - name: (I)캬라멜라떼
+        price: 6000
+      - name: 라떼5
+        price: 5600
+      - name: 자색고구마라떼
+        price: 5900
+      - name: 생강라떼
+        price: 6700
+      - name: 아포가또
+        price: 6500
+      - name: (I)라떼5
+        price: 5600
+      - name: 아인슈페너
+        price: 6400
+      - name: 카라멜라떼
+        price: 6000
+      - name: (I)카페모카
+        price: 6600
+      - name: 카페모카
+        price: 6600
+      - name: (I)보르지아
+        price: 6500
+      - name: 보르지아
+        price: 6500
+      - name: (I)카푸치노
+        price: 6000
+      - name: 에스프레소
+        price: 4800
+      - name: (I)카라멜마끼아또
+        price: 6200
+      - name: 카라멜마끼아또
+        price: 6200
+      - name: 진한라떼8부
+        price: 6700
+      - name: (I)진한라뗴8부
+        price: 6700
+  - name: 음료
+    items:
+      - name: 백향과
+        price: 7000
+      - name: 딸기요요
+        price: 7500
+      - name: 오미자에이드
+        price: 6700
+      - name: 레몬에이드
+        price: 6700
+      - name: 복숭아아이스티
+        price: 4700
+      - name: 자몽에이드
+        price: 6700
+      - name: 블루베리요거
+        price: 6900
+      - name: 아이스초코
+        price: 5900
+      - name: 딸기말차
+        price: 6700
+      - name: 벨지안다크핫초코
+        price: 6400
+      - name: 모구모구
+        price: 3000
+      - name: 딸기요거쉐이크
+        price: 6900
+      - name: 아샷추
+        price: 5700
+      - name: 핫초코
+        price: 5900
+      - name: 하겐다즈아이스크림
+        price: 6000
+      - name: 리얼초코퍼지
+        price: 7000
+      - name: 자두주스
+        price: 7500
+      - name: 분다버그자몽
+        price: 5500
+      - name: 과일요거트
+        price: 7400
+      - name: 분다버그망고
+        price: 5500
+      - name: 오미자에일355ml
+        price: 5500
+      - name: 주흘바이젠500ml
+        price: 7300
+      - name: 오미자에일500ml
+        price: 7300
+      - name: 주흘바이젠355ml
+        price: 5500
+      - name: 점촌IPA500ml
+        price: 7300
+      - name: 문경세제페일에일355ml
+        price: 5500
+      - name: 블루베리요요
+        price: 6900
+      - name: 은하수스타우트500ml
+        price: 7300
+      - name: 아샷추제로
+        price: 6200
+  - name: 차
+    items:
+      - name: TEA
+        price: 6000
+      - name: 로얄밀크티
+        price: 6700
+      - name: 문경오미자차
+        price: 6500
+      - name: 레몬차
+        price: 6500
+      - name: 생자몽차
+        price: 6500
+      - name: 마스카포네레몬티
+        price: 6000
+      - name: 생강차
+        price: 6700
+      - name: BLACK-TEA
+        price: 6000
+      - name: 수제얼그레이아이스티
+        price: 6200
+      - name: 민트유자차
+        price: 6500
+      - name: 유자차
+        price: 6000
+  - name: 베이커리
+    items:
+      - name: 소금버터빵
+        price: 3500
+      - name: 쫀득브라우니
+        price: 5700
+      - name: 커피번
+        price: 3800
+      - name: 앙버터
+        price: 5300
+      - name: 에그타르트
+        price: 4300
+      - name: 상하이버터떡
+        price: 8000
+      - name: 바질토마토포카치아
+        price: 6500
+      - name: 찹쌀떡소금빵
+        price: 4500
+      - name: 스콘+마스카포네
+        price: 4800
+      - name: 발로나초코바게트
+        price: 7303
+      - name: 올리브치즈포카치아
+        price: 5500
+      - name: 플레인베이글
+        price: 3800
+      - name: 소금버터베이글
+        price: 4800
+      - name: 유자파운드케익
+        price: 4800
+      - name: 휘낭시에(플레인)
+        price: 3500
+      - name: 명란포카치아
+        price: 6500
+      - name: 소금치아바타
+        price: 5300
+      - name: "휘낭시에(초코,피칸)"
+        price: 3800
+      - name: 허니버터토스트
+        price: 4500
+      - name: 빵
+        price: 6021
+      - name: 토마토베이글
+        price: 4200
+      - name: 블루베리베이글
+        price: 4200
+      - name: 시금치베이글
+        price: 4200
+      - name: half사워도우
+        price: 6000
+      - name: 단호박샤워도우
+        price: 11000
+      - name: 바게트+생크림
+        price: 6000
+      - name: 허니버터토스트(소)
+        price: 3800
+      - name: 참깨베이글
+        price: 4200
   - name: 브런치
-    items: []
-  - name: 베이글
-    items: []
-  - name: 빵
-    items: []
-  - name: 드립백
-    items: []
+    items:
+      - name: M.M.B.P
+        price: 14000
+      - name: 리코타바질콜드파스타
+        price: 17000
+      - name: 부라타치즈샐러드
+        price: 16000
+      - name: 단호박스프
+        price: 8000
+      - name: 토마토스튜
+        price: 13000
+      - name: 마르게리따피자
+        price: 18000
+      - name: 잠봉뵈르샌드위치
+        price: 10000
+      - name: 버섯그릴샌드위치
+        price: 13000
+      - name: 고르곤졸라피자
+        price: 22000
+      - name: 델리)토마토스튜
+        price: 10000
+  - name: 원두 / 드립백
+    items:
+      - name: 리치블랙원두200g
+        price: 14000
+      - name: 리치블랙드립백8
+        price: 13000
+      - name: 진주블루베리C
+        price: 18000
+      - name: 디카페인드립백8
+        price: 14000
+      - name: 디카페인원두200g
+        price: 16000
+      - name: 리치블랙원두1kg-A
+        price: 45000
