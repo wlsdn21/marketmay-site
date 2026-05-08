@@ -17,5 +17,10 @@ floors:
     name: SEMINAR
     description: 모임과 세미나를 위한 공간
 kakaoMap:
-  embedSrc: ""
+  # Daum Roughmap script-based embed (사용자 제공)
+  key: nfa8nqm5br9
+  timestamp: "1778234728295"
+  width: 360
+  height: 240
+  # 사용자가 카카오맵 가게 페이지 URL 제공 시 채움. 비우면 주소로 검색 링크 자동 생성됨.
   directionsUrl: ""

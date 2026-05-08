@@ -21,7 +21,13 @@ export interface SiteInfo {
   hours: { weekday: string; closed: string };
   instagram: string;
   floors: Floor[];
-  kakaoMap: { embedSrc: string; directionsUrl: string };
+  kakaoMap: {
+    key: string;
+    timestamp: string;
+    width: number;
+    height: number;
+    directionsUrl: string;
+  };
 }
 
 export interface MenuItem {
