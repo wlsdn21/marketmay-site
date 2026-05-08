@@ -1,0 +1,34 @@
+---
+const images = [
+  { src: '/images/interior-1.jpg', alt: '창가 좌석' },
+  { src: '/images/interior-2.jpg', alt: '내부 라운지' },
+  { src: '/images/menu-display.jpg', alt: '베이글과 빵' },
+];
+---
+<section class="gallery">
+  <div class="gallery-grid">
+    {images.map((img) => (
+      <div class="gallery-cell" style={`background-image: url('${img.src}')`} role="img" aria-label={img.alt}></div>
+    ))}
+  </div>
+</section>
+
+<style>
+.gallery {
+  background: var(--bg-alt);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.gallery-cell {
+  aspect-ratio: 1 / 1;
+  background-size: cover;
+  background-position: center;
+}
+@media (max-width: 720px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-cell { aspect-ratio: 4 / 3; }
+}
+</style>
