@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MenuSection from '../components/MenuSection.astro';
+import { menu } from '../lib/data';
+---
+<BaseLayout title="menu | market may">
+  <Header />
+  <main class="menu-page">
+    <div class="container">
+      <header class="menu-head">
+        <div class="label">MENU</div>
+        <h1 class="menu-title">menu</h1>
+        <p class="menu-intro">market may의 메뉴입니다. 가격은 사전 공지 없이 변동될 수 있습니다.</p>
+      </header>
+      {menu.categories.map((category) => (
+        <MenuSection category={category} />
+      ))}
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.menu-page {
+  padding: 60px 0 80px;
+  min-height: 60vh;
+}
+.menu-head { text-align: center; margin-bottom: 40px; }
+.menu-title {
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 500;
+  color: var(--brand);
+  margin: 8px 0 16px;
+}
+.menu-intro {
+  color: var(--text-mute);
+  font-size: 14px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+</style>
