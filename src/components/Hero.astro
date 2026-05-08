@@ -1,0 +1,51 @@
+---
+import { info } from '../lib/data';
+---
+<section class="hero">
+  <div class="hero-image" aria-hidden="true"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">{info.name}</h1>
+    <p class="hero-tagline">{info.tagline}</p>
+  </div>
+</section>
+
+<style>
+.hero {
+  position: relative;
+  height: clamp(360px, 60vh, 600px);
+  overflow: hidden;
+  color: #fff;
+}
+.hero-image {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(180deg, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.6)), url('/images/exterior.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.hero-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 24px 60px;
+  max-width: var(--container);
+  margin: 0 auto;
+  left: 0; right: 0;
+}
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+}
+.hero-tagline {
+  font-size: clamp(13px, 1.6vw, 16px);
+  letter-spacing: 1.5px;
+  opacity: 0.9;
+  max-width: 600px;
+}
+</style>
