@@ -1,0 +1,57 @@
+---
+import { info } from '../lib/data';
+---
+<section class="info-strip">
+  <div class="container info-grid">
+    <div class="info-cell">
+      <div class="info-label">OPEN</div>
+      <div class="info-value">{info.hours.weekday}</div>
+      <div class="info-sub">{info.hours.closed}</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-label">CALL</div>
+      <a class="info-value" href={`tel:${info.phone.replace(/-/g,'')}`}>{info.phone}</a>
+    </div>
+    <div class="info-cell">
+      <div class="info-label">WHERE</div>
+      <div class="info-value">{info.address}</div>
+    </div>
+  </div>
+</section>
+
+<style>
+.info-strip {
+  background: var(--brand);
+  color: #fff;
+  padding: 32px 0;
+}
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+.info-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+.info-value {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.info-sub {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 6px;
+}
+@media (max-width: 640px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    text-align: left;
+    padding: 0 12px;
+  }
+}
+</style>
