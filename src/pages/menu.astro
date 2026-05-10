@@ -4,6 +4,21 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MenuSection from '../components/MenuSection.astro';
 import { menu } from '../lib/data';
+
+// 카테고리 이름 → URL fragment slug
+const slugMap: Record<string, string> = {
+  '커피': 'coffee',
+  '음료': 'drinks',
+  '차': 'tea',
+  '베이커리': 'bakery',
+  '브런치': 'brunch',
+  '원두 / 드립백': 'beans',
+};
+
+const categoriesWithSlug = menu.categories.map(cat => ({
+  category: cat,
+  slug: slugMap[cat.name] ?? cat.name.replace(/\s+/g, '-'),
+}));
 ---
 <BaseLayout title="menu | market may">
   <Header />
@@ -14,8 +29,13 @@ import { menu } from '../lib/data';
         <h1 class="menu-title">menu</h1>
         <p class="menu-intro">market may의 메뉴입니다. 가격은 사전 공지 없이 변동될 수 있습니다.</p>
       </header>
-      {menu.categories.map((category) => (
-        <MenuSection category={category} />
+      <nav class="cat-nav" aria-label="메뉴 카테고리">
+        {categoriesWithSlug.map(({ category, slug }) => (
+          <a href={`#${slug}`}>{category.name}</a>
+        ))}
+      </nav>
+      {categoriesWithSlug.map(({ category, slug }) => (
+        <MenuSection category={category} sectionId={slug} />
       ))}
     </div>
   </main>
@@ -24,10 +44,13 @@ import { menu } from '../lib/data';
 
 <style>
 .menu-page {
-  padding: 60px 0 80px;
+  padding: 40px 0 80px;
   min-height: 60vh;
 }
-.menu-head { text-align: center; margin-bottom: 40px; }
+.menu-head {
+  text-align: center;
+  margin-bottom: 32px;
+}
 .menu-title {
   font-family: var(--font-heading);
   font-size: clamp(40px, 6vw, 64px);
@@ -40,5 +63,45 @@ import { menu } from '../lib/data';
   font-size: 14px;
   max-width: 480px;
   margin: 0 auto;
+}
+
+/* 카테고리 탭 — sticky 아래 메인 헤더 바로 밑에 붙음 */
+.cat-nav {
+  position: sticky;
+  top: 60px; /* 메인 헤더 높이 */
+  background: var(--bg);
+  z-index: 5;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  padding: 12px 0;
+  margin: 0 -24px 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: thin;
+}
+.cat-nav::-webkit-scrollbar { height: 4px; }
+.cat-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.cat-nav a {
+  flex: 0 0 auto;
+  padding: 7px 16px;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.cat-nav a:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+@media (max-width: 480px) {
+  .cat-nav { gap: 6px; padding: 10px 16px; margin: 0 -16px 20px; }
+  .cat-nav a { padding: 6px 12px; font-size: 12px; }
 }
 </style>

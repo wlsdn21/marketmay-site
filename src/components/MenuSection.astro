@@ -1,8 +1,8 @@
 ---
 import type { MenuCategory, MenuItem, MenuEntry } from '../lib/data';
 import { isHeading } from '../lib/data';
-interface Props { category: MenuCategory }
-const { category } = Astro.props;
+interface Props { category: MenuCategory; sectionId?: string }
+const { category, sectionId } = Astro.props;
 
 interface Group {
   baseName: string;
@@ -71,7 +71,7 @@ function buildRows(entries: MenuEntry[]): Row[] {
 
 const rows = buildRows(category.items);
 ---
-<section class="menu-section">
+<section class="menu-section" id={sectionId}>
   <h2 class="menu-cat">{category.name}</h2>
   {category.note && <p class="menu-cat-note">{category.note}</p>}
   {rows.length === 0 ? (
@@ -88,16 +88,17 @@ const rows = buildRows(category.items);
             <span class="menu-item-price">
               {row.group.hot && row.group.iced ? (
                 <span class="price-num">{row.group.hot.price.toLocaleString()}</span>
-              ) : row.group.hot ? (
-                <>
-                  <span class="price-num">{row.group.hot.price.toLocaleString()}</span>
-                  {row.group.hot.onlyHot && <span class="badge subtle">only hot</span>}
-                </>
               ) : (
-                <>
-                  <span class="price-num">{row.group.iced!.price.toLocaleString()}</span>
-                  {row.group.iced!.onlyIced && <span class="badge subtle">only iced</span>}
-                </>
+                (() => {
+                  const it = (row.group.hot ?? row.group.iced)!;
+                  const badge = it.onlyHot ? 'only hot' : it.onlyIced ? 'only iced' : null;
+                  return (
+                    <>
+                      <span class="price-num">{it.price.toLocaleString()}</span>
+                      {badge && <span class="badge subtle">{badge}</span>}
+                    </>
+                  );
+                })()
               )}
             </span>
           </div>
@@ -112,6 +113,7 @@ const rows = buildRows(category.items);
 .menu-section {
   padding: 40px 0;
   border-bottom: 1px solid var(--border);
+  scroll-margin-top: 132px; /* sticky header(~60) + 카테고리 탭(~72) */
 }
 .menu-section:last-child { border-bottom: 0; }
 .menu-cat {
