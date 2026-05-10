@@ -27,7 +27,6 @@ const categoriesWithSlug = menu.categories.map(cat => ({
       <header class="menu-head">
         <div class="label">MENU</div>
         <h1 class="menu-title">menu</h1>
-        <p class="menu-intro">market may의 메뉴입니다. 가격은 사전 공지 없이 변동될 수 있습니다.</p>
       </header>
       <nav class="cat-nav" aria-label="메뉴 카테고리">
         {categoriesWithSlug.map(({ category, slug }) => (
@@ -37,6 +36,7 @@ const categoriesWithSlug = menu.categories.map(cat => ({
       {categoriesWithSlug.map(({ category, slug }) => (
         <MenuSection category={category} sectionId={slug} />
       ))}
+      <p class="menu-disclaimer">market may의 메뉴입니다. 가격은 사전 공지 없이 변동될 수 있습니다.</p>
     </div>
   </main>
   <Footer />
@@ -58,11 +58,15 @@ const categoriesWithSlug = menu.categories.map(cat => ({
   color: var(--brand);
   margin: 8px 0 16px;
 }
-.menu-intro {
+.menu-disclaimer {
+  text-align: center;
   color: var(--text-mute);
-  font-size: 14px;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  margin: 60px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
   max-width: 480px;
-  margin: 0 auto;
 }
 
 /* 카테고리 탭 — sticky 아래 메인 헤더 바로 밑에 붙음 */
