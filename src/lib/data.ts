@@ -36,6 +36,7 @@ export interface MenuItem {
 
 export interface MenuCategory {
   name: string;
+  note?: string;       // 카테고리 헤더 아래 작은 안내 (예: "아이스 +500원")
   items: MenuItem[];
 }
 

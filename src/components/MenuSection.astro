@@ -49,6 +49,7 @@ const categoryHasIced = groups.some(g => g.iced);
 ---
 <section class="menu-section">
   <h2 class="menu-cat">{category.name}</h2>
+  {category.note && <p class="menu-cat-note">{category.note}</p>}
   {groups.length === 0 ? (
     <p class="menu-empty">메뉴 준비 중입니다.</p>
   ) : (
@@ -93,7 +94,13 @@ const categoryHasIced = groups.some(g => g.iced);
   font-size: 28px;
   font-weight: 500;
   color: var(--brand);
-  margin-bottom: 24px;
+  margin-bottom: 6px;
+}
+.menu-cat-note {
+  font-size: 12px;
+  color: var(--text-mute);
+  letter-spacing: 0.5px;
+  margin: 0 0 22px;
 }
 .menu-empty {
   color: var(--text-mute);

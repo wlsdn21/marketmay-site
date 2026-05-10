@@ -113,11 +113,33 @@ categories:
       - name: 딸기말차
         price: 6700
   - name: 차
+    note: 아이스 +500원
     items:
-      - name: TEA
+      # TEA — 허브 / 녹차
+      - name: 케모마일
         price: 6000
-      - name: BLACK-TEA
+      - name: 페퍼민트
         price: 6000
+      - name: 히비스커스
+        price: 6000
+      - name: 자스민
+        price: 6000
+      - name: 로즈마리
+        price: 6000
+      - name: 제주녹차
+        price: 6000
+      # BLACK TEA
+      - name: Queen Anne
+        price: 6000
+      - name: Jubilee
+        price: 6000
+      - name: Breakfast
+        price: 6000
+      - name: Ceylon
+        price: 6000
+      - name: Peach
+        price: 6000
+      # 시그니처 / 한방차
       - name: 로얄밀크티
         price: 6700
       - name: 마스카포네레몬티
