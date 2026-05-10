@@ -117,7 +117,7 @@ categories:
   - name: 차
     note: 아이스 +500원
     items:
-      # TEA — 허브 / 녹차
+      - heading: 허브 TEA
       - name: 케모마일
         price: 6000
       - name: 페퍼민트
@@ -130,7 +130,7 @@ categories:
         price: 6000
       - name: 제주녹차
         price: 6000
-      # BLACK TEA
+      - heading: BLACK TEA
       - name: Queen Anne
         price: 6000
       - name: Jubilee
@@ -141,7 +141,7 @@ categories:
         price: 6000
       - name: Peach
         price: 6000
-      # 시그니처 / 한방차
+      - heading: 시그니처 · 한방차
       - name: 로얄밀크티
         price: 6700
       - name: 마스카포네레몬티

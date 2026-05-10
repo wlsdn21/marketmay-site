@@ -1,5 +1,6 @@
 ---
-import type { MenuCategory, MenuItem } from '../lib/data';
+import type { MenuCategory, MenuItem, MenuEntry } from '../lib/data';
+import { isHeading } from '../lib/data';
 interface Props { category: MenuCategory }
 const { category } = Astro.props;
 
@@ -10,13 +11,14 @@ interface Group {
   description?: string;
 }
 
+type Row =
+  | { kind: 'heading'; heading: string }
+  | { kind: 'group'; group: Group };
+
 /**
  * POS 데이터 컨벤션:
  *   "(I)" 접두사 = 아이스 변형
  *   접두사 없음 = 핫 (또는 단일 온도 메뉴)
- *
- * baseNameOf("(I)아메리카노") -> { base: "아메리카노", isIced: true }
- * baseNameOf("아메리카노")    -> { base: "아메리카노", isIced: false }
  */
 function baseNameOf(name: string): { base: string; isIced: boolean } {
   const trimmed = name.trim();
@@ -26,9 +28,10 @@ function baseNameOf(name: string): { base: string; isIced: boolean } {
   return { base: trimmed, isIced: false };
 }
 
-function groupItems(items: MenuItem[]): Group[] {
+/** 한 chunk(헤딩 사이의 항목들) 안에서 hot/iced를 base name으로 묶는다. */
+function groupChunk(items: MenuItem[]): Group[] {
   const map = new Map<string, Group>();
-  const order: string[] = []; // 첫 등장 순서 보존
+  const order: string[] = [];
   for (const item of items) {
     const { base, isIced } = baseNameOf(item.name);
     if (!map.has(base)) {
@@ -43,38 +46,62 @@ function groupItems(items: MenuItem[]): Group[] {
   return order.map(b => map.get(b)!);
 }
 
-const groups = groupItems(category.items);
+/** 헤딩과 항목이 섞인 entries 리스트를 렌더용 Row[] 로 변환. */
+function buildRows(entries: MenuEntry[]): Row[] {
+  const rows: Row[] = [];
+  let chunk: MenuItem[] = [];
+
+  const flush = () => {
+    if (chunk.length === 0) return;
+    for (const g of groupChunk(chunk)) rows.push({ kind: 'group', group: g });
+    chunk = [];
+  };
+
+  for (const entry of entries) {
+    if (isHeading(entry)) {
+      flush();
+      rows.push({ kind: 'heading', heading: entry.heading });
+    } else {
+      chunk.push(entry);
+    }
+  }
+  flush();
+  return rows;
+}
+
+const rows = buildRows(category.items);
 ---
 <section class="menu-section">
   <h2 class="menu-cat">{category.name}</h2>
   {category.note && <p class="menu-cat-note">{category.note}</p>}
-  {groups.length === 0 ? (
+  {rows.length === 0 ? (
     <p class="menu-empty">메뉴 준비 중입니다.</p>
   ) : (
     <ul class="menu-list">
-      {groups.map((g) => (
+      {rows.map((row) => row.kind === 'heading' ? (
+        <li class="menu-subheading"><span>{row.heading}</span></li>
+      ) : (
         <li class="menu-item">
           <div class="menu-item-head">
-            <span class="menu-item-name">{g.baseName}</span>
+            <span class="menu-item-name">{row.group.baseName}</span>
             <span class="menu-item-dots"></span>
             <span class="menu-item-price">
-              {g.hot && g.iced ? (
-                // 양쪽 다 있으면 라벨 없이 단일 가격 (가격 다르면 hot 기준)
-                <span class="price-num">{g.hot.price.toLocaleString()}</span>
-              ) : g.hot ? (
+              {row.group.hot && row.group.iced ? (
+                <span class="price-num">{row.group.hot.price.toLocaleString()}</span>
+              ) : row.group.hot ? (
                 <>
-                  <span class="price-num">{g.hot.price.toLocaleString()}</span>
-                  {g.hot.onlyHot && <span class="badge subtle">only hot</span>}
+                  <span class="price-num">{row.group.hot.price.toLocaleString()}</span>
+                  {row.group.hot.onlyHot && <span class="badge subtle">only hot</span>}
                 </>
               ) : (
                 <>
-                  <span class="price-num">{g.iced!.price.toLocaleString()}</span>
-                  {g.iced!.onlyIced && <span class="badge subtle">only iced</span>}
+                  <span class="price-num">{row.group.iced!.price.toLocaleString()}</span>
+                  {row.group.iced!.onlyIced && <span class="badge subtle">only iced</span>}
                 </>
               )}
             </span>
           </div>
-          {g.description && <p class="menu-item-desc">{g.description}</p>}
+          {row.group.description && <p class="menu-item-desc">{row.group.description}</p>}
         </li>
       ))}
     </ul>
@@ -109,6 +136,25 @@ const groups = groupItems(category.items);
   list-style: none;
   padding: 0;
   margin: 0;
+}
+.menu-subheading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 0 8px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--brand);
+  font-weight: 600;
+}
+.menu-subheading::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+}
+.menu-list .menu-subheading:first-child {
+  padding-top: 0;
 }
 .menu-item {
   padding: 12px 0;

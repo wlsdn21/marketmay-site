@@ -36,10 +36,21 @@ export interface MenuItem {
   onlyIced?: boolean;  // 명시적으로 아이스 전용임을 표시
 }
 
+/** 카테고리 안의 서브섹션 헤더 (메뉴 항목이 아님). YAML에서 `- heading: ...` 로 표기. */
+export interface MenuHeading {
+  heading: string;
+}
+
+export type MenuEntry = MenuItem | MenuHeading;
+
+export function isHeading(e: MenuEntry): e is MenuHeading {
+  return (e as MenuHeading).heading !== undefined;
+}
+
 export interface MenuCategory {
   name: string;
   note?: string;       // 카테고리 헤더 아래 작은 안내 (예: "아이스 +500원")
-  items: MenuItem[];
+  items: MenuEntry[];
 }
 
 export interface Menu {
