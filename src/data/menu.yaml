@@ -28,7 +28,7 @@ categories:
         price: 6400
       - name: 카푸치노
         price: 5700
-      - name: (I)캬라멜라떼
+      - name: (I)카라멜라떼
         price: 6000
       - name: 라떼5
         price: 5600
@@ -62,7 +62,7 @@ categories:
         price: 6200
       - name: 진한라떼8부
         price: 6700
-      - name: (I)진한라뗴8부
+      - name: (I)진한라떼8부
         price: 6700
   - name: 음료
     items:

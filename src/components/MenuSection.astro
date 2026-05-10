@@ -1,22 +1,88 @@
 ---
-import type { MenuCategory } from '../lib/data';
+import type { MenuCategory, MenuItem } from '../lib/data';
 interface Props { category: MenuCategory }
 const { category } = Astro.props;
+
+interface Group {
+  baseName: string;
+  hot?: MenuItem;
+  iced?: MenuItem;
+  description?: string;
+}
+
+/**
+ * POS 데이터 컨벤션:
+ *   "(I)" 접두사 = 아이스 변형
+ *   접두사 없음 = 핫 (또는 단일 온도 메뉴)
+ *
+ * baseNameOf("(I)아메리카노") -> { base: "아메리카노", isIced: true }
+ * baseNameOf("아메리카노")    -> { base: "아메리카노", isIced: false }
+ */
+function baseNameOf(name: string): { base: string; isIced: boolean } {
+  const trimmed = name.trim();
+  if (trimmed.startsWith('(I)')) {
+    return { base: trimmed.slice(3).trim(), isIced: true };
+  }
+  return { base: trimmed, isIced: false };
+}
+
+function groupItems(items: MenuItem[]): Group[] {
+  const map = new Map<string, Group>();
+  const order: string[] = []; // 첫 등장 순서 보존
+  for (const item of items) {
+    const { base, isIced } = baseNameOf(item.name);
+    if (!map.has(base)) {
+      map.set(base, { baseName: base });
+      order.push(base);
+    }
+    const group = map.get(base)!;
+    if (isIced) group.iced = item;
+    else group.hot = item;
+    if (item.description) group.description = item.description;
+  }
+  return order.map(b => map.get(b)!);
+}
+
+const groups = groupItems(category.items);
+// 카테고리 안에 아이스 변형이 하나라도 있으면 = 핫/아이스 구분이 의미 있는 카테고리
+const categoryHasIced = groups.some(g => g.iced);
 ---
 <section class="menu-section">
   <h2 class="menu-cat">{category.name}</h2>
-  {category.items.length === 0 ? (
+  {groups.length === 0 ? (
     <p class="menu-empty">메뉴 준비 중입니다.</p>
   ) : (
     <ul class="menu-list">
-      {category.items.map((item) => (
+      {groups.map((g) => (
         <li class="menu-item">
           <div class="menu-item-head">
-            <span class="menu-item-name">{item.name}</span>
+            <span class="menu-item-name">{g.baseName}</span>
             <span class="menu-item-dots"></span>
-            <span class="menu-item-price">{item.price.toLocaleString()}원</span>
+            <span class="menu-item-price">
+              {g.hot && g.iced ? (
+                <>
+                  <span class="badge">HOT</span>
+                  <span class="price-num">{g.hot.price.toLocaleString()}</span>
+                  <span class="sep">·</span>
+                  <span class="badge">ICED</span>
+                  <span class="price-num">{g.iced.price.toLocaleString()}</span>
+                </>
+              ) : g.iced ? (
+                <>
+                  <span class="badge subtle">Only ICED</span>
+                  <span class="price-num">{g.iced.price.toLocaleString()}</span>
+                </>
+              ) : categoryHasIced ? (
+                <>
+                  <span class="badge subtle">Only HOT</span>
+                  <span class="price-num">{g.hot!.price.toLocaleString()}</span>
+                </>
+              ) : (
+                <span class="price-num">{g.hot!.price.toLocaleString()}</span>
+              )}
+            </span>
           </div>
-          {item.description && <p class="menu-item-desc">{item.description}</p>}
+          {g.description && <p class="menu-item-desc">{g.description}</p>}
         </li>
       ))}
     </ul>
@@ -60,11 +126,40 @@ const { category } = Astro.props;
   flex: 1;
   border-bottom: 1px dotted var(--border);
   transform: translateY(-4px);
+  min-width: 24px;
 }
-.menu-item-price { color: var(--text-mute); }
+.menu-item-price {
+  color: var(--text-mute);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.price-num { font-variant-numeric: tabular-nums; }
+.price-num::after { content: '원'; opacity: 0.55; margin-left: 1px; }
+.badge {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  color: var(--brand);
+  text-transform: uppercase;
+}
+.badge.subtle {
+  color: var(--text-mute);
+  opacity: 0.85;
+}
+.sep {
+  opacity: 0.4;
+  padding: 0 2px;
+}
 .menu-item-desc {
   font-size: 13px;
   color: var(--text-mute);
   margin: 4px 0 0;
+}
+@media (max-width: 480px) {
+  .menu-item-head { font-size: 14px; }
+  .badge { font-size: 9px; }
 }
 </style>
