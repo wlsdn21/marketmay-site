@@ -21,11 +21,11 @@ categories:
       - name: (I)카푸치노
         price: 6000
       - name: 라떼
-        sizes:
+        variants:
           - { label: 5부, price: 5600 }
           - { label: 8부, price: 5700 }
       - name: (I)라떼
-        sizes:
+        variants:
           - { label: 5부, price: 5600 }
           - { label: 8부, price: 5700 }
       - name: 바닐라라떼
@@ -190,12 +190,8 @@ categories:
         price: 11000
       - name: half사워도우
         price: 6000
-      - name: 빵
-        price: 6021
       - name: 허니버터토스트
         price: 4500
-      - name: 허니버터토스트(소)
-        price: 3800
       - name: 커피번
         price: 3800
       - name: 앙버터
@@ -210,10 +206,10 @@ categories:
         price: 5700
       - name: 유자파운드케익
         price: 4800
-      - name: 휘낭시에(플레인)
-        price: 3500
-      - name: "휘낭시에(초코,피칸)"
-        price: 3800
+      - name: 휘낭시에
+        variants:
+          - { label: 플레인, price: 3500 }
+          - { label: "초코·피칸", price: 3800 }
   - name: 브런치
     items:
       - name: M.M.B.P

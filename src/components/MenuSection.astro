@@ -97,12 +97,12 @@ const rows = buildRows(category.items);
                       : null;
                 return (
                   <>
-                    {it.sizes ? (
-                      it.sizes.map((s, i) => (
+                    {it.variants ? (
+                      it.variants.map((v, i) => (
                         <>
                           {i > 0 && <span class="sep">·</span>}
-                          <span class="size-label">{s.label}</span>
-                          <span class="price-num">{s.price.toLocaleString()}</span>
+                          <span class="size-label">{v.label}</span>
+                          <span class="price-num">{v.price.toLocaleString()}</span>
                         </>
                       ))
                     ) : (

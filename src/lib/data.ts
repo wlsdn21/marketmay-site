@@ -27,16 +27,16 @@ export interface SiteInfo {
   };
 }
 
-/** 한 메뉴 안에 여러 사이즈가 있을 때 (예: 라떼 5부/8부) */
-export interface SizePrice {
+/** 한 메뉴 안에 여러 사이즈/옵션이 있을 때 (예: 라떼 5부/8부, 휘낭시에 플레인/초코) */
+export interface Variant {
   label: string;
   price: number;
 }
 
 export interface MenuItem {
   name: string;
-  price?: number;          // 단일 가격 (sizes 사용 시 생략 가능)
-  sizes?: SizePrice[];     // 다중 사이즈/가격
+  price?: number;          // 단일 가격 (variants 사용 시 생략 가능)
+  variants?: Variant[];    // 사이즈·옵션·맛 등 다중 변형
   description?: string;
   image?: string;
   onlyHot?: boolean;   // 명시적으로 핫 전용임을 표시 (예: 마로치노)
