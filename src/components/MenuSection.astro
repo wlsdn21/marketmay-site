@@ -44,8 +44,6 @@ function groupItems(items: MenuItem[]): Group[] {
 }
 
 const groups = groupItems(category.items);
-// 카테고리 안에 아이스 변형이 하나라도 있으면 = 핫/아이스 구분이 의미 있는 카테고리
-const categoryHasIced = groups.some(g => g.iced);
 ---
 <section class="menu-section">
   <h2 class="menu-cat">{category.name}</h2>
@@ -66,12 +64,12 @@ const categoryHasIced = groups.some(g => g.iced);
               ) : g.hot ? (
                 <>
                   <span class="price-num">{g.hot.price.toLocaleString()}</span>
-                  {categoryHasIced && <span class="badge subtle">only hot</span>}
+                  {g.hot.onlyHot && <span class="badge subtle">only hot</span>}
                 </>
               ) : (
                 <>
                   <span class="price-num">{g.iced!.price.toLocaleString()}</span>
-                  {categoryHasIced && <span class="badge subtle">only iced</span>}
+                  {g.iced!.onlyIced && <span class="badge subtle">only iced</span>}
                 </>
               )}
             </span>

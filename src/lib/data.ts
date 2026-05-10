@@ -32,6 +32,8 @@ export interface MenuItem {
   price: number;
   description?: string;
   image?: string;
+  onlyHot?: boolean;   // 명시적으로 핫 전용임을 표시 (예: 마로치노)
+  onlyIced?: boolean;  // 명시적으로 아이스 전용임을 표시
 }
 
 export interface MenuCategory {
