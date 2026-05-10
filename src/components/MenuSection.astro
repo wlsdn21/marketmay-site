@@ -60,25 +60,18 @@ const categoryHasIced = groups.some(g => g.iced);
             <span class="menu-item-dots"></span>
             <span class="menu-item-price">
               {g.hot && g.iced ? (
+                // 양쪽 다 있으면 라벨 없이 단일 가격 (가격 다르면 hot 기준)
+                <span class="price-num">{g.hot.price.toLocaleString()}</span>
+              ) : g.hot ? (
                 <>
-                  <span class="badge">HOT</span>
                   <span class="price-num">{g.hot.price.toLocaleString()}</span>
-                  <span class="sep">·</span>
-                  <span class="badge">ICED</span>
-                  <span class="price-num">{g.iced.price.toLocaleString()}</span>
-                </>
-              ) : g.iced ? (
-                <>
-                  <span class="badge subtle">Only ICED</span>
-                  <span class="price-num">{g.iced.price.toLocaleString()}</span>
-                </>
-              ) : categoryHasIced ? (
-                <>
-                  <span class="badge subtle">Only HOT</span>
-                  <span class="price-num">{g.hot!.price.toLocaleString()}</span>
+                  {categoryHasIced && <span class="badge subtle">only hot</span>}
                 </>
               ) : (
-                <span class="price-num">{g.hot!.price.toLocaleString()}</span>
+                <>
+                  <span class="price-num">{g.iced!.price.toLocaleString()}</span>
+                  {categoryHasIced && <span class="badge subtle">only iced</span>}
+                </>
               )}
             </span>
           </div>
