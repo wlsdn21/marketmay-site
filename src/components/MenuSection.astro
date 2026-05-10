@@ -86,20 +86,32 @@ const rows = buildRows(category.items);
             <span class="menu-item-name">{row.group.baseName}</span>
             <span class="menu-item-dots"></span>
             <span class="menu-item-price">
-              {row.group.hot && row.group.iced ? (
-                <span class="price-num">{row.group.hot.price.toLocaleString()}</span>
-              ) : (
-                (() => {
-                  const it = (row.group.hot ?? row.group.iced)!;
-                  const badge = it.onlyHot ? 'only hot' : it.onlyIced ? 'only iced' : null;
-                  return (
-                    <>
-                      <span class="price-num">{it.price.toLocaleString()}</span>
-                      {badge && <span class="badge subtle">{badge}</span>}
-                    </>
-                  );
-                })()
-              )}
+              {(() => {
+                // 양쪽 다 있든, 한쪽만 있든, 가격 표시는 hot 우선 (없으면 iced)
+                const it = (row.group.hot ?? row.group.iced)!;
+                const badge =
+                  !(row.group.hot && row.group.iced) && it.onlyHot
+                    ? 'only hot'
+                    : !(row.group.hot && row.group.iced) && it.onlyIced
+                      ? 'only iced'
+                      : null;
+                return (
+                  <>
+                    {it.sizes ? (
+                      it.sizes.map((s, i) => (
+                        <>
+                          {i > 0 && <span class="sep">·</span>}
+                          <span class="size-label">{s.label}</span>
+                          <span class="price-num">{s.price.toLocaleString()}</span>
+                        </>
+                      ))
+                    ) : (
+                      <span class="price-num">{it.price!.toLocaleString()}</span>
+                    )}
+                    {badge && <span class="badge subtle">{badge}</span>}
+                  </>
+                );
+              })()}
             </span>
           </div>
           {row.group.description && <p class="menu-item-desc">{row.group.description}</p>}
@@ -194,6 +206,13 @@ const rows = buildRows(category.items);
 .badge.subtle {
   color: var(--text-mute);
   opacity: 0.85;
+}
+.size-label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--brand);
+  font-weight: 600;
+  margin-right: 2px;
 }
 .sep {
   opacity: 0.4;

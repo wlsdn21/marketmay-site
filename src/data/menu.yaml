@@ -20,14 +20,14 @@ categories:
         price: 5700
       - name: (I)카푸치노
         price: 6000
-      - name: 라떼5
-        price: 5600
-      - name: (I)라떼5
-        price: 5600
-      - name: 라떼8
-        price: 5700
-      - name: (I)라떼8
-        price: 5700
+      - name: 라떼
+        sizes:
+          - { label: 5부, price: 5600 }
+          - { label: 8부, price: 5700 }
+      - name: (I)라떼
+        sizes:
+          - { label: 5부, price: 5600 }
+          - { label: 8부, price: 5700 }
       - name: 바닐라라떼
         price: 6200
       - name: (I)바닐라라떼
@@ -246,5 +246,3 @@ categories:
         price: 45000
       - name: 디카페인원두200g
         price: 16000
-      - name: 진주블루베리C
-        price: 18000
