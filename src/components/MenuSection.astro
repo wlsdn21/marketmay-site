@@ -72,8 +72,10 @@ function buildRows(entries: MenuEntry[]): Row[] {
 const rows = buildRows(category.items);
 ---
 <section class="menu-section" id={sectionId}>
-  <h2 class="menu-cat">{category.name}</h2>
-  {category.note && <p class="menu-cat-note">{category.note}</p>}
+  <h2 class="menu-cat">
+    <span class="menu-cat-name">{category.name}</span>
+    {category.note && <span class="menu-cat-note">{category.note}</span>}
+  </h2>
   {rows.length === 0 ? (
     <p class="menu-empty">메뉴 준비 중입니다.</p>
   ) : (
@@ -133,13 +135,20 @@ const rows = buildRows(category.items);
   font-size: 28px;
   font-weight: 500;
   color: var(--brand);
-  margin-bottom: 6px;
+  margin: 0 0 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
 }
+.menu-cat-name { display: inline-block; }
 .menu-cat-note {
+  font-family: var(--font-body);
   font-size: 12px;
-  color: var(--text-mute);
+  font-weight: 400;
   letter-spacing: 0.5px;
-  margin: 0 0 22px;
+  color: var(--text-mute);
+  text-transform: none;
 }
 .menu-empty {
   color: var(--text-mute);

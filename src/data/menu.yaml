@@ -209,6 +209,7 @@ categories:
           - { label: 플레인, price: 3500 }
           - { label: "초코·피칸", price: 3800 }
   - name: 브런치
+    note: 3시 마감
     items:
       - name: M.M.B.P
         price: 14000
