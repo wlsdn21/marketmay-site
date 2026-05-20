@@ -1,149 +1,181 @@
 ---
-// 메뉴 사진 라이트박스 — menu.astro에서만 사용
-// .menu-item.has-photo[data-image] 클릭하면 열림
+// 메뉴 사진 팝오버 — 클릭한 메뉴 항목 근처에서 튀어나옴
 ---
-<div class="lb" id="menu-lb" role="dialog" aria-modal="true" aria-labelledby="lb-caption" aria-hidden="true">
-  <button class="lb-close" type="button" aria-label="닫기">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<div class="pop" id="menu-pop" role="dialog" aria-modal="false" aria-labelledby="pop-caption" aria-hidden="true">
+  <button class="pop-close" type="button" aria-label="닫기">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <line x1="6" y1="6" x2="18" y2="18"/>
       <line x1="18" y1="6" x2="6" y2="18"/>
     </svg>
   </button>
-  <figure class="lb-figure">
-    <img class="lb-img" alt="" />
-    <figcaption class="lb-caption" id="lb-caption"></figcaption>
-  </figure>
+  <img class="pop-img" alt="" />
+  <div class="pop-caption" id="pop-caption"></div>
 </div>
 
 <script is:inline>
 (() => {
-  const lb = document.getElementById('menu-lb');
-  if (!lb) return;
-  const img = lb.querySelector('.lb-img');
-  const cap = lb.querySelector('.lb-caption');
-  const closeBtn = lb.querySelector('.lb-close');
+  const pop = document.getElementById('menu-pop');
+  if (!pop) return;
+  const img = pop.querySelector('.pop-img');
+  const cap = pop.querySelector('.pop-caption');
+  const closeBtn = pop.querySelector('.pop-close');
   let lastFocused = null;
+  let currentItem = null;
 
-  function open(src, name) {
+  function position(item) {
+    const rect = item.getBoundingClientRect();
+    const popW = pop.offsetWidth;
+    const popH = pop.offsetHeight;
+    const margin = 10;
+
+    // 기본: 메뉴 항목 아래, 항목의 가로 중심에 맞춤
+    const itemCenterX = rect.left + rect.width / 2;
+    let left = itemCenterX - popW / 2;
+    let top = rect.bottom + 8;
+    let originY = 'top';
+
+    // 아래로 넘치면 위로
+    if (top + popH > window.innerHeight - margin) {
+      top = rect.top - popH - 8;
+      originY = 'bottom';
+    }
+    // 위로도 부족하면 그냥 화면 안에 끼우기
+    if (top < margin) top = margin;
+
+    // 좌우 클램프
+    if (left < margin) left = margin;
+    if (left + popW > window.innerWidth - margin) left = window.innerWidth - popW - margin;
+
+    // transform-origin은 메뉴 항목 중심 쪽으로 — 항목에서 튀어나오는 느낌
+    const originX = Math.max(20, Math.min(popW - 20, itemCenterX - left));
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+    pop.style.transformOrigin = `${originX}px ${originY}`;
+  }
+
+  function open(item) {
+    const src = item.getAttribute('data-image');
+    const name = item.getAttribute('data-name');
     if (!src) return;
     img.src = src;
     img.alt = name || '';
     cap.textContent = name || '';
+    currentItem = item;
     lastFocused = document.activeElement;
-    lb.classList.add('is-open');
-    lb.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    requestAnimationFrame(() => closeBtn.focus());
+    pop.setAttribute('aria-hidden', 'false');
+    // 측정용으로 잠깐 보이게(opacity 0 상태에서 layout만 잡힘) → 위치 계산 → 애니메이션
+    requestAnimationFrame(() => {
+      position(item);
+      pop.classList.add('is-open');
+    });
   }
+
   function close() {
-    lb.classList.remove('is-open');
-    lb.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    // 이미지는 약간의 지연 후 비워 transition을 자연스럽게
-    setTimeout(() => { if (!lb.classList.contains('is-open')) { img.src = ''; } }, 200);
+    if (!pop.classList.contains('is-open')) return;
+    pop.classList.remove('is-open');
+    pop.setAttribute('aria-hidden', 'true');
+    currentItem = null;
+    setTimeout(() => { if (!pop.classList.contains('is-open')) img.src = ''; }, 200);
     if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
   }
 
-  // 메뉴 항목 클릭 위임
+  // 메뉴 항목 클릭
   document.addEventListener('click', (e) => {
     const item = e.target.closest('.menu-item.has-photo[data-image]');
-    if (!item) return;
-    open(item.getAttribute('data-image'), item.getAttribute('data-name'));
+    if (item) {
+      // 같은 항목 다시 클릭하면 닫기
+      if (currentItem === item) { close(); return; }
+      open(item);
+      return;
+    }
+    // 팝오버 외부 클릭하면 닫기 (팝오버 자체 클릭은 제외)
+    if (pop.classList.contains('is-open') && !e.target.closest('#menu-pop')) {
+      close();
+    }
   });
-  // 키보드 (Enter / Space) — 클릭 가능한 메뉴 아이템 활성화
+
+  // 키보드 Enter / Space (포커스된 메뉴 항목 활성화)
   document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const target = e.target;
-    if (!target || !target.classList || !target.classList.contains('menu-item') || !target.classList.contains('has-photo')) return;
-    e.preventDefault();
-    open(target.getAttribute('data-image'), target.getAttribute('data-name'));
+    if (e.key === 'Enter' || e.key === ' ') {
+      const target = e.target;
+      if (target && target.classList && target.classList.contains('menu-item') && target.classList.contains('has-photo')) {
+        e.preventDefault();
+        if (currentItem === target) close();
+        else open(target);
+      }
+      return;
+    }
+    if (e.key === 'Escape' && pop.classList.contains('is-open')) close();
   });
-  // 닫기: X 버튼, 배경 클릭, Esc
-  closeBtn.addEventListener('click', close);
-  lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lb.classList.contains('is-open')) close();
-  });
+
+  // X 버튼
+  closeBtn.addEventListener('click', (e) => { e.stopPropagation(); close(); });
+
+  // 스크롤 / 리사이즈 시 닫기 (위치가 어긋나는 걸 방지)
+  window.addEventListener('scroll', () => { close(); }, { passive: true });
+  window.addEventListener('resize', () => { close(); }, { passive: true });
 })();
 </script>
 
 <style>
-.lb {
+.pop {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.78);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  width: 240px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
   z-index: 100;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.18s ease;
+  transform: scale(0.15);
+  transition: transform 0.16s ease-in, opacity 0.16s ease-in;
 }
-.lb.is-open {
+.pop.is-open {
   opacity: 1;
   pointer-events: auto;
-}
-.lb-figure {
-  margin: 0;
-  max-width: 92vw;
-  max-height: 88vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  transform: scale(0.8);
-  opacity: 0;
-  /* 닫힐 때: 빠른 페이드 + 작은 축소 */
-  transition: transform 0.18s ease, opacity 0.18s ease;
-}
-.lb.is-open .lb-figure {
   transform: scale(1);
-  opacity: 1;
-  /* 열릴 때: 살짝 1을 넘었다가 안착 (back-out easing) */
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out;
+  /* 열릴 때: 살짝 1을 넘어 튕긴 뒤 안착 */
+  transition: transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out;
 }
-.lb-img {
-  max-width: 100%;
-  max-height: 78vh;
-  object-fit: contain;
-  border-radius: 4px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-  background: #fff;
+.pop-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #f3f3f3;
 }
-.lb-caption {
-  color: #fff;
-  font-size: 14px;
-  letter-spacing: 0.5px;
+.pop-caption {
+  padding: 9px 14px 11px;
+  font-size: 13px;
+  color: var(--text);
+  letter-spacing: 0.3px;
   text-align: center;
-  opacity: 0.9;
 }
-.lb-close {
+.pop-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 40px;
-  height: 40px;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
   border: none;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.55);
   color: #fff;
   border-radius: 50%;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   transition: background 0.15s;
+  padding: 0;
 }
-.lb-close:hover { background: rgba(255, 255, 255, 0.18); }
-.lb-close:focus-visible {
-  outline: 2px solid #fff;
+.pop-close:hover { background: rgba(0, 0, 0, 0.75); }
+.pop-close:focus-visible {
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
 }
-.lb-close svg { width: 20px; height: 20px; }
-@media (max-width: 480px) {
-  .lb { padding: 12px; }
-  .lb-close { top: 10px; right: 10px; width: 36px; height: 36px; }
-  .lb-caption { font-size: 13px; }
+.pop-close svg { width: 12px; height: 12px; }
+@media (max-width: 360px) {
+  .pop { width: calc(100vw - 32px); }
 }
 </style>
