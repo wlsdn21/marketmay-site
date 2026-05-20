@@ -23,16 +23,17 @@
   let currentItem = null;
 
   function position(item) {
-    // 행(.menu-item)이 아닌 텍스트(.menu-item-name) 위치에 맞춰야 PC에서도 글자 옆에서 튀어나옴
+    // 카메라 아이콘(.photo-ind)이 있으면 그 위치에서 튀어나오게 — 글자 끝의 아이콘 쪽에서 뿅
+    const iconEl = item.querySelector('.photo-ind');
     const nameEl = item.querySelector('.menu-item-name') || item;
-    const nameRect = nameEl.getBoundingClientRect();
+    const anchorRect = (iconEl || nameEl).getBoundingClientRect();
     const itemRect = item.getBoundingClientRect();
     const popW = pop.offsetWidth;
     const popH = pop.offsetHeight;
     const margin = 10;
 
-    // 가로: 글자(.menu-item-name) 중심 기준 — PC에선 행 좌측에 가까운 위치
-    const anchorX = nameRect.left + nameRect.width / 2;
+    // 가로: 아이콘 중심 기준
+    const anchorX = anchorRect.left + anchorRect.width / 2;
     let left = anchorX - popW / 2;
     // 세로 기준은 행 전체 — 아래로 깔끔하게 튀어나오게
     let top = itemRect.bottom + 8;
