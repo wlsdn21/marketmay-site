@@ -23,31 +23,34 @@
   let currentItem = null;
 
   function position(item) {
-    const rect = item.getBoundingClientRect();
+    // 행(.menu-item)이 아닌 텍스트(.menu-item-name) 위치에 맞춰야 PC에서도 글자 옆에서 튀어나옴
+    const nameEl = item.querySelector('.menu-item-name') || item;
+    const nameRect = nameEl.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
     const popW = pop.offsetWidth;
     const popH = pop.offsetHeight;
     const margin = 10;
 
-    // 기본: 메뉴 항목 아래, 항목의 가로 중심에 맞춤
-    const itemCenterX = rect.left + rect.width / 2;
-    let left = itemCenterX - popW / 2;
-    let top = rect.bottom + 8;
+    // 가로: 글자(.menu-item-name) 중심 기준 — PC에선 행 좌측에 가까운 위치
+    const anchorX = nameRect.left + nameRect.width / 2;
+    let left = anchorX - popW / 2;
+    // 세로 기준은 행 전체 — 아래로 깔끔하게 튀어나오게
+    let top = itemRect.bottom + 8;
     let originY = 'top';
 
     // 아래로 넘치면 위로
     if (top + popH > window.innerHeight - margin) {
-      top = rect.top - popH - 8;
+      top = itemRect.top - popH - 8;
       originY = 'bottom';
     }
-    // 위로도 부족하면 그냥 화면 안에 끼우기
     if (top < margin) top = margin;
 
     // 좌우 클램프
     if (left < margin) left = margin;
     if (left + popW > window.innerWidth - margin) left = window.innerWidth - popW - margin;
 
-    // transform-origin은 메뉴 항목 중심 쪽으로 — 항목에서 튀어나오는 느낌
-    const originX = Math.max(20, Math.min(popW - 20, itemCenterX - left));
+    // transform-origin은 글자 중심 쪽으로 — 글자에서 튀어나오는 느낌
+    const originX = Math.max(20, Math.min(popW - 20, anchorX - left));
     pop.style.left = left + 'px';
     pop.style.top = top + 'px';
     pop.style.transformOrigin = `${originX}px ${originY}`;
