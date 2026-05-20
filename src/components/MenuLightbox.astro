@@ -93,10 +93,17 @@
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  transform: scale(0.96);
-  transition: transform 0.18s ease;
+  transform: scale(0.8);
+  opacity: 0;
+  /* 닫힐 때: 빠른 페이드 + 작은 축소 */
+  transition: transform 0.18s ease, opacity 0.18s ease;
 }
-.lb.is-open .lb-figure { transform: scale(1); }
+.lb.is-open .lb-figure {
+  transform: scale(1);
+  opacity: 1;
+  /* 열릴 때: 살짝 1을 넘었다가 안착 (back-out easing) */
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out;
+}
 .lb-img {
   max-width: 100%;
   max-height: 78vh;
