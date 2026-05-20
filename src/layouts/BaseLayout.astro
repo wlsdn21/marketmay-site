@@ -3,8 +3,17 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string;
 }
-const { title = 'market may', description = '달콤한 커피 · 따뜻한 브런치 · 모닝 베이글 · 신선한 드립백' } = Astro.props;
+const {
+  title = 'market may',
+  description = '달콤한 커피 · 따뜻한 브런치 · 모닝 베이글 · 신선한 드립백',
+  ogImage = '/images/exterior.jpg',
+} = Astro.props;
+
+const siteUrl = 'https://marketmay.com';
+const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+const canonical = `${siteUrl}${Astro.url.pathname}`;
 ---
 <html lang="ko">
   <head>
@@ -12,6 +21,24 @@ const { title = 'market may', description = '달콤한 커피 · 따뜻한 브�
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+
+    <!-- Open Graph (KakaoTalk, Facebook, LinkedIn, 등) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="market may" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:image:alt" content="market may 카페 외관" />
+    <meta property="og:url" content={canonical} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
     <link rel="shortcut icon" href="/favicon.svg?v=3" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/favicon.svg?v=3" />
