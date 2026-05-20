@@ -45,6 +45,7 @@ categories:
         price: 6200
       - name: 카페모카
         price: 6600
+        image: /images/menu/cafe-mocha.jpg
       - name: (I)카페모카
         price: 6600
       - name: 마로치노

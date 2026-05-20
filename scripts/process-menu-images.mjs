@@ -27,7 +27,7 @@ const MAPPING = {
   17: 'royal-milk-tea',
   18: 'omija-tea-2',             // 15와 중복 대안
   19: 'grapefruit-tea',
-  21: 'marocchino-2',            // 16과 중복 대안
+  21: 'cafe-mocha',              // 카페모카
   22: 'latte-hot-8',
   30: 'americano-hot',
   32: 'burrata-salad',
