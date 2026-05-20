@@ -6,6 +6,13 @@ import { info } from '../lib/data';
     <a href="/" class="brand">{info.name}</a>
     <nav class="nav">
       <a href="/menu">menu</a>
+      <a href={info.instagram} target="_blank" rel="noopener" aria-label="Instagram" class="icon-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"/>
+        </svg>
+      </a>
       <a href="#location" class="cta">오시는 길</a>
     </nav>
   </div>
@@ -41,6 +48,13 @@ import { info } from '../lib/data';
   transition: color 0.15s;
 }
 .nav a:hover { color: var(--text); }
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-link svg { width: 19px; height: 19px; display: block; }
+.icon-link:hover { color: var(--brand); }
 .cta {
   background: var(--brand);
   color: #fff !important;
