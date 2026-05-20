@@ -10,8 +10,10 @@ categories:
         price: 4800
       - name: 아메리카노
         price: 5000
+        image: /images/menu/americano-hot.jpg
       - name: (I)아메리카노
         price: 5000
+        image: /images/menu/americano-iced.jpg
       - name: cold brew
         price: 5500
       - name: (I)cold brew
@@ -21,6 +23,7 @@ categories:
       - name: (I)카푸치노
         price: 6000
       - name: 라떼
+        image: /images/menu/latte-hot-8.jpg
         variants:
           - { label: 5부, price: 5600 }
           - { label: 8부, price: 5700 }
@@ -47,6 +50,7 @@ categories:
       - name: 마로치노
         price: 6800
         onlyHot: true
+        image: /images/menu/marocchino.jpg
       - name: 보르지아
         price: 6500
       - name: (I)보르지아
@@ -67,34 +71,44 @@ categories:
         price: 7500
       - name: 레몬에이드
         price: 6700
+        image: /images/menu/lemonade.jpg
       - name: 자몽에이드
         price: 6700
+        image: /images/menu/grapefruit-ade.jpg
       - name: 오미자에이드
         price: 6700
+        image: /images/menu/omija-ade.jpg
       - name: 복숭아아이스티
         price: 4700
       - name: 블루베리요요
         price: 6900
+        image: /images/menu/blueberry-yoyo.jpg
       - name: 블루베리요거
         price: 6900
+        image: /images/menu/blueberry-yogurt.jpg
       - name: 딸기요거쉐이크
         price: 6900
+        image: /images/menu/strawberry-yogurt-shake.jpg
       - name: 아샷추
         price: 5700
         description: 제로 가능 (+500원)
       - name: 핫초코
         price: 5900
+        image: /images/menu/hot-chocolate.jpg
       - name: 벨지안다크핫초코
         price: 6400
       - name: 아이스초코
         price: 5900
+        image: /images/menu/choco-iced.jpg
       - name: 딸기말차
         price: 6700
       # 논커피 라떼류
       - name: 녹차라떼
         price: 5900
+        image: /images/menu/matcha-latte-hot.jpg
       - name: (I)녹차라떼
         price: 5900
+        image: /images/menu/matcha-latte-iced.jpg
       - name: 마스카포네딸기라떼
         price: 7000
       - name: (I)마스카포네딸기라떼
@@ -137,12 +151,15 @@ categories:
       - heading: 시그니처 · 한방차
       - name: 로얄밀크티
         price: 6700
+        image: /images/menu/royal-milk-tea.jpg
       - name: 문경오미자차
         price: 6500
+        image: /images/menu/omija-tea.jpg
       - name: 레몬차
         price: 6500
       - name: 생자몽차
         price: 6500
+        image: /images/menu/grapefruit-tea.jpg
       - name: 생강차
         price: 6700
       - name: 민트유자차
@@ -209,22 +226,29 @@ categories:
     items:
       - name: M.M.B.P
         price: 14000
+        image: /images/menu/mmbp.jpg
       - name: 리코타바질콜드파스타
         price: 17000
+        image: /images/menu/ricotta-cold-pasta.jpg
       - name: 마르게리따피자
         price: 18000
+        image: /images/menu/margherita-pizza.jpg
       - name: 고르곤졸라피자
         price: 22000
       - name: 토마토스튜
         price: 13000
+        image: /images/menu/tomato-stew.jpg
       - name: 잠봉뵈르샌드위치
         price: 10000
+        image: /images/menu/jambon-beurre-sandwich.jpg
       - name: 버섯그릴샌드위치
         price: 13000
       - name: 부라타치즈샐러드
         price: 16000
+        image: /images/menu/burrata-salad.jpg
       - name: 단호박스프
         price: 8000
+        image: /images/menu/pumpkin-soup.jpg
   - name: 원두 / 드립백
     items:
       - name: 리치블랙드립백8

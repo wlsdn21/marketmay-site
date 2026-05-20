@@ -83,41 +83,61 @@ const rows = buildRows(category.items);
       {rows.map((row) => row.kind === 'heading' ? (
         <li class="menu-subheading"><span>{row.heading}</span></li>
       ) : (
-        <li class="menu-item">
-          <div class="menu-item-head">
-            <span class="menu-item-name">{row.group.baseName}</span>
-            <span class="menu-item-dots"></span>
-            <span class="menu-item-price">
-              {(() => {
-                // 양쪽 다 있든, 한쪽만 있든, 가격 표시는 hot 우선 (없으면 iced)
-                const it = (row.group.hot ?? row.group.iced)!;
-                const badge =
-                  !(row.group.hot && row.group.iced) && it.onlyHot
-                    ? 'only hot'
-                    : !(row.group.hot && row.group.iced) && it.onlyIced
-                      ? 'only iced'
-                      : null;
-                return (
-                  <>
-                    {it.variants ? (
-                      it.variants.map((v, i) => (
-                        <>
-                          {i > 0 && <span class="sep">·</span>}
-                          <span class="size-label">{v.label}</span>
-                          <span class="price-num">{v.price.toLocaleString()}</span>
-                        </>
-                      ))
-                    ) : (
-                      <span class="price-num">{it.price!.toLocaleString()}</span>
-                    )}
-                    {badge && <span class="badge subtle">{badge}</span>}
-                  </>
-                );
-              })()}
-            </span>
-          </div>
-          {row.group.description && <p class="menu-item-desc">{row.group.description}</p>}
-        </li>
+        (() => {
+          const image = row.group.hot?.image ?? row.group.iced?.image;
+          const clickable = !!image;
+          return (
+            <li
+              class={clickable ? 'menu-item has-photo' : 'menu-item'}
+              data-image={image}
+              data-name={row.group.baseName}
+              role={clickable ? 'button' : undefined}
+              tabindex={clickable ? 0 : undefined}
+            >
+              <div class="menu-item-head">
+                <span class="menu-item-name">
+                  {row.group.baseName}
+                  {clickable && (
+                    <svg class="photo-ind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="3" y="6" width="18" height="14" rx="2"/>
+                      <circle cx="12" cy="13" r="3.5"/>
+                      <path d="M8 6l1.5-2h5L16 6"/>
+                    </svg>
+                  )}
+                </span>
+                <span class="menu-item-dots"></span>
+                <span class="menu-item-price">
+                  {(() => {
+                    const it = (row.group.hot ?? row.group.iced)!;
+                    const badge =
+                      !(row.group.hot && row.group.iced) && it.onlyHot
+                        ? 'only hot'
+                        : !(row.group.hot && row.group.iced) && it.onlyIced
+                          ? 'only iced'
+                          : null;
+                    return (
+                      <>
+                        {it.variants ? (
+                          it.variants.map((v, i) => (
+                            <>
+                              {i > 0 && <span class="sep">·</span>}
+                              <span class="size-label">{v.label}</span>
+                              <span class="price-num">{v.price.toLocaleString()}</span>
+                            </>
+                          ))
+                        ) : (
+                          <span class="price-num">{it.price!.toLocaleString()}</span>
+                        )}
+                        {badge && <span class="badge subtle">{badge}</span>}
+                      </>
+                    );
+                  })()}
+                </span>
+              </div>
+              {row.group.description && <p class="menu-item-desc">{row.group.description}</p>}
+            </li>
+          );
+        })()
       ))}
     </ul>
   )}
@@ -182,13 +202,41 @@ const rows = buildRows(category.items);
 .menu-item {
   padding: 12px 0;
 }
+.menu-item.has-photo {
+  cursor: pointer;
+  transition: opacity 0.15s;
+  user-select: none;
+}
+.menu-item.has-photo:hover .menu-item-name,
+.menu-item.has-photo:focus-visible .menu-item-name { color: var(--brand); }
+.menu-item.has-photo:hover .photo-ind,
+.menu-item.has-photo:focus-visible .photo-ind { opacity: 1; }
+.menu-item.has-photo:focus-visible { outline: none; }
+.menu-item.has-photo:focus-visible .menu-item-head {
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
 .menu-item-head {
   display: flex;
   align-items: baseline;
   gap: 8px;
   font-size: 15px;
 }
-.menu-item-name { font-weight: 500; }
+.menu-item-name {
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.photo-ind {
+  width: 13px;
+  height: 13px;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+  color: var(--brand);
+  flex-shrink: 0;
+}
 .menu-item-dots {
   flex: 1;
   border-bottom: 1px dotted var(--border);

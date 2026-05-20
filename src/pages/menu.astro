@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MenuSection from '../components/MenuSection.astro';
+import MenuLightbox from '../components/MenuLightbox.astro';
 import { menu } from '../lib/data';
 
 // 카테고리 이름 → URL fragment slug
@@ -39,6 +40,7 @@ const categoriesWithSlug = menu.categories.map(cat => ({
       <p class="menu-disclaimer">market may의 메뉴입니다. 가격은 사전 공지 없이 변동될 수 있습니다.</p>
     </div>
   </main>
+  <MenuLightbox />
   <Footer />
 </BaseLayout>
 
