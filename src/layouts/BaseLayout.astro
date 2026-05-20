@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { info } from '../lib/data';
+
 interface Props {
   title?: string;
   description?: string;
@@ -7,13 +9,40 @@ interface Props {
 }
 const {
   title = 'market may',
-  description = '달콤한 커피 · 따뜻한 브런치 · 모닝 베이글 · 신선한 드립백',
+  description = 'market may | 구미시 카페 · 베이커리. 달콤한 커피, 따뜻한 브런치, 모닝 베이글, 신선한 드립백. 10:00–22:00 (매주 월요일 휴무)',
   ogImage = '/images/exterior.jpg',
 } = Astro.props;
 
 const siteUrl = 'https://marketmay.com';
 const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 const canonical = `${siteUrl}${Astro.url.pathname}`;
+
+// Schema.org LocalBusiness 구조화 데이터 - Google 검색 결과에서 카페 정보 풍부하게 표시
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'CafeOrCoffeeShop',
+  name: info.name,
+  description,
+  url: siteUrl,
+  telephone: `+82-${info.phone.replace(/^0/, '')}`,
+  image: absoluteOgImage,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '남통동 공원로 22',
+    addressLocality: '구미시',
+    addressRegion: '경상북도',
+    addressCountry: 'KR',
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '10:00',
+      closes: '22:00',
+    },
+  ],
+  sameAs: [info.instagram],
+};
 ---
 <html lang="ko">
   <head>
@@ -21,8 +50,17 @@ const canonical = `${siteUrl}${Astro.url.pathname}`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
 
-    <!-- Open Graph (KakaoTalk, Facebook, LinkedIn, 등) -->
+    <!-- Favicons (멀티 사이즈/포맷 — Google 검색은 PNG를 가장 잘 인식) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/favicon-32.png" />
+
+    <!-- Open Graph (KakaoTalk, Facebook 등) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="market may" />
     <meta property="og:locale" content="ko_KR" />
@@ -38,10 +76,12 @@ const canonical = `${siteUrl}${Astro.url.pathname}`;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absoluteOgImage} />
 
-    <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
-    <link rel="shortcut icon" href="/favicon.svg?v=3" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/favicon.svg?v=3" />
+    <!-- Schema.org LocalBusiness (Google 풍부한 결과) -->
+    <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+
+    <!-- 검색 엔진에 한국어 사이트 명시 -->
+    <meta name="theme-color" content="#0a3711" />
+    <meta name="format-detection" content="telephone=yes" />
   </head>
   <body>
     <slot />
