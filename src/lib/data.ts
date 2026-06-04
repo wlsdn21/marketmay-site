@@ -64,6 +64,23 @@ export interface Menu {
   categories: MenuCategory[];
 }
 
+/** 공지/이벤트 팝업 버튼 (선택) */
+export interface NoticeButton {
+  label: string;
+  url: string;
+}
+
+/** 홈 진입 시 뜨는 공지/이벤트 팝업 설정 — src/data/notice.yaml */
+export interface Notice {
+  enabled: boolean;
+  version?: number;
+  image?: string;
+  imageAlt?: string;
+  title?: string;
+  body?: string;
+  button?: NoticeButton | null;
+}
+
 function load<T>(filename: string): T {
   const content = fs.readFileSync(path.join(dataDir, filename), 'utf8');
   return yaml.load(content) as T;
@@ -71,3 +88,4 @@ function load<T>(filename: string): T {
 
 export const info: SiteInfo = load<SiteInfo>('info.yaml');
 export const menu: Menu = load<Menu>('menu.yaml');
+export const notice: Notice = load<Notice>('notice.yaml');

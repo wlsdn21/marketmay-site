@@ -1,0 +1,22 @@
+# 공지/이벤트 팝업 — 이 파일만 수정하면 팝업 내용이 바뀝니다.
+# - 팝업을 끄려면: enabled: false
+# - 내용을 새로 바꿔서 '오늘 하루 보지 않기' 누른 사람에게도 다시 띄우려면: version 숫자를 +1
+enabled: true
+version: 1
+
+# 포스터 이미지. public/images/ 안에 넣고 경로를 적으세요. 이미지가 없으면 image: "" (텍스트만 나옴).
+image: /images/exterior.jpg
+imageAlt: "market may 안내"
+
+# 제목 (없으면 title: "")
+title: "market may에 오신 것을 환영합니다"
+
+# 본문 (여러 줄 가능, 없으면 body: "")
+body: |
+  영업시간 10:00 – 22:00
+  매주 월요일은 정기 휴무입니다.
+
+# 버튼이 필요 없으면 아래 button 블록 전체를 삭제하세요.
+button:
+  label: "인스타그램 구경하기"
+  url: https://www.instagram.com/market.may_/
