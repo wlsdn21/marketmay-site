@@ -6,16 +6,17 @@ hours:
   weekday: "10:00 - 22:00"
   closed: "매주 월요일 휴무 / 매월 마지막주 월·화 휴무"
 instagram: https://www.instagram.com/market.may_/
-floors:
-  - code: 2F
-    name: BRUNCH
-    description: 조용한 창가 좌석에서 즐기는 브런치
-  - code: 1F
-    name: MARKET
-    description: 베이글 · 빵 · 드립백 테이크아웃
-  - code: BF
-    name: SEMINAR
-    description: 모임과 세미나를 위한 공간
+# 홈 "메뉴 바로가기" 카드 — 누르면 메뉴 페이지의 해당 카테고리로 이동
+menuLinks:
+  - name: COFFEE
+    description: 에스프레소 · 라떼 · 콜드브루
+    href: /menu#coffee
+  - name: BREAD
+    description: 베이글 · 포카치아 · 구움과자
+    href: /menu#bakery
+  - name: BRUNCH
+    description: 피자 · 파스타 · 샌드위치
+    href: /menu#brunch
 kakaoMap:
   # Daum Roughmap script-based embed (사용자 제공)
   key: nfa8nqm5br9

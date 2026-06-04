@@ -4,10 +4,10 @@ import yaml from 'js-yaml';
 
 const dataDir = path.join(process.cwd(), 'src', 'data');
 
-export interface Floor {
-  code: string;
+export interface MenuLink {
   name: string;
   description: string;
+  href: string;
 }
 
 export interface SiteInfo {
@@ -17,7 +17,7 @@ export interface SiteInfo {
   phone: string;
   hours: { weekday: string; closed: string };
   instagram: string;
-  floors: Floor[];
+  menuLinks: MenuLink[];
   kakaoMap: {
     key: string;
     timestamp: string;
