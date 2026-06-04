@@ -1,0 +1,215 @@
+---
+// 공지/이벤트 팝업 — 홈 진입 시 노출, '오늘 하루 보지 않기' 지원.
+// 기존 MenuLightbox.astro 패턴을 따르되, 노출 판단 로직은 lib/notice-visibility로 분리(테스트됨).
+import { notice } from '../lib/data';
+
+const version = notice.version ?? 1;
+const hasContent = Boolean(notice.image || notice.title || notice.body);
+const show = notice.enabled && hasContent;
+const hasButton = Boolean(notice.button && notice.button.url && notice.button.label);
+const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
+---
+{show && (
+  <div class="notice-overlay" data-version={version} aria-hidden="true">
+    <div
+      class="notice-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={notice.title ? 'notice-title' : undefined}
+      aria-label={notice.title ? undefined : '공지'}
+    >
+      <button class="notice-close" type="button" aria-label="닫기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="6" y1="6" x2="18" y2="18" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+        </svg>
+      </button>
+
+      {notice.image && (
+        <img class="notice-img" src={notice.image} alt={notice.imageAlt ?? ''} />
+      )}
+
+      {hasTextBlock && (
+        <div class="notice-content">
+          {notice.title && <h2 class="notice-title" id="notice-title">{notice.title}</h2>}
+          {notice.body && <div class="notice-body">{notice.body}</div>}
+          {hasButton && (
+            <a class="notice-btn" href={notice.button!.url} target="_blank" rel="noopener noreferrer">
+              {notice.button!.label}
+            </a>
+          )}
+        </div>
+      )}
+
+      <label class="notice-dismiss">
+        <input type="checkbox" class="notice-dismiss-check" />
+        오늘 하루 보지 않기
+      </label>
+    </div>
+  </div>
+)}
+
+<script>
+  import { shouldShowNotice, dismissValue, dateKey } from '../lib/notice-visibility';
+
+  const STORAGE_KEY = 'mm-notice-dismissed';
+  const overlay = document.querySelector('.notice-overlay');
+
+  if (overlay) {
+    const card = overlay.querySelector('.notice-card');
+    const closeBtn = overlay.querySelector('.notice-close');
+    const check = overlay.querySelector('.notice-dismiss-check');
+    const img = overlay.querySelector('.notice-img');
+    const version = Number(overlay.getAttribute('data-version')) || 1;
+    const today = dateKey(new Date());
+    let lastFocused = null;
+
+    // 이미지 로드 실패 시 이미지 영역 숨김
+    if (img) img.addEventListener('error', () => { img.style.display = 'none'; });
+
+    function read() {
+      try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
+    }
+    function persistDismiss() {
+      try { localStorage.setItem(STORAGE_KEY, dismissValue(version, today)); } catch (e) {}
+    }
+
+    function open() {
+      lastFocused = document.activeElement;
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => overlay.classList.add('is-open'));
+      if (closeBtn && typeof closeBtn.focus === 'function') closeBtn.focus();
+    }
+    function close() {
+      if (check && check.checked) persistDismiss();
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    if (shouldShowNotice(read(), version, today)) {
+      open();
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', close);
+
+    // 오버레이(바깥) 클릭 시 닫기 — 카드 내부 클릭은 무시
+    overlay.addEventListener('click', (e) => {
+      if (card && !card.contains(e.target)) close();
+    });
+
+    // ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+    });
+  }
+</script>
+
+<style>
+  .notice-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .notice-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .notice-card {
+    position: relative;
+    width: calc(100vw - 40px);
+    max-width: 380px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+    transform: scale(0.92);
+    transition: transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .notice-overlay.is-open .notice-card {
+    transform: scale(1);
+  }
+  .notice-img {
+    width: 100%;
+    border-radius: 14px 14px 0 0;
+    object-fit: cover;
+  }
+  .notice-content {
+    padding: 18px 20px 4px;
+  }
+  .notice-title {
+    /* 한글 제목 가독성 위해 본문 폰트 사용 (헤딩 폰트엔 한글 글꼴 없음) */
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--text);
+    margin: 0 0 8px;
+  }
+  .notice-body {
+    white-space: pre-line;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-mute);
+  }
+  .notice-btn {
+    display: block;
+    margin-top: 14px;
+    padding: 11px 16px;
+    background: var(--brand);
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: opacity 0.15s;
+  }
+  .notice-btn:hover { opacity: 0.88; }
+  .notice-dismiss {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-mute);
+    cursor: pointer;
+  }
+  .notice-dismiss-check { cursor: pointer; }
+  .notice-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1;
+    transition: background 0.15s;
+  }
+  .notice-close:hover { background: rgba(0, 0, 0, 0.7); }
+  .notice-close:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .notice-close svg { width: 14px; height: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .notice-overlay, .notice-card { transition: none; }
+  }
+</style>
