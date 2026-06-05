@@ -16,5 +16,5 @@ body: ""
 
 # 버튼이 필요 없으면 아래 button 블록 전체를 삭제하세요.
 button:
-  label: "알바천국으로 바로가기"
+  label: "공고로 바로가기"
   url: https://www.alba.co.kr/job/Detail?adid=144658042&listmenucd=SEARCH
