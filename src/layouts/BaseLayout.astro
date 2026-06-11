@@ -26,6 +26,15 @@ const localBusiness = {
   url: siteUrl,
   telephone: `+82-${info.phone.replace(/^0/, '')}`,
   image: absoluteOgImage,
+  priceRange: '₩₩',
+  servesCuisine: ['커피', '브런치', '베이커리'],
+  hasMenu: `${siteUrl}/menu`,
+  currenciesAccepted: 'KRW',
+  petsAllowed: info.amenities.pets,
+  amenityFeature: [
+    { '@type': 'LocationFeatureSpecification', name: '주차', value: info.amenities.parking },
+    { '@type': 'LocationFeatureSpecification', name: '무료 와이파이', value: info.amenities.wifi },
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: '남통동 공원로 22',

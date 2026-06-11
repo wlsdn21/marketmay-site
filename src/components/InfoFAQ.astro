@@ -1,0 +1,89 @@
+---
+// 매장 소개 + 자주 묻는 질문(FAQ) — AI·검색이 읽기 좋은 텍스트 + FAQPage 구조화데이터.
+// 내용은 src/data/info.yaml 의 amenities / seasonal / faq 에서 편집.
+import { info } from '../lib/data';
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: info.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+<section class="info-faq">
+  <div class="container">
+    <h2 class="info-faq-title">about &amp; faq</h2>
+
+    <p class="info-about">
+      market may(마켓메이)는 경상북도 구미시 남통동 공원로에 자리한 베이글 · 브런치 카페입니다.
+      1층 마켓에서는 모닝 베이글과 빵 · 드립백을 테이크아웃할 수 있고, 2층에서는 조용한 창가 좌석에서 브런치를,
+      지하 세미나 공간은 모임과 세미나에 이용할 수 있어요. 매일 오전 10시부터 밤 10시까지 영업하며,
+      주차와 와이파이를 제공합니다. 시즌 메뉴로 {info.seasonal.join(' · ')}를 즐기실 수 있어요.
+    </p>
+
+    <dl class="faq-list">
+      {info.faq.map((item) => (
+        <div class="faq-item">
+          <dt class="faq-q">{item.q}</dt>
+          <dd class="faq-a">{item.a}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+<style>
+.info-faq {
+  padding: var(--space-section) 0;
+  background: var(--bg);
+}
+.info-faq-title {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 500;
+  text-align: center;
+  color: var(--brand);
+  margin-bottom: 28px;
+}
+.info-about {
+  max-width: 640px;
+  margin: 0 auto 44px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-mute);
+}
+.faq-list {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0;
+}
+.faq-item {
+  padding: 18px 2px;
+  border-top: 1px solid var(--border);
+}
+.faq-item:last-child { border-bottom: 1px solid var(--border); }
+.faq-q {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.faq-q::before {
+  content: 'Q. ';
+  color: var(--brand);
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+.faq-a {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-mute);
+}
+</style>

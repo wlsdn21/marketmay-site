@@ -17,6 +17,9 @@ export interface SiteInfo {
   phone: string;
   hours: { weekday: string; closed: string };
   instagram: string;
+  amenities: { parking: boolean; wifi: boolean; pets: boolean };
+  seasonal: string[];
+  faq: { q: string; a: string }[];
   menuLinks: MenuLink[];
   kakaoMap: {
     key: string;
