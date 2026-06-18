@@ -5,7 +5,7 @@ enabled: true   # 팝업 켜짐(방문자에게 보임). 끄려면 false 로 바
 version: 3      # 채용 링크 갱신(새 알바천국 공고) — 기존에 닫은 사람에게도 다시 노출
 
 # 포스터 이미지. public/images/ 안에 넣고 경로를 적으세요. 이미지가 없으면 image: "" (텍스트만 나옴).
-image: /images/notice-hiring.png
+image: /images/notice-hiring-v2.png
 imageAlt: "마켓메이 바리스타 채용공고 — 2026 정직원 모집 (6.4~6.25). 자세한 내용은 알바천국 공고 참고."
 
 # 제목 (없으면 title: "") — 포스터 이미지에 모든 내용이 있어 비워둠
