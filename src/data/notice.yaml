@@ -2,7 +2,7 @@
 # - 팝업을 끄려면: enabled: false
 # - 내용을 새로 바꿔서 '오늘 하루 보지 않기' 누른 사람에게도 다시 띄우려면: version 숫자를 +1
 enabled: true   # 팝업 켜짐(방문자에게 보임). 끄려면 false 로 바꾸세요.
-version: 3      # 채용 링크 갱신(새 알바천국 공고) — 기존에 닫은 사람에게도 다시 노출
+version: 4      # 2장 캐러셀(채용 포스터 + 원두 라인업)로 변경 — 닫았던 사람에게도 재노출
 
 # 포스터 이미지. public/images/ 안에 넣고 경로를 적으세요. 이미지가 없으면 image: "" (텍스트만 나옴).
 image: /images/notice-hiring-v2.png

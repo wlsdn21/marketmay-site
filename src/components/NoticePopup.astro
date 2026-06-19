@@ -1,23 +1,16 @@
 ---
-// 공지/이벤트 팝업 — 홈 진입 시 노출, '오늘 하루 보지 않기' 지원.
-// 기존 MenuLightbox.astro 패턴을 따르되, 노출 판단 로직은 lib/notice-visibility로 분리(테스트됨).
+// 공지/이벤트 팝업 — 2장 캐러셀(① 채용 포스터 → ② 원두 라인업), 스와이프 + 점 + 5초 자동전환.
+// ①번 내용은 src/data/notice.yaml 에서 편집. ②번(원두 라인업) 내용은 아래 .beans 마크업에서 편집.
 import { notice } from '../lib/data';
 
 const version = notice.version ?? 1;
 const hasContent = Boolean(notice.image || notice.title || notice.body);
 const show = notice.enabled && hasContent;
 const hasButton = Boolean(notice.button && notice.button.url && notice.button.label);
-const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
 ---
 {show && (
   <div class="notice-overlay" data-version={version} aria-hidden="true">
-    <div
-      class="notice-card"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={notice.title ? 'notice-title' : undefined}
-      aria-label={notice.title ? undefined : '공지'}
-    >
+    <div class="notice-card" role="dialog" aria-modal="true" aria-label="market may 안내">
       <button class="notice-close" type="button" aria-label="닫기">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="6" y1="6" x2="18" y2="18" />
@@ -25,21 +18,53 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
         </svg>
       </button>
 
-      {notice.image && (
-        <img class="notice-img" src={notice.image} alt={notice.imageAlt ?? ''} />
-      )}
-
-      {hasTextBlock && (
-        <div class="notice-content">
-          {notice.title && <h2 class="notice-title" id="notice-title">{notice.title}</h2>}
-          {notice.body && <div class="notice-body">{notice.body}</div>}
+      <div class="notice-slides">
+        {/* ① 채용 포스터 슬라이드 */}
+        <div class="notice-slide is-active" data-slide="0">
+          {notice.image && <img class="notice-img" src={notice.image} alt={notice.imageAlt ?? ''} />}
           {hasButton && (
-            <a class="notice-btn" href={notice.button!.url} target="_blank" rel="noopener noreferrer">
-              {notice.button!.label}
-            </a>
+            <div class="notice-slide-foot">
+              <a class="notice-btn" href={notice.button!.url} target="_blank" rel="noopener noreferrer">{notice.button!.label}</a>
+            </div>
           )}
         </div>
-      )}
+
+        {/* ② 원두 라인업 슬라이드 */}
+        <div class="notice-slide" data-slide="1">
+          <div class="beans">
+            <div class="beans-eyebrow">BEAN LINEUP · 원두 라인업</div>
+            <svg class="beans-ridge" viewBox="0 0 560 16" preserveAspectRatio="none" aria-hidden="true">
+              <polyline points="0,14 80,2 160,14 240,2 320,14 400,2 480,14 560,2" fill="none" stroke="#0cb14b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            </svg>
+            <ul class="bean-list">
+              <li class="bean">
+                <div class="bean-cat">SIGNATURE · 시그니처</div>
+                <div class="bean-name">리치 블랙</div>
+                <p class="bean-desc">고소한 견과류 풍미와 부드러운 단맛이 어우러진 깔끔하고 편안한 블렌드</p>
+                <div class="bean-compo">브라질 50% · 과테말라 30% · 콜롬비아 20%</div>
+              </li>
+              <li class="bean">
+                <div class="bean-cat">SINGLE ORIGIN · 싱글 오리진</div>
+                <div class="bean-name">에티오피아 예가체프</div>
+                <p class="bean-desc">부드러운 산미에 꽃향과 꿀 같은 은은한 단맛이 어우러진 싱글 오리진</p>
+                <div class="bean-compo">게데오 이디도 G2 · 워시드</div>
+              </li>
+              <li class="bean">
+                <div class="bean-cat">DECAF · 디카페인</div>
+                <div class="bean-name">디카페인</div>
+                <p class="bean-desc">고소한 견과류 풍미와 부드러운 바디감을 살린, 카페인 부담 없는 데일리 커피</p>
+                <div class="bean-compo">브라질 100% 디카페인</div>
+              </li>
+            </ul>
+            <div class="beans-brand">MARKET&nbsp;MAY COFFEE</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-dots" role="tablist" aria-label="슬라이드">
+        <button class="notice-dot" type="button" data-dot="0" aria-current="true" aria-label="1번째 슬라이드"></button>
+        <button class="notice-dot" type="button" data-dot="1" aria-current="false" aria-label="2번째 슬라이드"></button>
+      </div>
 
       <label class="notice-dismiss">
         <input type="checkbox" class="notice-dismiss-check" />
@@ -60,19 +85,34 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
     const closeBtn = overlay.querySelector('.notice-close');
     const check = overlay.querySelector('.notice-dismiss-check');
     const img = overlay.querySelector('.notice-img');
+    const slidesWrap = overlay.querySelector('.notice-slides');
+    const slides = Array.from(overlay.querySelectorAll('.notice-slide'));
+    const dots = Array.from(overlay.querySelectorAll('.notice-dot'));
     const version = Number(overlay.getAttribute('data-version')) || 1;
     const today = dateKey(new Date());
     let lastFocused = null;
+    let index = 0;
+    let autoTimer = null;
+    let interacted = false;
 
-    // 이미지 로드 실패 시 이미지 영역 숨김
+    function setSlide(i, userAction) {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((s, si) => s.classList.toggle('is-active', si === index));
+      dots.forEach((d, di) => d.setAttribute('aria-current', di === index ? 'true' : 'false'));
+      if (userAction) cancelAuto();
+    }
+    function cancelAuto() {
+      interacted = true;
+      if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+    }
+    function startAuto() {
+      autoTimer = setTimeout(() => { if (!interacted && index === 0) setSlide(1); }, 5000);
+    }
+
     if (img) img.addEventListener('error', () => { img.style.display = 'none'; });
 
-    function read() {
-      try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
-    }
-    function persistDismiss() {
-      try { localStorage.setItem(STORAGE_KEY, dismissValue(version, today)); } catch (e) {}
-    }
+    function read() { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } }
+    function persistDismiss() { try { localStorage.setItem(STORAGE_KEY, dismissValue(version, today)); } catch (e) {} }
 
     function open() {
       lastFocused = document.activeElement;
@@ -80,30 +120,42 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
       document.body.style.overflow = 'hidden';
       requestAnimationFrame(() => overlay.classList.add('is-open'));
       if (closeBtn && typeof closeBtn.focus === 'function') closeBtn.focus();
+      startAuto();
     }
     function close() {
       if (check && check.checked) persistDismiss();
+      cancelAuto();
       overlay.classList.remove('is-open');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
       if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
     }
 
-    if (shouldShowNotice(read(), version, today)) {
-      open();
-    }
+    if (shouldShowNotice(read(), version, today)) open();
 
     if (closeBtn) closeBtn.addEventListener('click', close);
-
-    // 오버레이(바깥) 클릭 시 닫기 — 카드 내부 클릭은 무시
-    overlay.addEventListener('click', (e) => {
-      if (card && !card.contains(e.target)) close();
-    });
-
-    // ESC
+    overlay.addEventListener('click', (e) => { if (card && !card.contains(e.target)) close(); });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+      if (!overlay.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') setSlide(index + 1, true);
+      else if (e.key === 'ArrowLeft') setSlide(index - 1, true);
     });
+
+    dots.forEach((d, di) => d.addEventListener('click', () => setSlide(di, true)));
+
+    // 터치 스와이프
+    let startX = null;
+    if (slidesWrap) {
+      slidesWrap.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; cancelAuto(); }, { passive: true });
+      slidesWrap.addEventListener('touchend', (e) => {
+        if (startX === null) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        if (dx <= -40) setSlide(index + 1, true);
+        else if (dx >= 40) setSlide(index - 1, true);
+        startX = null;
+      }, { passive: true });
+    }
   }
 </script>
 
@@ -121,10 +173,7 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
     pointer-events: none;
     transition: opacity 0.2s ease;
   }
-  .notice-overlay.is-open {
-    opacity: 1;
-    pointer-events: auto;
-  }
+  .notice-overlay.is-open { opacity: 1; pointer-events: auto; }
   .notice-card {
     position: relative;
     width: calc(100vw - 40px);
@@ -137,34 +186,26 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
     transform: scale(0.92);
     transition: transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .notice-overlay.is-open .notice-card {
-    transform: scale(1);
+  .notice-overlay.is-open .notice-card { transform: scale(1); }
+
+  /* ===== 슬라이드 ===== */
+  .notice-slides { position: relative; }
+  .notice-slide { display: none; }
+  .notice-slide.is-active { display: block; animation: notice-slide-in 0.3s ease; }
+  @keyframes notice-slide-in {
+    from { opacity: 0; transform: translateX(16px); }
+    to { opacity: 1; transform: translateX(0); }
   }
   .notice-img {
     width: 100%;
-    border-radius: 14px 14px 0 0;
+    aspect-ratio: 1080 / 1527;
     object-fit: cover;
+    border-radius: 14px 14px 0 0;
+    display: block;
   }
-  .notice-content {
-    padding: 18px 20px 4px;
-  }
-  .notice-title {
-    /* 한글 제목 가독성 위해 본문 폰트 사용 (헤딩 폰트엔 한글 글꼴 없음) */
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 19px;
-    color: var(--text);
-    margin: 0 0 8px;
-  }
-  .notice-body {
-    white-space: pre-line;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-mute);
-  }
+  .notice-slide-foot { padding: 14px 20px 4px; }
   .notice-btn {
     display: block;
-    margin-top: 14px;
     padding: 11px 16px;
     background: var(--brand);
     color: #fff;
@@ -175,11 +216,81 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
     transition: opacity 0.15s;
   }
   .notice-btn:hover { opacity: 0.88; }
+
+  /* ===== 원두 라인업 슬라이드 ===== */
+  .beans { padding: 22px 20px 6px; }
+  .beans-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: #0cb14b;
+    margin-bottom: 8px;
+  }
+  .beans-ridge { width: 100%; height: 12px; display: block; margin-bottom: 14px; }
+  .bean-list { list-style: none; margin: 0; padding: 0; }
+  .bean {
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .bean:first-child { padding-top: 0; }
+  .bean-cat {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #0cb14b;
+    margin-bottom: 5px;
+  }
+  .bean-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 5px;
+  }
+  .bean-desc {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text-mute);
+    margin: 0 0 5px;
+  }
+  .bean-compo {
+    font-size: 11px;
+    color: #999;
+    letter-spacing: 0.2px;
+  }
+  .beans-brand {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--text);
+    padding: 16px 0 4px;
+  }
+
+  /* ===== 점 인디케이터 ===== */
+  .notice-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 0 2px;
+  }
+  .notice-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: var(--border);
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .notice-dot[aria-current='true'] { background: var(--brand); transform: scale(1.15); }
+
   .notice-dismiss {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 14px;
+    margin-top: 6px;
     padding: 12px 20px;
     border-top: 1px solid var(--border);
     font-size: 13px;
@@ -187,6 +298,7 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
     cursor: pointer;
   }
   .notice-dismiss-check { cursor: pointer; }
+
   .notice-close {
     position: absolute;
     top: 8px;
@@ -202,7 +314,7 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
     justify-content: center;
     cursor: pointer;
     padding: 0;
-    z-index: 1;
+    z-index: 2;
     transition: background 0.15s;
   }
   .notice-close:hover { background: rgba(0, 0, 0, 0.7); }
@@ -211,5 +323,6 @@ const hasTextBlock = Boolean(notice.title || notice.body || hasButton);
 
   @media (prefers-reduced-motion: reduce) {
     .notice-overlay, .notice-card { transition: none; }
+    .notice-slide.is-active { animation: none; }
   }
 </style>
