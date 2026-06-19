@@ -1,6 +1,7 @@
 ---
-// 공지/이벤트 팝업 — 2장 캐러셀(① 채용 포스터 → ② 원두 라인업), 스와이프 + 점 + 5초 자동전환.
-// ①번 내용은 src/data/notice.yaml 에서 편집. ②번(원두 라인업) 내용은 아래 .beans 마크업에서 편집.
+// 공지/이벤트 팝업 — 2장 캐러셀(① 채용 포스터 → ② 원두 라인업).
+// 좌우 슬라이드(트랙 translateX) + 높이 애니메이션, 모바일 스와이프 / 데스크톱 좌우버튼, 점, 5초 자동전환.
+// ①번 내용은 src/data/notice.yaml, ②번(원두 라인업)은 아래 .beans 마크업에서 편집.
 import { notice } from '../lib/data';
 
 const version = notice.version ?? 1;
@@ -19,46 +20,57 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
       </button>
 
       <div class="notice-slides">
-        {/* ① 채용 포스터 슬라이드 */}
-        <div class="notice-slide is-active" data-slide="0">
-          {notice.image && <img class="notice-img" src={notice.image} alt={notice.imageAlt ?? ''} />}
-          {hasButton && (
-            <div class="notice-slide-foot">
-              <a class="notice-btn" href={notice.button!.url} target="_blank" rel="noopener noreferrer">{notice.button!.label}</a>
+        <div class="notice-viewport">
+          <div class="notice-track">
+            {/* ① 채용 포스터 */}
+            <div class="notice-slide" data-slide="0">
+              {notice.image && <img class="notice-img" src={notice.image} alt={notice.imageAlt ?? ''} />}
+              {hasButton && (
+                <div class="notice-slide-foot">
+                  <a class="notice-btn" href={notice.button!.url} target="_blank" rel="noopener noreferrer">{notice.button!.label}</a>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* ② 원두 라인업 슬라이드 */}
-        <div class="notice-slide" data-slide="1">
-          <div class="beans">
-            <div class="beans-eyebrow">BEAN LINEUP · 원두 라인업</div>
-            <svg class="beans-ridge" viewBox="0 0 560 16" preserveAspectRatio="none" aria-hidden="true">
-              <polyline points="0,14 80,2 160,14 240,2 320,14 400,2 480,14 560,2" fill="none" stroke="#0cb14b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
-            </svg>
-            <ul class="bean-list">
-              <li class="bean">
-                <div class="bean-cat">SIGNATURE · 시그니처</div>
-                <div class="bean-name">리치 블랙</div>
-                <p class="bean-desc">고소한 견과류 풍미와 부드러운 단맛이 어우러진 깔끔하고 편안한 블렌드</p>
-                <div class="bean-compo">브라질 50% · 과테말라 30% · 콜롬비아 20%</div>
-              </li>
-              <li class="bean">
-                <div class="bean-cat">SINGLE ORIGIN · 싱글 오리진</div>
-                <div class="bean-name">에티오피아 예가체프</div>
-                <p class="bean-desc">부드러운 산미에 꽃향과 꿀 같은 은은한 단맛이 어우러진 싱글 오리진</p>
-                <div class="bean-compo">게데오 이디도 G2 · 워시드</div>
-              </li>
-              <li class="bean">
-                <div class="bean-cat">DECAF · 디카페인</div>
-                <div class="bean-name">디카페인</div>
-                <p class="bean-desc">고소한 견과류 풍미와 부드러운 바디감을 살린, 카페인 부담 없는 데일리 커피</p>
-                <div class="bean-compo">브라질 100% 디카페인</div>
-              </li>
-            </ul>
-            <div class="beans-brand">MARKET&nbsp;MAY COFFEE</div>
+            {/* ② 원두 라인업 */}
+            <div class="notice-slide" data-slide="1">
+              <div class="beans">
+                <div class="beans-eyebrow">BEAN LINEUP · 원두 라인업</div>
+                <svg class="beans-ridge" viewBox="0 0 560 16" preserveAspectRatio="none" aria-hidden="true">
+                  <polyline points="0,14 80,2 160,14 240,2 320,14 400,2 480,14 560,2" fill="none" stroke="#0cb14b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+                </svg>
+                <ul class="bean-list">
+                  <li class="bean">
+                    <div class="bean-cat">SIGNATURE · 시그니처</div>
+                    <div class="bean-name">리치 블랙</div>
+                    <p class="bean-desc">고소한 견과류 풍미와 부드러운 단맛이 어우러진 깔끔하고 편안한 블렌드</p>
+                    <div class="bean-compo">브라질 50% · 과테말라 30% · 콜롬비아 20%</div>
+                  </li>
+                  <li class="bean">
+                    <div class="bean-cat">SINGLE ORIGIN · 싱글 오리진</div>
+                    <div class="bean-name">에티오피아 예가체프</div>
+                    <p class="bean-desc">부드러운 산미에 꽃향과 꿀 같은 은은한 단맛이 어우러진 싱글 오리진</p>
+                    <div class="bean-compo">게데오 이디도 G2 · 워시드</div>
+                  </li>
+                  <li class="bean">
+                    <div class="bean-cat">DECAF · 디카페인</div>
+                    <div class="bean-name">디카페인</div>
+                    <p class="bean-desc">고소한 견과류 풍미와 부드러운 바디감을 살린, 카페인 부담 없는 데일리 커피</p>
+                    <div class="bean-compo">브라질 100% 디카페인</div>
+                  </li>
+                </ul>
+                <div class="beans-brand">MARKET&nbsp;MAY COFFEE</div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <button class="notice-arrow notice-arrow-prev" type="button" aria-label="이전" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 5 8 12 15 19" /></svg>
+        </button>
+        <button class="notice-arrow notice-arrow-next" type="button" aria-label="다음">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 5 16 12 9 19" /></svg>
+        </button>
       </div>
 
       <div class="notice-dots" role="tablist" aria-label="슬라이드">
@@ -85,9 +97,12 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
     const closeBtn = overlay.querySelector('.notice-close');
     const check = overlay.querySelector('.notice-dismiss-check');
     const img = overlay.querySelector('.notice-img');
-    const slidesWrap = overlay.querySelector('.notice-slides');
+    const viewport = overlay.querySelector('.notice-viewport');
+    const track = overlay.querySelector('.notice-track');
     const slides = Array.from(overlay.querySelectorAll('.notice-slide'));
     const dots = Array.from(overlay.querySelectorAll('.notice-dot'));
+    const prevBtn = overlay.querySelector('.notice-arrow-prev');
+    const nextBtn = overlay.querySelector('.notice-arrow-next');
     const version = Number(overlay.getAttribute('data-version')) || 1;
     const today = dateKey(new Date());
     let lastFocused = null;
@@ -95,10 +110,16 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
     let autoTimer = null;
     let interacted = false;
 
+    function setHeight() {
+      if (viewport && slides[index]) viewport.style.height = slides[index].offsetHeight + 'px';
+    }
     function setSlide(i, userAction) {
       index = Math.max(0, Math.min(slides.length - 1, i));
-      slides.forEach((s, si) => s.classList.toggle('is-active', si === index));
+      if (track) track.style.transform = `translateX(${-index * 100}%)`;
+      setHeight();
       dots.forEach((d, di) => d.setAttribute('aria-current', di === index ? 'true' : 'false'));
+      if (prevBtn) prevBtn.disabled = index === 0;
+      if (nextBtn) nextBtn.disabled = index === slides.length - 1;
       if (userAction) cancelAuto();
     }
     function cancelAuto() {
@@ -109,7 +130,10 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
       autoTimer = setTimeout(() => { if (!interacted && index === 0) setSlide(1); }, 5000);
     }
 
-    if (img) img.addEventListener('error', () => { img.style.display = 'none'; });
+    if (img) {
+      img.addEventListener('load', setHeight);
+      img.addEventListener('error', () => { img.style.display = 'none'; setHeight(); });
+    }
 
     function read() { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } }
     function persistDismiss() { try { localStorage.setItem(STORAGE_KEY, dismissValue(version, today)); } catch (e) {} }
@@ -118,7 +142,11 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
       lastFocused = document.activeElement;
       overlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      requestAnimationFrame(() => overlay.classList.add('is-open'));
+      requestAnimationFrame(() => {
+        overlay.classList.add('is-open');
+        if (viewport) { viewport.style.transition = 'none'; setHeight(); void viewport.offsetHeight; viewport.style.transition = ''; }
+        else setHeight();
+      });
       if (closeBtn && typeof closeBtn.focus === 'function') closeBtn.focus();
       startAuto();
     }
@@ -134,6 +162,8 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
     if (shouldShowNotice(read(), version, today)) open();
 
     if (closeBtn) closeBtn.addEventListener('click', close);
+    if (prevBtn) prevBtn.addEventListener('click', () => setSlide(index - 1, true));
+    if (nextBtn) nextBtn.addEventListener('click', () => setSlide(index + 1, true));
     overlay.addEventListener('click', (e) => { if (card && !card.contains(e.target)) close(); });
     document.addEventListener('keydown', (e) => {
       if (!overlay.classList.contains('is-open')) return;
@@ -146,9 +176,9 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
 
     // 터치 스와이프
     let startX = null;
-    if (slidesWrap) {
-      slidesWrap.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; cancelAuto(); }, { passive: true });
-      slidesWrap.addEventListener('touchend', (e) => {
+    if (viewport) {
+      viewport.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; cancelAuto(); }, { passive: true });
+      viewport.addEventListener('touchend', (e) => {
         if (startX === null) return;
         const dx = e.changedTouches[0].clientX - startX;
         if (dx <= -40) setSlide(index + 1, true);
@@ -156,6 +186,8 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
         startX = null;
       }, { passive: true });
     }
+
+    window.addEventListener('resize', setHeight, { passive: true });
   }
 </script>
 
@@ -188,14 +220,18 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
   }
   .notice-overlay.is-open .notice-card { transform: scale(1); }
 
-  /* ===== 슬라이드 ===== */
+  /* ===== 캐러셀 ===== */
   .notice-slides { position: relative; }
-  .notice-slide { display: none; }
-  .notice-slide.is-active { display: block; animation: notice-slide-in 0.3s ease; }
-  @keyframes notice-slide-in {
-    from { opacity: 0; transform: translateX(16px); }
-    to { opacity: 1; transform: translateX(0); }
+  .notice-viewport {
+    overflow: hidden;
+    transition: height 0.34s ease;
   }
+  .notice-track {
+    display: flex;
+    align-items: flex-start;
+    transition: transform 0.34s ease;
+  }
+  .notice-slide { flex: 0 0 100%; box-sizing: border-box; }
   .notice-img {
     width: 100%;
     aspect-ratio: 1080 / 1527;
@@ -217,6 +253,35 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
   }
   .notice-btn:hover { opacity: 0.88; }
 
+  /* ===== 좌우 화살표 (데스크톱 전용) ===== */
+  .notice-arrow {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.42);
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    z-index: 2;
+    transition: background 0.15s, opacity 0.2s;
+  }
+  .notice-arrow:hover { background: rgba(0, 0, 0, 0.65); }
+  .notice-arrow:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .notice-arrow svg { width: 18px; height: 18px; }
+  .notice-arrow-prev { left: 8px; }
+  .notice-arrow-next { right: 8px; }
+  .notice-arrow:disabled { opacity: 0; pointer-events: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .notice-arrow { display: flex; }
+  }
+
   /* ===== 원두 라인업 슬라이드 ===== */
   .beans { padding: 22px 20px 6px; }
   .beans-eyebrow {
@@ -228,10 +293,7 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
   }
   .beans-ridge { width: 100%; height: 12px; display: block; margin-bottom: 14px; }
   .bean-list { list-style: none; margin: 0; padding: 0; }
-  .bean {
-    padding: 13px 0;
-    border-bottom: 1px solid var(--border);
-  }
+  .bean { padding: 13px 0; border-bottom: 1px solid var(--border); }
   .bean:first-child { padding-top: 0; }
   .bean-cat {
     font-size: 9.5px;
@@ -247,17 +309,8 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
     line-height: 1.2;
     margin-bottom: 5px;
   }
-  .bean-desc {
-    font-size: 12.5px;
-    line-height: 1.55;
-    color: var(--text-mute);
-    margin: 0 0 5px;
-  }
-  .bean-compo {
-    font-size: 11px;
-    color: #999;
-    letter-spacing: 0.2px;
-  }
+  .bean-desc { font-size: 12.5px; line-height: 1.55; color: var(--text-mute); margin: 0 0 5px; }
+  .bean-compo { font-size: 11px; color: #999; letter-spacing: 0.2px; }
   .beans-brand {
     text-align: center;
     font-size: 10px;
@@ -268,12 +321,7 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
   }
 
   /* ===== 점 인디케이터 ===== */
-  .notice-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 0 2px;
-  }
+  .notice-dots { display: flex; justify-content: center; gap: 8px; padding: 12px 0 2px; }
   .notice-dot {
     width: 8px;
     height: 8px;
@@ -314,7 +362,7 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
     justify-content: center;
     cursor: pointer;
     padding: 0;
-    z-index: 2;
+    z-index: 3;
     transition: background 0.15s;
   }
   .notice-close:hover { background: rgba(0, 0, 0, 0.7); }
@@ -322,7 +370,6 @@ const hasButton = Boolean(notice.button && notice.button.url && notice.button.la
   .notice-close svg { width: 14px; height: 14px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .notice-overlay, .notice-card { transition: none; }
-    .notice-slide.is-active { animation: none; }
+    .notice-overlay, .notice-card, .notice-viewport, .notice-track { transition: none; }
   }
 </style>
