@@ -2,10 +2,10 @@
 # - 팝업을 끄려면: enabled: false
 # - 내용을 새로 바꿔서 '오늘 하루 보지 않기' 누른 사람에게도 다시 띄우려면: version 숫자를 +1
 enabled: true   # 팝업 켜짐(방문자에게 보임). 끄려면 false 로 바꾸세요.
-version: 4      # 2장 캐러셀(채용 포스터 + 원두 라인업)로 변경 — 닫았던 사람에게도 재노출
+version: 5      # 채용 링크 갱신(새 공고 adid=145101448) — 닫았던 사람에게도 재노출
 
 # 포스터 이미지. public/images/ 안에 넣고 경로를 적으세요. 이미지가 없으면 image: "" (텍스트만 나옴).
-image: /images/notice-hiring-v2.png
+image: /images/notice-hiring-v3.png
 imageAlt: "마켓메이 바리스타 채용공고 — 2026 정직원 모집 (6.4~6.25). 자세한 내용은 알바천국 공고 참고."
 
 # 제목 (없으면 title: "") — 포스터 이미지에 모든 내용이 있어 비워둠
@@ -17,4 +17,4 @@ body: ""
 # 버튼이 필요 없으면 아래 button 블록 전체를 삭제하세요.
 button:
   label: "공고로 바로가기"
-  url: "https://m.alba.co.kr/job/JobDetail.asp?adid=144956677&provider=SHARE"
+  url: "https://m.alba.co.kr/job/JobDetail.asp?adid=145101448&provider=SHARE"
