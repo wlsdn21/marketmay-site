@@ -11,26 +11,54 @@ const directionsUrl = kakaoMap.directionsUrl || `https://map.kakao.com/?q=${enco
     <p class="map-address">{info.address}</p>
     <div class="map-frame">
       <div id={containerId} class="root_daum_roughmap root_daum_roughmap_landing"></div>
+      <p class="map-fallback" data-map-fallback hidden>
+        지도를 불러오지 못했습니다. 아래 길찾기 버튼을 이용해 주세요.
+      </p>
     </div>
     <a class="map-cta" href={directionsUrl} target="_blank" rel="noopener">카카오맵에서 길찾기 →</a>
   </div>
 </section>
 
-<script is:inline charset="UTF-8" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+<script is:inline async charset="UTF-8" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
 <script is:inline define:vars={{ kakaoMap }}>
   (function () {
+    const retryDelay = 250;
+    const maxAttempts = 40;
+    let attempts = 0;
+    let retryTimer;
+
+    function showFallback() {
+      const fallback = document.querySelector('[data-map-fallback]');
+      if (fallback) fallback.hidden = false;
+    }
+
     function init() {
       if (typeof window.daum === 'undefined' || !window.daum.roughmap) {
-        setTimeout(init, 100);
+        attempts += 1;
+        if (attempts >= maxAttempts) {
+          showFallback();
+          return;
+        }
+        retryTimer = window.setTimeout(init, retryDelay);
         return;
       }
-      new window.daum.roughmap.Lander({
-        timestamp: kakaoMap.timestamp,
-        key: kakaoMap.key,
-        mapWidth: String(kakaoMap.width),
-        mapHeight: String(kakaoMap.height),
-      }).render();
+
+      try {
+        new window.daum.roughmap.Lander({
+          timestamp: kakaoMap.timestamp,
+          key: kakaoMap.key,
+          mapWidth: String(kakaoMap.width),
+          mapHeight: String(kakaoMap.height),
+        }).render();
+      } catch {
+        showFallback();
+      }
     }
+
+    window.addEventListener('pagehide', function () {
+      if (retryTimer) window.clearTimeout(retryTimer);
+    }, { once: true });
+
     init();
   })();
 </script>
@@ -56,8 +84,22 @@ const directionsUrl = kakaoMap.directionsUrl || `https://map.kakao.com/?q=${enco
 .map-frame {
   margin: 0 auto 24px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
+.map-fallback {
+  width: min(100%, 640px);
+  min-height: 180px;
+  margin: 0;
+  padding: 32px 24px;
+  display: grid;
+  place-items: center;
+  color: var(--text-mute);
+  background: #f2f2f2;
+  border: 1px solid var(--border);
+}
+.map-fallback[hidden] { display: none; }
 .map-cta {
   display: inline-block;
   background: var(--brand);

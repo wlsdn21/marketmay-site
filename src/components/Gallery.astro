@@ -8,7 +8,16 @@ const images = [
 <section class="gallery">
   <div class="gallery-grid">
     {images.map((img) => (
-      <div class="gallery-cell" style={`background-image: url('${img.src}')`} role="img" aria-label={img.alt}></div>
+      <figure class="gallery-cell">
+        <img
+          src={img.src}
+          alt={img.alt}
+          width="1200"
+          height="1200"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
     ))}
   </div>
 </section>
@@ -23,9 +32,15 @@ const images = [
   gap: 0;
 }
 .gallery-cell {
+  margin: 0;
   aspect-ratio: 1 / 1;
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+}
+.gallery-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 @media (max-width: 720px) {
   .gallery-grid { grid-template-columns: 1fr; }
