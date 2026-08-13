@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="페이지를 찾을 수 없어요 | market may"
+  description="요청하신 페이지를 찾을 수 없습니다. market may 홈에서 매장 정보를 확인해 주세요."
+>
+  <main class="not-found">
+    <a class="brand" href="/" aria-label="market may 홈으로 이동">market may</a>
+
+    <section class="not-found-content" aria-labelledby="not-found-title">
+      <p class="error-code" aria-hidden="true">404</p>
+      <h1 id="not-found-title">페이지를 찾을 수 없어요.</h1>
+      <p class="description">
+        주소가 바뀌었거나 존재하지 않는 페이지예요.<br />
+        홈으로 돌아가 market may를 만나보세요.
+      </p>
+      <a class="home-link" href="/">홈으로 돌아가기</a>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .not-found {
+    min-height: calc(100svh - 85px);
+    display: flex;
+    flex-direction: column;
+    padding: 28px clamp(24px, 6vw, 72px) 64px;
+    background:
+      radial-gradient(circle at 78% 18%, rgba(10, 55, 17, 0.1), transparent 32%),
+      var(--bg);
+  }
+
+  .brand {
+    align-self: flex-start;
+    font-family: var(--font-heading);
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+
+  .not-found-content {
+    width: min(100%, 720px);
+    margin: auto;
+    padding: 72px 0;
+  }
+
+  .error-code {
+    margin: 0 0 22px;
+    color: var(--brand);
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 6px;
+  }
+
+  h1 {
+    max-width: 640px;
+    font-family: var(--font-body);
+    font-size: clamp(34px, 7vw, 64px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+  }
+
+  .description {
+    margin: 24px 0 36px;
+    color: var(--text-mute);
+    font-size: clamp(15px, 2vw, 17px);
+    line-height: 1.8;
+  }
+
+  .home-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 12px 22px;
+    border-radius: 4px;
+    background: var(--brand);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+
+  .home-link:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
+  .home-link:focus-visible,
+  .brand:focus-visible {
+    outline: 3px solid rgba(10, 55, 17, 0.35);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 560px) {
+    .not-found {
+      min-height: calc(100svh - 113px);
+      padding-top: 24px;
+    }
+
+    .not-found-content {
+      padding: 56px 0;
+    }
+
+    .description br {
+      display: none;
+    }
+  }
+</style>
