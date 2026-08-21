@@ -19,7 +19,8 @@ const directionsUrl = kakaoMap.directionsUrl || `https://map.kakao.com/?q=${enco
   </div>
 </section>
 
-<script is:inline async charset="UTF-8" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+<!-- roughmapLoader.js uses document.write; keep this script synchronous. -->
+<script is:inline charset="UTF-8" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
 <script is:inline define:vars={{ kakaoMap }}>
   (function () {
     const retryDelay = 250;
