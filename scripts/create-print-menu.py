@@ -18,16 +18,17 @@ from reportlab.pdfbase.ttfonts import TTFont
 parser = argparse.ArgumentParser()
 parser.add_argument('--font-dir', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
-parser.add_argument('--reference-image', type=Path, help='Original IMG_3566.jpeg, for its small brand mark')
+parser.add_argument('--logo', type=Path, help='Clean logo image; defaults to docs/assets/marketmay-print-logo.png')
 opt = parser.parse_args()
 opt.output.mkdir(parents=True, exist_ok=True)
 root = Path(__file__).resolve().parents[1]
+logo_path = opt.logo or root / 'docs/assets/marketmay-print-logo.png'
 data = json.loads((root / 'src/data/drinks.json').read_text())
 items = {i['id']: i for s in data['sections'] for i in s['items']}
 pdfmetrics.registerFont(TTFont('KR', str(opt.font_dir/'NanumGothic-Regular.ttf')))
 pdfmetrics.registerFont(TTFont('KR-Bold', str(opt.font_dir/'NanumGothic-Bold.ttf')))
 W,H = A4
-INK, GREEN, RED, PAPER = '#202822', '#254536', '#a45457', '#f5f1e8'
+INK, GREEN, RED, PAPER = '#202822', '#254536', '#a45457', '#ffffff'
 c=canvas.Canvas(str(opt.output/'marketmay-qr-menu-A4-2pages.pdf'), pagesize=A4, pageCompression=1)
 c.setTitle('마켓메이 메뉴판 | 원본 구성 · A4 2장')
 c.setAuthor('마켓메이')
@@ -106,15 +107,11 @@ item('marocchino',left,690)
 signature(left,714)
 lines(left,742,['벨기에 다크 초콜릿 슬라이스가','가득 올라간 진한 초코맛 카푸치노'])
 
-# Extract only the original printed brand mark as a document asset.
-# No surrounding photograph is embedded in the PDF.
-if opt.reference_image:
-    source=Image.open(opt.reference_image).convert('RGB')
-    iw,ih=source.size
-    mark=source.crop((int(iw*.422),int(ih*.542),int(iw*.493),int(ih*.580)))
-    c.drawImage(ImageReader(mark),453,H-452-39,width=90,height=39)
-else:
-    text(498,478,'M A R K E T  M A Y',9,'Helvetica-Bold',align='center')
+# A clean generated logo replaces the dark crop from the original photograph.
+mark = Image.open(logo_path)
+logo_scale = min(106 / mark.width, 48 / mark.height)
+logo_width, logo_height = mark.width * logo_scale, mark.height * logo_scale
+c.drawImage(ImageReader(mark),548-logo_width,H-451-logo_height,width=logo_width,height=logo_height,mask='auto')
 line(377,511,548)
 text(538,559,'디카페인',15,align='right')
 text(538,604,'모든 커피 메뉴는',12.5,align='right')
