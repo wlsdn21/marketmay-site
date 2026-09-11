@@ -92,7 +92,7 @@ def signature(x,y):
     text(x+67,y,'(only hot)',13,'Helvetica-Oblique',RED)
 
 
-page('커피')
+page('COFFEE')
 left=50
 item('americano',left,190)
 item('latte-8',left,237,label='카페라떼 8부(기본)')
