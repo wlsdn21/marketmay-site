@@ -16,14 +16,17 @@ JSON의 이름, 가격, 설명, `signature`, `hotOnly`를 수정한다. 페이�
 Python 패키지 `reportlab`, `qrcode`, `Pillow`와 나눔고딕 TTF Regular/Bold가 필요하다. 폰트는 Google Fonts의 `google/fonts` 저장소 `ofl/nanumgothic/`에서 제공된다(SIL Open Font License).
 
 ```sh
-python scripts/create-print-menu.py --font-dir /path/to/fonts --output /path/to/output --reference-image /path/to/IMG_3566.jpeg
+python scripts/create-print-menu.py --font-dir /path/to/fonts --output /path/to/output
 ```
 
 폰트 파일명: `NanumGothic-Regular.ttf`, `NanumGothic-Bold.ttf`.
 
 - A4 세로 210 × 297 mm, 2페이지. 1장은 커피와 추가 옵션, 2장은 티·에이드·밀크티·기타 음료. 브런치는 포함하지 않는다.
-- 원본과 비슷한 크림색 바탕, 넓은 상단 여백, 메뉴 순서와 구분선, 오른쪽 디카페인 안내 배치. 가격은 원본처럼 천 원 단위(`5.0`)이며 에이드·과일차·밀크티는 묶음 가격으로 표시한다.
-- `--reference-image`를 주면 사진 속 작은 로고 부분만 추출해 배치한다. 주변 매장 사진은 PDF에 포함하지 않는다. 생략 시 영문 상호만 표시한다.
+- 원본의 메뉴 순서, 구분선과 천 원 단위(`5.0`) 가격을 유지한다. 에이드·과일차·밀크티는 묶음 가격으로 표시한다.
+- 사용자 추가 요청에 따라 양쪽 여백을 약 18 mm로 맞추고, 로고·QR·제목 위치를 두 페이지에 통일했다. 1장은 넓은 커피 목록과 중앙 높이에 정리한 옵션 안내, 2장은 같은 너비의 두 열로 배치한다.
+- 메뉴명은 기본 13pt, 가격은 13.2pt로 맞추며 긴 이름은 영역 안에서 조정한다. 디카페인 안내가 오른쪽 아래에 몰리지 않도록 크기·간격·위치를 재조정했다.
+- 사용자 요청에 따라 두 페이지 배경은 순백색(`#ffffff`). 검게 보이던 사진 속 로고를 흰 배경·초록색 선과 글자의 새 생성 로고로 교체했다.
+- 기본 로고는 `docs/assets/marketmay-print-logo.png`이며 `--logo /path/to/logo.png`로 별도 파일을 지정할 수 있다. 두 페이지 모두 상단에 비율을 유지해 배치하며 원본 사진을 다시 자르지 않는다.
 - 두 페이지 오른쪽 상단 각각에 QR 배치, 전체 크기 약 26.1 mm. 사방 4모듈 여백, Q 오류 정정, 흑백 벡터.
 - 흰 QR 여백을 자르거나 QR 위에 로고를 겹치지 않는다. 인쇄 시 해당 종이에 실제 크기(100%)로 출력한다.
 
