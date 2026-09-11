@@ -16,19 +16,22 @@ JSON의 이름, 가격, 설명, `signature`, `hotOnly`를 수정한다. 페이�
 Python 패키지 `reportlab`, `qrcode`, `Pillow`와 나눔고딕 TTF Regular/Bold가 필요하다. 폰트는 Google Fonts의 `google/fonts` 저장소 `ofl/nanumgothic/`에서 제공된다(SIL Open Font License).
 
 ```sh
-python scripts/create-print-menu.py --font-dir /path/to/fonts --output /path/to/output
+python scripts/create-print-menu.py --font-dir /path/to/fonts --output /path/to/output --reference-image /path/to/IMG_3566.jpeg
 ```
 
 폰트 파일명: `NanumGothic-Regular.ttf`, `NanumGothic-Bold.ttf`.
 
 - A4 세로 210 × 297 mm, 2페이지. 1장은 커피와 추가 옵션, 2장은 티·에이드·밀크티·기타 음료. 브런치는 포함하지 않는다.
-- 두 페이지 각각에 QR 배치, 전체 크기 약 27.5 mm. 사방 4모듈 여백, Q 오류 정정, 흑백 벡터.
+- 원본과 비슷한 크림색 바탕, 넓은 상단 여백, 메뉴 순서와 구분선, 오른쪽 디카페인 안내 배치. 가격은 원본처럼 천 원 단위(`5.0`)이며 에이드·과일차·밀크티는 묶음 가격으로 표시한다.
+- `--reference-image`를 주면 사진 속 작은 로고 부분만 추출해 배치한다. 주변 매장 사진은 PDF에 포함하지 않는다. 생략 시 영문 상호만 표시한다.
+- 두 페이지 오른쪽 상단 각각에 QR 배치, 전체 크기 약 26.1 mm. 사방 4모듈 여백, Q 오류 정정, 흑백 벡터.
 - 흰 QR 여백을 자르거나 QR 위에 로고를 겹치지 않는다. 인쇄 시 해당 종이에 실제 크기(100%)로 출력한다.
 
 ## 확인
 
 - 기존 테스트 7개와 Astro 정적 빌드 통과.
-- 생성 HTML에서 메뉴 32개, 가격, 세 가지 HOT ONLY 표시, 카테고리 링크, 이미지 경로 및 리필 조건 확인.
+- 웹은 흰 배경에 한 열로 표시하며, 메뉴명·가격은 18px, 설명은 15px. 사진·홍보 문구·영문 제목·번호·시그니처 배지·고정 탐색·장식은 제거했다. 메뉴 상세 설명은 필요한 내용을 짧게 표시한다.
+- 생성 HTML에서 메뉴 32개, 가격, 세 가지 따뜻한 음료 전용 안내 및 리필 조건 보존 확인.
 - A4 2페이지 PDF를 이미지로 렌더링해 레이아웃 검토하고, 32개 메뉴와 가격의 텍스트 보존 확인.
 - 렌더링 이미지의 QR을 OpenCV로 해독해 공개 주소와 일치하는지 확인. 실물 종이 또는 실제 휴대폰 카메라로 시험한 것은 아님.
 - 모바일 반응형 CSS 적용. 별도 모바일 브라우저 렌더링 검증은 진행하지 않음.
