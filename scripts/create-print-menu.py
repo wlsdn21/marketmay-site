@@ -83,8 +83,15 @@ def item(item_id,x,y,width=280,label=None,show_price=True):
     if show_price: text(x+width,y,f"{item['price']/1000:.1f}",13.2,'KR-Bold',align='right')
 
 
-def lines(x,y,values,size=10.5,leading=13):
-    for n,value in enumerate(values): text(x,y+n*leading,value,size)
+def lines(x,y,values,size=10.5,leading=15):
+    # Descriptions sit below bold menu names in a quieter regular weight.
+    for n,value in enumerate(values):
+        text(x,y+n*leading,value,size,'KR',color='#586159')
+
+
+def choices(x,y,values):
+    # Explicit labels and a small indent distinguish choices from descriptions.
+    lines(x+6,y,values,size=10.5,leading=16)
 
 
 def signature(x,y):
@@ -144,16 +151,16 @@ item('lemon-tea',left,340,width,show_price=False)
 item('grapefruit-tea',left,374,width,show_price=False)
 item('peach',left,426,width)
 item('ashotchu',left,460,width)
-lines(left,480,['(아샷추 제로 +0.5)'])
+lines(left,480,['아샷추 제로 +0.5'])
 line(left,505,left+width)
 item('herbal',left,535,width)
-lines(left,557,['(캐모마일/페퍼민트/','로즈마리/자스민/제주 녹차)'],leading=16)
+choices(left,557,['선택 · 캐모마일 / 페퍼민트 /','로즈마리 / 자스민 / 제주 녹차'])
 item('black-tea',left,613,width,label='포트넘앤메이슨 홍차')
-lines(left,634,['(실론/피치/쥬빌레)'])
+choices(left,634,['선택 · 실론 / 피치 / 쥬빌레'])
 item('earl-grey',left,673,width)
 lines(left,694,['시트러스 과육이 살아있는','달콤 시원한 과일 홍차 티'])
 item('yogurt',left,749,width)
-lines(left,770,['(블루베리/딸기)'])
+choices(left,770,['선택 · 블루베리 / 딸기'])
 
 item('royal-milk-tea',right,185,width)
 signature(right,210)
@@ -170,7 +177,7 @@ item('belgian',right,582,width)
 signature(right,608)
 lines(right,640,['벨지안 다크초콜릿을 우유에 직접 녹여,','진한 풍미를 그대로 살린 리얼 핫초코'],size=10)
 line(right,690,right+width)
-text(right,726,'시즌 한정 메뉴',12.5)
+text(right+width,726,'시즌 한정 메뉴',12.5,align='right')
 seasonal=items['passion-fruit'];printed.append(seasonal['id'])
 text(right,758,seasonal['name'],13)
 text(right+width,758,f"{seasonal['price']/1000:.1f}",13.2,align='right')
