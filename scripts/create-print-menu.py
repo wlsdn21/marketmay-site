@@ -90,7 +90,7 @@ def lines(x,y,values,size=10.5,leading=15):
 
 
 def choices(x,y,values):
-    # Explicit labels and a small indent distinguish choices from descriptions.
+    # A small indent and regular gray type distinguish choices from menu names.
     lines(x+6,y,values,size=10.5,leading=16)
 
 
@@ -154,13 +154,13 @@ item('ashotchu',left,460,width)
 lines(left,480,['아샷추 제로 +0.5'])
 line(left,505,left+width)
 item('herbal',left,535,width)
-choices(left,557,['선택 · 캐모마일 / 페퍼민트 /','로즈마리 / 자스민 / 제주 녹차'])
+choices(left,557,['캐모마일 / 페퍼민트 /','로즈마리 / 자스민 / 제주 녹차'])
 item('black-tea',left,613,width,label='포트넘앤메이슨 홍차')
-choices(left,634,['선택 · 실론 / 피치 / 쥬빌레'])
+choices(left,634,['실론 / 피치 / 쥬빌레'])
 item('earl-grey',left,673,width)
 lines(left,694,['시트러스 과육이 살아있는','달콤 시원한 과일 홍차 티'])
 item('yogurt',left,749,width)
-choices(left,770,['선택 · 블루베리 / 딸기'])
+choices(left,770,['블루베리 / 딸기'])
 
 item('royal-milk-tea',right,185,width)
 signature(right,210)
@@ -179,7 +179,7 @@ lines(right,640,['벨지안 다크초콜릿을 우유에 직접 녹여,','진한
 line(right,690,right+width)
 text(right+width,726,'시즌 한정 메뉴',12.5,align='right')
 seasonal=items['passion-fruit'];printed.append(seasonal['id'])
-text(right,758,seasonal['name'],13)
+text(right+width-48,758,seasonal['name'],13,align='right')
 text(right+width,758,f"{seasonal['price']/1000:.1f}",13.2,align='right')
 assert sorted(printed)==sorted(items),printed
 c.showPage();c.save()
