@@ -134,7 +134,7 @@ text(edge,566,'+2.5',11,align='right')
 lines(right,591,['1인 1음료,','커피류 주문 시 가능'],size=10,leading=16)
 c.showPage()
 
-page('티 · 음료')
+page('NON COFFEE')
 left,right,width=50,313,232
 item('omija-ade',left,185,width)
 item('lemon-ade',left,219,width,show_price=False)
