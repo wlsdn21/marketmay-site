@@ -1,0 +1,55 @@
+{
+  "updated": "2026-09-11",
+  "source": "사용자가 제공한 새 음료 메뉴판 IMG_3566.jpeg. 묶음 가격은 원본의 에이드 6.7, 과일차 6.5, 밀크티 6.7 표기를 따름.",
+  "url": "https://marketmay.com/menu",
+  "sections": [
+    {"id": "coffee", "name": "커피", "english": "Coffee", "items": [
+      {"id": "americano", "name": "아메리카노", "price": 5000},
+      {"id": "latte-8", "name": "카페라떼 8부", "price": 5700, "detail": "기본"},
+      {"id": "latte-5", "name": "카페라떼 5부", "price": 5600, "detail": "작은 잔"},
+      {"id": "cappuccino", "name": "카푸치노", "price": 5700},
+      {"id": "vanilla", "name": "바닐라빈라떼", "price": 6200},
+      {"id": "caramel", "name": "카라멜라떼", "price": 6000},
+      {"id": "cold-brew", "name": "콜드브루", "price": 5500},
+      {"id": "einspanner", "name": "아인슈페너", "price": 6400},
+      {"id": "borgia", "name": "보르지아", "price": 6500, "detail": "초코맛 비엔나커피"},
+      {"id": "mocha", "name": "카페모카", "price": 6600},
+      {"id": "affogato", "name": "아포가또", "price": 6500, "detail": "하겐다즈"},
+      {"id": "marocchino", "name": "마로치노", "price": 6800, "signature": true, "hotOnly": true, "detail": "벨기에 다크 초콜릿 슬라이스가 가득 올라간 진한 초코맛 카푸치노"}
+    ]},
+    {"id": "fruit", "name": "에이드 · 과일차", "english": "Ade & Fruit Tea", "items": [
+      {"id": "omija-ade", "name": "문경 오미자 에이드", "price": 6700},
+      {"id": "lemon-ade", "name": "생 레몬 에이드", "price": 6700},
+      {"id": "grapefruit-ade", "name": "생 자몽 에이드", "price": 6700},
+      {"id": "omija-tea", "name": "문경 오미자 차", "price": 6500},
+      {"id": "lemon-tea", "name": "생 레몬차", "price": 6500},
+      {"id": "grapefruit-tea", "name": "생 자몽차", "price": 6500}
+    ]},
+    {"id": "tea", "name": "티 · 밀크티", "english": "Tea & Milk Tea", "items": [
+      {"id": "herbal", "name": "허브티", "price": 6000, "detail": "캐모마일 / 페퍼민트 / 로즈마리 / 자스민 / 제주 녹차"},
+      {"id": "black-tea", "name": "포트넘앤메이슨 홍차", "price": 6000, "detail": "실론 / 피치 / 쥬빌레"},
+      {"id": "earl-grey", "name": "수제 얼그레이 아이스티", "price": 6200, "detail": "시트러스 과육이 살아있는 달콤 시원한 과일 홍차 티"},
+      {"id": "royal-milk-tea", "name": "로얄 밀크티", "price": 6700, "signature": true, "hotOnly": true, "detail": "로얄 블렌드 홍차를 우유에 천천히 끓이고, 은은한 꿀 향을 더한 밀크티"},
+      {"id": "iced-milk-tea", "name": "아이스 밀크티", "price": 6700, "detail": "블렌딩 홍차를 냉침해 깔끔 달콤한 맛"}
+    ]},
+    {"id": "drinks", "name": "라떼 · 음료", "english": "Latte & Drinks", "items": [
+      {"id": "peach", "name": "복숭아 아이스티", "price": 4700},
+      {"id": "ashotchu", "name": "아샷추", "price": 5700, "detail": "아샷추 제로 +500원"},
+      {"id": "yogurt", "name": "요거 쉐이크", "price": 6900, "detail": "블루베리 / 딸기"},
+      {"id": "chocolate", "name": "핫초코 / 아이스초코", "price": 5900},
+      {"id": "matcha", "name": "유기농 제주말차라떼", "price": 5900},
+      {"id": "strawberry-matcha", "name": "딸기말차라떼", "price": 6700},
+      {"id": "ginger", "name": "생강차 / 생강라떼", "price": 6700, "detail": "직접 만든 생강 진액"},
+      {"id": "belgian", "name": "벨지안 다크핫초코", "price": 6400, "signature": true, "hotOnly": true, "detail": "벨지안 다크초콜릿을 우유에 직접 녹여, 진한 풍미를 그대로 살린 리얼 핫초코"}
+    ]},
+    {"id": "seasonal", "name": "시즌 한정", "english": "Seasonal", "items": [
+      {"id": "passion-fruit", "name": "생 백향과 주스", "price": 7000}
+    ]}
+  ],
+  "options": [
+    {"name": "디카페인 원두 변경", "price": 0, "detail": "모든 커피 메뉴"},
+    {"name": "2샷 추가", "price": 1000},
+    {"name": "오트밀크로 우유 변경", "price": 1000},
+    {"name": "아메리카노 리필", "price": 2500, "detail": "1인 1음료, 커피류 주문 시 가능"}
+  ]
+}

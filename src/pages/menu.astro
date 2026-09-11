@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import drinks from '../data/drinks.json';
+const price = (value: number) => value.toLocaleString('ko-KR');
+---
+<BaseLayout title="메뉴 | 마켓메이" description="마켓메이의 커피, 밀크티, 에이드와 음료 메뉴 및 가격. 모든 커피 메뉴는 디카페인 원두로 무료 변경할 수 있습니다.">
+  <a class="skip-link" href="#coffee">메뉴로 바로 가기</a>
+  <header class="menu-header">
+    <a class="wordmark" href="/" aria-label="마켓메이 홈페이지">market may</a>
+    <a class="home-link" href="/">홈페이지</a>
+  </header>
+  <main id="top" class="menu-shell">
+    <div class="menu-intro">
+      <div>
+        <p class="eyebrow">COFFEE & DRINKS</p>
+        <h1>마켓메이 메뉴</h1>
+        <p class="intro-copy">직접 볶아 더 신선한 커피</p>
+      </div>
+      <figure class="coffee-photo">
+        <img src="/images/menu/marocchino.jpg" width="1200" height="900" alt="다크 초콜릿 슬라이스를 올린 마켓메이 마로치노" fetchpriority="high" />
+        <figcaption>마로치노</figcaption>
+      </figure>
+    </div>
+    <p class="decaf-note"><strong>디카페인 무료 변경</strong><span>모든 커피 메뉴에 가능합니다.</span></p>
+    <nav class="category-nav" aria-label="메뉴 종류">
+      {drinks.sections.map(section => <a href={`#${section.id}`}>{section.name}</a>)}
+      <a href="#options">추가 옵션</a>
+    </nav>
+    <p class="price-note">가격 단위: 원</p>
+    <div class="menu-columns">
+      {drinks.sections.map((section, index) => (
+        <section class={`menu-section section-${section.id}`} id={section.id} aria-labelledby={`heading-${section.id}`}>
+          <header class="section-heading">
+            <span class="section-number" aria-hidden="true">0{index + 1}</span>
+            <div><p>{section.english}</p><h2 id={`heading-${section.id}`}>{section.name}</h2></div>
+          </header>
+          <ul class="menu-list">
+            {section.items.map(item => (
+              <li class:list={['menu-item', { signature: 'signature' in item && item.signature }]} data-menu-id={item.id}>
+                <div class="item-top"><h3>{item.name}</h3><span class="price">{price(item.price)}<span class="sr-only">원</span></span></div>
+                {'signature' in item && item.signature && <p class="item-badges"><span>시그니처</span>{'hotOnly' in item && item.hotOnly && <span class="hot-only">HOT ONLY</span>}</p>}
+                {'detail' in item && <p class="item-detail">{item.detail}</p>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+    <section class="options" id="options" aria-labelledby="options-heading">
+      <h2 id="options-heading">취향에 맞게 즐기세요</h2>
+      <dl>{drinks.options.map(option => <div><dt>{option.name}{option.detail && <small>{option.detail}</small>}</dt><dd>{option.price === 0 ? '무료' : `${option.name.includes('리필') ? '' : '+'}${price(option.price)}원`}</dd></div>)}</dl>
+    </section>
+    <footer class="menu-footer"><a class="wordmark" href="/">market may</a><a href="#top">맨 위로 ↑</a></footer>
+  </main>
+</BaseLayout>
+
+<style>
+  :global(html) { scroll-behavior: smooth; }
+  :global(body) { background: #f7f8f3; }
+  :global(a:focus-visible) { outline: 2px solid var(--brand); outline-offset: 5px; }
+  .skip-link { position: fixed; left: 16px; top: -100px; background: white; padding: 12px; z-index: 50; }
+  .skip-link:focus { top: 12px; }
+  .menu-header { max-width: 1168px; margin: auto; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #cbd5c8; }
+  .wordmark { font-family: var(--font-heading); font-size: 2rem; font-style: italic; color: var(--brand); line-height: 1.2; }
+  .home-link { color: #49604b; font-size: .875rem; padding: 10px 0 10px 20px; }
+  .menu-shell { max-width: 1168px; margin: auto; padding: 0 32px; }
+  .menu-intro { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 32px 0 24px; }
+  .eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .16em; color: #456346; margin: 0 0 7px; }
+  h1 { font-family: var(--font-body); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 650; line-height: 1.35; letter-spacing: -.04em; color: var(--brand); word-break: keep-all; }
+  .intro-copy { margin: 10px 0 0; font-size: 1rem; color: #4d604d; word-break: keep-all; }
+  .coffee-photo { width: 180px; margin: 0; flex-shrink: 0; text-align: center; }
+  .coffee-photo img { width: 100%; height: auto; mix-blend-mode: multiply; }
+  .coffee-photo figcaption { font-size: .75rem; color: #5c695a; }
+  .decaf-note { display: flex; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; padding: 13px 18px; background: #e7eee1; color: #23452a; font-size: .875rem; }
+  .category-nav { display: flex; flex-wrap: wrap; gap: 0 24px; position: sticky; top: 0; z-index: 5; padding: 8px 0; background: #f7f8f3; border-bottom: 1px solid #abbda7; }
+  .category-nav a { display: flex; align-items: center; min-height: 44px; font-size: .875rem; color: #314d34; font-weight: 600; }
+  .category-nav a:hover { text-decoration: underline; text-underline-offset: 6px; }
+  .price-note { text-align: right; font-size: .75rem; color: #60705c; margin: 12px 0 8px; }
+  .menu-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; align-items: start; }
+  .menu-section { min-width: 0; scroll-margin-top: 130px; }
+  .section-coffee { grid-column: 1; grid-row: 1 / 3; }
+  .section-fruit { grid-column: 2; grid-row: 1; }
+  .section-tea { grid-column: 2; grid-row: 2; }
+  .section-drinks { grid-column: 3; grid-row: 1; }
+  .section-seasonal { grid-column: 3; grid-row: 2; }
+  .section-heading { display: flex; align-items: baseline; gap: 12px; padding: 12px 0 16px; border-bottom: 2px solid var(--brand); color: var(--brand); }
+  .section-number { font-size: .75rem; font-weight: 600; }
+  .section-heading p { margin: 0 0 2px; font-family: var(--font-heading); font-size: 1.75rem; line-height: 1.2; }
+  h2 { font-family: var(--font-body); font-size: 1rem; font-weight: 650; }
+  .menu-list { list-style: none; margin: 0; padding: 0; }
+  .menu-item { padding: 15px 0; border-bottom: 1px solid #dde3d8; }
+  .item-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; }
+  h3 { font-family: var(--font-body); font-size: 1rem; font-weight: 500; line-height: 1.55; word-break: keep-all; overflow-wrap: anywhere; }
+  .price { font-size: 1rem; font-weight: 550; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .item-detail { margin: 5px 0 0; color: #52604f; font-size: .875rem; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; }
+  .signature h3 { color: var(--brand); font-weight: 700; }
+  .item-badges { display: flex; gap: 10px; margin: 7px 0; color: #285032; font-size: .75rem; font-weight: 600; }
+  .hot-only { color: #8b4837; }
+  .options { scroll-margin-top: 140px; margin: 48px 0 0; padding: 24px; background: #e7eee1; }
+  .options h2 { font-size: 1.125rem; color: var(--brand); }
+  .options dl { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; margin: 22px 0 0; }
+  .options dl > div { display: flex; justify-content: space-between; gap: 12px; font-size: 1rem; }
+  .options small { display: block; font-size: .875rem; color: #52604f; }
+  .options dd { margin: 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .menu-footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 36px 0; color: #466147; font-size: .875rem; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+  @media (max-width: 920px) {
+    .menu-columns { grid-template-columns: 1fr 1fr; gap: 28px; }
+    .menu-section { grid-column: auto; grid-row: auto; }
+    .section-coffee { grid-column: 1; grid-row: 1 / 3; }
+    .section-fruit { grid-column: 2; grid-row: 1; }
+    .section-tea { grid-column: 2; grid-row: 2; }
+  }
+  @media (max-width: 620px) {
+    .menu-header { padding: 18px 20px; }
+    .menu-shell { padding: 0 20px; }
+    .wordmark { font-size: 1.75rem; }
+    .menu-intro { gap: 4px; padding: 26px 0 20px; }
+    .coffee-photo { width: 100px; }
+    .menu-intro h1 { font-size: 1.75rem; }
+    .intro-copy { font-size: .875rem; }
+    .decaf-note { gap: 2px 8px; padding: 12px; }
+    .category-nav { gap: 0 20px; flex-wrap: nowrap; overflow-x: auto; }
+    .category-nav a { flex: 0 0 auto; }
+    .menu-columns { display: block; }
+    .menu-section { margin-bottom: 32px; scroll-margin-top: 80px; }
+    .menu-item { padding: 16px 0; }
+    h3, .price { font-size: 1.0625rem; }
+    .options { padding: 20px; margin-top: 16px; scroll-margin-top: 80px; }
+    .options dl { grid-template-columns: 1fr; gap: 20px; }
+    .section-heading p { font-size: 1.75rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { :global(html) { scroll-behavior: auto; } }
+  @media print { .category-nav, .home-link, .menu-footer, .skip-link { display: none; } .menu-section { break-inside: avoid; } }
+</style>
