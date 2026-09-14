@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import drinks from '../data/drinks.json';
 const price = (value: number) => `${value.toLocaleString('ko-KR')}원`;
+const navLabels: Record<string, string> = { coffee: '커피', fruit: '에이드', tea: '티', drinks: '음료', seasonal: '시즌' };
+const decaf = drinks.options.find(option => option.name === '디카페인 원두 변경');
+const coffeeOptions = drinks.options.filter(option => option !== decaf);
 const briefDetails: Record<string, string> = {
   marocchino: '다크초콜릿을 올린 카푸치노',
   'earl-grey': '시트러스 과육을 넣은 홍차',
@@ -13,30 +16,41 @@ const briefDetails: Record<string, string> = {
 <BaseLayout title="메뉴 | 마켓메이" description="마켓메이 커피와 음료 메뉴, 가격 및 추가 옵션.">
   <main class="menu-page">
     <h1><a href="/">마켓메이 메뉴</a></h1>
+    <nav class="menu-nav" aria-label="메뉴 종류 바로가기">
+      {drinks.sections.map(section => (
+        <a href={`#${section.id}`} aria-label={section.name}>{navLabels[section.id] ?? section.name}</a>
+      ))}
+    </nav>
     {drinks.sections.map(section => (
       <section id={section.id} aria-labelledby={`heading-${section.id}`}>
         <h2 id={`heading-${section.id}`}>{section.name}</h2>
+        {section.id === 'coffee' && decaf && (
+          <p class="decaf-note">모든 커피 <strong>디카페인 {decaf.price === 0 ? '무료 변경' : `변경 +${price(decaf.price)}`}</strong></p>
+        )}
         <ul>
           {section.items.map(item => (
             <li data-menu-id={item.id}>
               <div class="menu-row"><h3>{item.name}</h3><span class="price">{price(item.price)}</span></div>
-              {'hotOnly' in item && item.hotOnly && <p class="detail">따뜻한 음료만 가능</p>}
+              {'hotOnly' in item && item.hotOnly && <p class="temperature"><span aria-label="따뜻한 음료만 가능">HOT ONLY</span></p>}
               {'detail' in item && <p class="detail">{briefDetails[item.id] ?? item.detail}</p>}
             </li>
           ))}
         </ul>
+        {section.id === 'coffee' && (
+          <div class="coffee-options" id="options" aria-labelledby="options-heading">
+            <h3 id="options-heading">커피 추가 옵션</h3>
+            <dl>{coffeeOptions.map(option => (
+              <div class="option">
+                <dt>{option.name}</dt>
+                <dd class="price">{option.price === 0 ? '무료' : `${option.name.includes('리필') ? '' : '+'}${price(option.price)}`}</dd>
+                {option.detail && <dd class="detail">{option.detail}</dd>}
+              </div>
+            ))}</dl>
+          </div>
+        )}
       </section>
     ))}
-    <section id="options" aria-labelledby="options-heading">
-      <h2 id="options-heading">추가 옵션</h2>
-      <dl>{drinks.options.map(option => (
-        <div class="option">
-          <dt>{option.name}</dt>
-          <dd class="price">{option.price === 0 ? '무료' : `${option.name.includes('리필') ? '' : '+'}${price(option.price)}`}</dd>
-          {option.detail && <dd class="detail">{option.detail}</dd>}
-        </div>
-      ))}</dl>
-    </section>
+
   </main>
 </BaseLayout>
 
@@ -48,20 +62,31 @@ const briefDetails: Record<string, string> = {
   }
   .menu-page { max-width: 42rem; margin: 0 auto; padding: 28px 20px 48px; }
   h1, h2, h3 { font-family: inherit; letter-spacing: normal; word-break: keep-all; overflow-wrap: anywhere; }
-  h1 { margin: 0 0 32px; font-size: 1.5rem; font-weight: 700; line-height: 1.4; }
-  h1 a:focus-visible { outline: 2px solid #171717; outline-offset: 5px; }
+  h1 { margin: 0 0 12px; font-size: 1.5rem; font-weight: 700; line-height: 1.4; }
+  a:focus-visible { outline: 2px solid #171717; outline-offset: 5px; }
+  .menu-nav { position: sticky; top: 0; z-index: 10; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 8px 0; margin-bottom: 24px; background: #fff; border-bottom: 1px solid #dce3dc; }
+  .menu-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 4px; border-radius: 6px; font-size: 1rem; font-weight: 600; color: #254536; }
+  .menu-nav a:hover, .menu-nav a:focus-visible { background: #edf2ed; }
+  section { scroll-margin-top: 84px; }
   section + section { margin-top: 36px; }
+  .decaf-note { margin: 12px 0 4px; color: #254536; font-size: .9375rem; }
+  .coffee-options { margin-top: 20px; padding: 16px; background: #f5f7f4; border-radius: 8px; }
+  .coffee-options h3 { margin-bottom: 4px; font-size: 1rem; }
+  .coffee-options .option:last-child { border-bottom: 0; padding-bottom: 0; }
+  .temperature { margin: 6px 0 0 8px; }
+  .temperature span { display: inline-block; padding: 1px 6px; border: 1px solid #e2c9c3; border-radius: 3px; font-size: .75rem; font-weight: 600; color: #89443b; }
+  @media (prefers-reduced-motion: no-preference) { :global(html) { scroll-behavior: smooth; } }
   h2 { margin: 0; padding-bottom: 10px; border-bottom: 1px solid #333; font-size: 1.25rem; font-weight: 700; line-height: 1.5; }
   ul, dl { list-style: none; margin: 0; padding: 0; }
   li, .option { padding: 14px 0; border-bottom: 1px solid #e7e7e7; }
   .menu-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: baseline; }
   .option { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; align-items: baseline; }
   .option .detail { grid-column: 1 / -1; }
-  h3, dt { margin: 0; font-size: 1.125rem; font-weight: 500; line-height: 1.55; }
+  h3, dt { margin: 0; font-size: 1.125rem; font-weight: 650; line-height: 1.55; }
   dt { word-break: keep-all; overflow-wrap: anywhere; }
   dd { margin: 0; }
   .price { font-size: 1.125rem; font-weight: 600; line-height: 1.55; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
-  .detail { margin: 4px 0 0; color: #555; font-size: .9375rem; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
+  .detail { margin: 6px 0 0 8px; font-weight: 400; color: #555; font-size: .9375rem; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
   @media (max-width: 360px) { .menu-page { padding-inline: 16px; } .menu-row { gap: 12px; } }
-  @media print { .menu-page { max-width: none; padding: 0; } li, .option { break-inside: avoid; } }
+  @media print { .menu-nav { display: none; } .menu-page { max-width: none; padding: 0; } li, .option { break-inside: avoid; } }
 </style>
