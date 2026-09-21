@@ -6,11 +6,13 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  lang?: string;
 }
 const {
   title = 'market may',
   description = 'market may | 구미시 카페 · 베이커리. 직접 볶아 더 신선한 커피, 따뜻한 브런치, 모닝 베이글, 신선한 드립백. 10:00–22:00 (매주 월요일 휴무)',
   ogImage = '/images/exterior.jpg',
+  lang = 'ko',
 } = Astro.props;
 
 const siteUrl = 'https://marketmay.com';
@@ -53,13 +55,14 @@ const localBusiness = {
   sameAs: [info.instagram],
 };
 ---
-<html lang="ko">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <slot name="head" />
 
     <!-- Favicons (멀티 사이즈/포맷 — Google 검색은 PNG를 가장 잘 인식) -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -72,7 +75,7 @@ const localBusiness = {
     <!-- Open Graph (KakaoTalk, Facebook 등) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="market may" />
-    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:locale" content={({ ko: 'ko_KR', en: 'en_US', ja: 'ja_JP', 'zh-Hans': 'zh_CN' } as Record<string, string>)[lang] ?? 'ko_KR'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={absoluteOgImage} />

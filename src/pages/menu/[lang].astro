@@ -1,0 +1,12 @@
+---
+import DrinkMenu from '../../components/DrinkMenu.astro';
+import { languages, type MenuLocale } from '../../lib/menu';
+export function getStaticPaths() {
+  return languages.filter(language => language.code !== 'ko').map(language => ({
+    params: { lang: language.code }, props: { locale: language.code },
+  }));
+}
+interface Props { locale: MenuLocale }
+const { locale } = Astro.props;
+---
+<DrinkMenu locale={locale} />
