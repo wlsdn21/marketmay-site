@@ -1,0 +1,464 @@
+{
+  "en": {
+    "title": "MARKET MAY Menu",
+    "description": "Coffee, drinks, prices and add-ons at MARKET MAY.",
+    "languageLabel": "Menu language",
+    "navLabel": "Jump to a category",
+    "currency": "Prices in Korean won (KRW)",
+    "decaf": "Decaf available for all coffees",
+    "freeChange": "No extra charge",
+    "free": "Free",
+    "optionsTitle": "Coffee add-ons",
+    "hotOnly": "HOT ONLY",
+    "sections": {
+      "coffee": [
+        "Coffee",
+        "Coffee"
+      ],
+      "fruit": [
+        "Fruit Sodas & Fruit Teas",
+        "Fruit"
+      ],
+      "tea": [
+        "Tea & Milk Tea",
+        "Tea"
+      ],
+      "drinks": [
+        "Lattes & Other Drinks",
+        "Drinks"
+      ]
+    },
+    "options": {
+      "디카페인 원두 변경": {
+        "name": "Switch to decaf"
+      },
+      "2샷 추가": {
+        "name": "Add 2 espresso shots"
+      },
+      "오트밀크로 우유 변경": {
+        "name": "Switch to oat milk"
+      },
+      "아메리카노 리필": {
+        "name": "Americano refill",
+        "detail": "Available after ordering a coffee; each person must order a drink."
+      }
+    },
+    "items": {
+      "americano": {
+        "name": "Americano"
+      },
+      "latte-8": {
+        "name": "Caffè Latte",
+        "detail": "Regular cup"
+      },
+      "latte-5": {
+        "name": "Caffè Latte",
+        "detail": "Small cup"
+      },
+      "cappuccino": {
+        "name": "Cappuccino"
+      },
+      "vanilla": {
+        "name": "Vanilla Bean Latte"
+      },
+      "caramel": {
+        "name": "Caramel Latte"
+      },
+      "cold-brew": {
+        "name": "Cold Brew"
+      },
+      "einspanner": {
+        "name": "Einspänner"
+      },
+      "borgia": {
+        "name": "Borgia",
+        "detail": "Chocolate-flavored Vienna coffee"
+      },
+      "mocha": {
+        "name": "Caffè Mocha"
+      },
+      "affogato": {
+        "name": "Affogato",
+        "detail": "With Häagen-Dazs ice cream"
+      },
+      "marocchino": {
+        "name": "Marocchino",
+        "detail": "Cappuccino topped with dark chocolate"
+      },
+      "omija-ade": {
+        "name": "Mungyeong Omija Soda"
+      },
+      "lemon-ade": {
+        "name": "Fresh Lemon Soda"
+      },
+      "grapefruit-ade": {
+        "name": "Fresh Grapefruit Soda"
+      },
+      "omija-tea": {
+        "name": "Mungyeong Omija Tea"
+      },
+      "lemon-tea": {
+        "name": "Fresh Lemon Tea"
+      },
+      "grapefruit-tea": {
+        "name": "Fresh Grapefruit Tea"
+      },
+      "herbal": {
+        "name": "Herbal Tea",
+        "detail": "Chamomile / Peppermint / Rosemary / Jasmine / Jeju green tea"
+      },
+      "black-tea": {
+        "name": "Fortnum & Mason Tea",
+        "detail": "Ceylon / Peach / Jubilee"
+      },
+      "earl-grey": {
+        "name": "House Earl Grey Iced Tea",
+        "detail": "Black tea with citrus pulp"
+      },
+      "royal-milk-tea": {
+        "name": "Royal Milk Tea",
+        "detail": "Royal Blend tea · milk · honey"
+      },
+      "iced-milk-tea": {
+        "name": "Iced Milk Tea",
+        "detail": "Cold-steeped blended black tea"
+      },
+      "peach": {
+        "name": "Peach Iced Tea"
+      },
+      "ashotchu": {
+        "name": "Peach Iced Tea with Espresso",
+        "detail": "Zero version +₩500"
+      },
+      "yogurt": {
+        "name": "Yogurt Shake",
+        "detail": "Blueberry / Strawberry"
+      },
+      "chocolate": {
+        "name": "Hot / Iced Chocolate"
+      },
+      "matcha": {
+        "name": "Organic Jeju Matcha Latte"
+      },
+      "strawberry-matcha": {
+        "name": "Strawberry Matcha Latte"
+      },
+      "ginger": {
+        "name": "Ginger Tea / Ginger Latte",
+        "detail": "Made with house-made ginger concentrate"
+      },
+      "belgian": {
+        "name": "Belgian Dark Hot Chocolate",
+        "detail": "Belgian dark chocolate melted into milk"
+      }
+    }
+  },
+  "ja": {
+    "title": "MARKET MAY メニュー",
+    "description": "MARKET MAYのコーヒー・ドリンクメニュー、価格と追加オプション。",
+    "languageLabel": "メニューの言語",
+    "navLabel": "カテゴリーへ移動",
+    "currency": "価格は韓国ウォン（KRW）です",
+    "decaf": "すべてのコーヒーをデカフェに変更できます",
+    "freeChange": "追加料金なし",
+    "free": "無料",
+    "optionsTitle": "コーヒーの追加オプション",
+    "hotOnly": "ホットのみ",
+    "sections": {
+      "coffee": [
+        "コーヒー",
+        "コーヒー"
+      ],
+      "fruit": [
+        "フルーツソーダ・フルーツティー",
+        "果実"
+      ],
+      "tea": [
+        "ティー・ミルクティー",
+        "ティー"
+      ],
+      "drinks": [
+        "ラテ・その他のドリンク",
+        "ドリンク"
+      ]
+    },
+    "options": {
+      "디카페인 원두 변경": {
+        "name": "デカフェに変更"
+      },
+      "2샷 추가": {
+        "name": "エスプレッソ2ショット追加"
+      },
+      "오트밀크로 우유 변경": {
+        "name": "オーツミルクに変更"
+      },
+      "아메리카노 리필": {
+        "name": "アメリカーノのおかわり",
+        "detail": "お一人様1ドリンク、コーヒーをご注文の場合に限ります。"
+      }
+    },
+    "items": {
+      "americano": {
+        "name": "アメリカーノ"
+      },
+      "latte-8": {
+        "name": "カフェラテ",
+        "detail": "レギュラーカップ"
+      },
+      "latte-5": {
+        "name": "カフェラテ",
+        "detail": "小さめのカップ"
+      },
+      "cappuccino": {
+        "name": "カプチーノ"
+      },
+      "vanilla": {
+        "name": "バニラビーンズラテ"
+      },
+      "caramel": {
+        "name": "キャラメルラテ"
+      },
+      "cold-brew": {
+        "name": "コールドブリュー"
+      },
+      "einspanner": {
+        "name": "アインシュペナー"
+      },
+      "borgia": {
+        "name": "ボルジア",
+        "detail": "チョコレート風味のウインナーコーヒー"
+      },
+      "mocha": {
+        "name": "カフェモカ"
+      },
+      "affogato": {
+        "name": "アフォガート",
+        "detail": "ハーゲンダッツ使用"
+      },
+      "marocchino": {
+        "name": "マロッキーノ",
+        "detail": "ダークチョコレートをのせたカプチーノ"
+      },
+      "omija-ade": {
+        "name": "聞慶オミジャソーダ"
+      },
+      "lemon-ade": {
+        "name": "フレッシュレモンソーダ"
+      },
+      "grapefruit-ade": {
+        "name": "フレッシュグレープフルーツソーダ"
+      },
+      "omija-tea": {
+        "name": "聞慶オミジャ茶"
+      },
+      "lemon-tea": {
+        "name": "フレッシュレモンティー"
+      },
+      "grapefruit-tea": {
+        "name": "フレッシュグレープフルーツティー"
+      },
+      "herbal": {
+        "name": "ハーブティー",
+        "detail": "カモミール / ペパーミント / ローズマリー / ジャスミン / 済州緑茶"
+      },
+      "black-tea": {
+        "name": "フォートナム＆メイソンの紅茶",
+        "detail": "セイロン / ピーチ / ジュビリー"
+      },
+      "earl-grey": {
+        "name": "自家製アールグレイアイスティー",
+        "detail": "柑橘の果肉入り紅茶"
+      },
+      "royal-milk-tea": {
+        "name": "ロイヤルミルクティー",
+        "detail": "ロイヤルブレンド紅茶・牛乳・はちみつ"
+      },
+      "iced-milk-tea": {
+        "name": "アイスミルクティー",
+        "detail": "ブレンド紅茶を低温でじっくり抽出"
+      },
+      "peach": {
+        "name": "ピーチアイスティー"
+      },
+      "ashotchu": {
+        "name": "エスプレッソ入りピーチアイスティー",
+        "detail": "ゼロタイプに変更 +₩500"
+      },
+      "yogurt": {
+        "name": "ヨーグルトシェイク",
+        "detail": "ブルーベリー / いちご"
+      },
+      "chocolate": {
+        "name": "ホットチョコレート / アイスチョコレート"
+      },
+      "matcha": {
+        "name": "有機済州抹茶ラテ"
+      },
+      "strawberry-matcha": {
+        "name": "いちご抹茶ラテ"
+      },
+      "ginger": {
+        "name": "生姜茶 / 生姜ラテ",
+        "detail": "自家製生姜エキス使用"
+      },
+      "belgian": {
+        "name": "ベルギーダークホットチョコレート",
+        "detail": "ベルギー産ダークチョコレートを牛乳に溶かした一杯"
+      }
+    }
+  },
+  "zh": {
+    "title": "MARKET MAY 菜单",
+    "description": "MARKET MAY咖啡与饮品菜单、价格及加购选项。",
+    "languageLabel": "菜单语言",
+    "navLabel": "跳转至饮品分类",
+    "currency": "价格以韩元（KRW）计",
+    "decaf": "所有咖啡均可更换低咖啡因咖啡豆",
+    "freeChange": "免费更换",
+    "free": "免费",
+    "optionsTitle": "咖啡加购选项",
+    "hotOnly": "仅限热饮",
+    "sections": {
+      "coffee": [
+        "咖啡",
+        "咖啡"
+      ],
+      "fruit": [
+        "水果气泡饮 · 水果茶",
+        "果饮"
+      ],
+      "tea": [
+        "茶 · 奶茶",
+        "茶饮"
+      ],
+      "drinks": [
+        "拿铁 · 其他饮品",
+        "饮品"
+      ]
+    },
+    "options": {
+      "디카페인 원두 변경": {
+        "name": "更换低咖啡因咖啡豆"
+      },
+      "2샷 추가": {
+        "name": "加2份浓缩咖啡"
+      },
+      "오트밀크로 우유 변경": {
+        "name": "牛奶更换为燕麦奶"
+      },
+      "아메리카노 리필": {
+        "name": "美式咖啡续杯",
+        "detail": "每人需点一杯饮品，且仅限已点咖啡的顾客。"
+      }
+    },
+    "items": {
+      "americano": {
+        "name": "美式咖啡"
+      },
+      "latte-8": {
+        "name": "咖啡拿铁",
+        "detail": "标准杯"
+      },
+      "latte-5": {
+        "name": "咖啡拿铁",
+        "detail": "小杯"
+      },
+      "cappuccino": {
+        "name": "卡布奇诺"
+      },
+      "vanilla": {
+        "name": "香草豆拿铁"
+      },
+      "caramel": {
+        "name": "焦糖拿铁"
+      },
+      "cold-brew": {
+        "name": "冷萃咖啡"
+      },
+      "einspanner": {
+        "name": "维也纳奶油咖啡"
+      },
+      "borgia": {
+        "name": "波吉亚咖啡",
+        "detail": "巧克力风味维也纳咖啡"
+      },
+      "mocha": {
+        "name": "摩卡咖啡"
+      },
+      "affogato": {
+        "name": "阿芙佳朵",
+        "detail": "使用哈根达斯冰淇淋"
+      },
+      "marocchino": {
+        "name": "玛罗奇诺",
+        "detail": "铺上黑巧克力的卡布奇诺"
+      },
+      "omija-ade": {
+        "name": "闻庆五味子气泡饮"
+      },
+      "lemon-ade": {
+        "name": "鲜柠檬气泡饮"
+      },
+      "grapefruit-ade": {
+        "name": "鲜葡萄柚气泡饮"
+      },
+      "omija-tea": {
+        "name": "闻庆五味子茶"
+      },
+      "lemon-tea": {
+        "name": "鲜柠檬茶"
+      },
+      "grapefruit-tea": {
+        "name": "鲜葡萄柚茶"
+      },
+      "herbal": {
+        "name": "花草茶",
+        "detail": "洋甘菊 / 薄荷 / 迷迭香 / 茉莉 / 济州绿茶"
+      },
+      "black-tea": {
+        "name": "福南梅森红茶",
+        "detail": "锡兰 / 蜜桃 / 禧年"
+      },
+      "earl-grey": {
+        "name": "自制伯爵冰茶",
+        "detail": "加入柑橘果肉的红茶"
+      },
+      "royal-milk-tea": {
+        "name": "皇家奶茶",
+        "detail": "皇家拼配红茶 · 牛奶 · 蜂蜜"
+      },
+      "iced-milk-tea": {
+        "name": "冰奶茶",
+        "detail": "冷泡拼配红茶"
+      },
+      "peach": {
+        "name": "蜜桃冰茶"
+      },
+      "ashotchu": {
+        "name": "浓缩咖啡蜜桃冰茶",
+        "detail": "更换Zero版本 +₩500"
+      },
+      "yogurt": {
+        "name": "酸奶奶昔",
+        "detail": "蓝莓 / 草莓"
+      },
+      "chocolate": {
+        "name": "热巧克力 / 冰巧克力"
+      },
+      "matcha": {
+        "name": "有机济州抹茶拿铁"
+      },
+      "strawberry-matcha": {
+        "name": "草莓抹茶拿铁"
+      },
+      "ginger": {
+        "name": "姜茶 / 姜拿铁",
+        "detail": "使用自制生姜浓缩液"
+      },
+      "belgian": {
+        "name": "比利时黑巧克力热饮",
+        "detail": "将比利时黑巧克力融入牛奶"
+      }
+    }
+  }
+}
