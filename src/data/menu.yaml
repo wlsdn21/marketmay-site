@@ -1,5 +1,6 @@
 # 메뉴 데이터 (출처: 2026-04 KDS 카테고리별 분석 + 수동 정렬)
-# 가격은 4월 평균 판매 단가 기준 — 필요시 수동 조정
+# 브런치는 2026-09-10 제공된 market-may-brunch-menu.pdf 기준.
+# 나머지 가격은 4월 평균 판매 단가 기준 — 필요시 수동 조정
 
 categories:
   - name: 커피
@@ -223,33 +224,35 @@ categories:
           - { label: 플레인, price: 3500 }
           - { label: "초코·피칸", price: 3800 }
   - name: 브런치
-    note: 3시 마감
+    note: 브런치 메뉴는 오후 3시까지 주문 가능합니다.
     items:
-      - name: M.M.B.P
+      - name: 마켓메이 브런치 플레이트
         price: 14000
-        image: /images/menu/mmbp.jpg
-      - name: 리코타바질콜드파스타
-        price: 17000
-        image: /images/menu/ricotta-cold-pasta.jpg
-      - name: 마르게리따피자
-        price: 18000
-        image: /images/menu/margherita-pizza.jpg
-      - name: 고르곤졸라피자
-        price: 22000
-      - name: 토마토스튜
-        price: 13000
-        image: /images/menu/tomato-stew.jpg
-      - name: 잠봉뵈르샌드위치
-        price: 10000
-        image: /images/menu/jambon-beurre-sandwich.jpg
-      - name: 버섯그릴샌드위치
-        price: 13000
-      - name: 부라타치즈샐러드
+        image: /images/brunch/market-may-plate.webp
+      - name: 부라타 치즈 샐러드
         price: 16000
-        image: /images/menu/burrata-salad.jpg
-      - name: 단호박스프
+        image: /images/brunch/burrata-salad.webp
+      - name: 잠봉뵈르 베이글 샌드위치
+        price: 10000
+        image: /images/brunch/jambon-bagel.webp
+      - name: 리코타 바질 콜드 파스타
+        price: 17000
+        image: /images/brunch/ricotta-basil-pasta.webp
+      - name: 단호박 스프
         price: 8000
-        image: /images/menu/pumpkin-soup.jpg
+        image: /images/brunch/pumpkin-soup.webp
+      - name: 토마토 비프 스튜
+        price: 13000
+        image: /images/brunch/tomato-beef-stew.webp
+      - name: 버섯 그릴드 치즈 샌드위치
+        price: 13000
+        image: /images/brunch/mushroom-grilled-cheese.webp
+      - name: 마르게리따 화덕피자
+        price: 18000
+        image: /images/brunch/margherita-pizza.webp
+      - name: 고르곤졸라 화덕피자
+        price: 22000
+        image: /images/brunch/gorgonzola-pizza.webp
   - name: 원두 / 드립백
     items:
       - name: 리치블랙드립백8
