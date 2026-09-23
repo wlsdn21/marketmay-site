@@ -75,7 +75,7 @@ const localBusiness = {
     <!-- Open Graph (KakaoTalk, Facebook 등) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="market may" />
-    <meta property="og:locale" content={({ ko: 'ko_KR', en: 'en_US', ja: 'ja_JP', 'zh-Hans': 'zh_CN' } as Record<string, string>)[lang] ?? 'ko_KR'} />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'ko_KR'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={absoluteOgImage} />

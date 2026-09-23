@@ -4,8 +4,6 @@ import translations from '../data/menu/translations.json';
 export const languages = [
   { code: 'ko', tag: 'ko', label: '한국어', href: '/menu/' },
   { code: 'en', tag: 'en', label: 'English', href: '/menu/en/' },
-  { code: 'ja', tag: 'ja', label: '日本語', href: '/menu/ja/' },
-  { code: 'zh', tag: 'zh-Hans', label: '中文', href: '/menu/zh/' },
 ] as const;
 export type MenuLocale = typeof languages[number]['code'];
 type Copy = { name: string; detail?: string };
