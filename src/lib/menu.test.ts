@@ -1,16 +1,26 @@
 import { describe, expect, it } from 'vitest';
 import drinks from '../data/drinks.json';
+import brunch from '../data/brunch.json';
 import { getMenu, languages } from './menu';
-const available = drinks.sections.flatMap(section => section.items).filter(item => item.id !== 'passion-fruit');
+const available = [
+  ...drinks.sections.flatMap(section => section.items).filter(item => item.id !== 'passion-fruit'),
+  ...brunch.items,
+];
 describe('multilingual QR menu', () => {
   for (const language of languages) {
     it(language.code + ': translates the full menu while preserving prices and conditions', () => {
       const menu = getMenu(language.code);
       const items = menu.sections.flatMap(section => section.items);
       expect(items.map(item => [item.id, item.price])).toEqual(available.map(item => [item.id, item.price]));
-      expect(items).toHaveLength(31);
+      expect(items).toHaveLength(42);
       expect(menu.sections.some(section => section.id === 'seasonal')).toBe(false);
       expect(items.filter(item => item.hotOnly)).toHaveLength(3);
+      const brunchSection = menu.sections.find(section => section.id === 'brunch')!;
+      expect(brunchSection.items).toHaveLength(11);
+      expect(brunchSection.note).toMatch(language.code === 'ko' ? /3시/ : /3 PM/);
+      expect(brunchSection.items.filter(item => item.isNew).map(item => [item.id, item.price])).toEqual([
+        ['chili-egg', 14000], ['fig-jambon', 14000],
+      ]);
       for (const original of available) {
         const item = items.find(item => item.id === original.id)!;
         expect(item.name.trim()).not.toBe('');

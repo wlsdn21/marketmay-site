@@ -1,0 +1,30 @@
+{
+  "updated": "2026-09-23",
+  "source": "사용자가 제공한 매장 브런치 메뉴판 IMG_3597.JPG",
+  "id": "brunch",
+  "items": [
+    {
+      "id": "chili-egg",
+      "name": "칠리 에그",
+      "price": 14000,
+      "new": true,
+      "detail": "사워도우와 반숙 유정란 2개, 수제 그릭요거트, 칠리 오일"
+    },
+    {
+      "id": "fig-jambon",
+      "name": "유기농 무화과 잠봉 샌드위치",
+      "price": 14000,
+      "new": true,
+      "detail": "제철 유기농 무화과와 잠봉, 루꼴라, 수제 리코타 치즈"
+    },
+    { "id": "brunch-plate", "name": "마켓메이 브런치 플레이트 (M.M.B.P)", "price": 14000 },
+    { "id": "burrata-salad", "name": "부라타 치즈 샐러드", "price": 16000 },
+    { "id": "jambon-bagel", "name": "잠봉뵈르 베이글 샌드위치", "price": 10000 },
+    { "id": "ricotta-pasta", "name": "리코타 바질 콜드 파스타", "price": 17000 },
+    { "id": "pumpkin-soup", "name": "단호박 스프", "price": 8000 },
+    { "id": "tomato-stew", "name": "토마토 비프 스튜", "price": 13000 },
+    { "id": "mushroom-sandwich", "name": "버섯 그릴드 치즈 샌드위치", "price": 13000 },
+    { "id": "margherita-pizza", "name": "마르게리따 화덕피자", "price": 18000 },
+    { "id": "gorgonzola-pizza", "name": "고르곤졸라 화덕피자", "price": 22000 }
+  ]
+}
