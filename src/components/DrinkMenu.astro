@@ -12,7 +12,11 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
     <link rel="alternate" hreflang="x-default" href="https://marketmay.com/menu/" />
   </Fragment>
   <main class="menu-page">
-    <h1><a href="/">{copy.title}</a></h1>
+    <h1 class="menu-title" aria-label={copy.title}>
+      <a href="/" aria-label={locale === 'ko' ? '마켓메이 홈페이지로 이동' : 'Go to MARKET MAY homepage'}>
+        <img src="/images/market-may-menu-logo.png" alt="MARKET MAY" width="1800" height="400" />
+      </a>
+    </h1>
     <nav class="language-nav" aria-label={copy.languageLabel}>
       {languages.map(language => (
         <a href={language.href} lang={language.tag} hreflang={language.tag} aria-current={language.code === locale ? 'page' : undefined}>{language.label}</a>
@@ -62,7 +66,9 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
   }
   .menu-page { max-width: 42rem; margin: 0 auto; padding: 28px 20px 48px; }
   h1, h2, h3 { font-family: inherit; letter-spacing: normal; word-break: keep-all; overflow-wrap: anywhere; }
-  h1 { margin: 0 0 12px; font-size: 1.5rem; font-weight: 700; line-height: 1.4; }
+  .menu-title { margin: 0 0 12px; line-height: 0; }
+  .menu-title a { display: inline-block; }
+  .menu-title img { display: block; width: 240px; max-width: 100%; height: auto; }
   a:focus-visible { outline: 2px solid #171717; outline-offset: 5px; }
   .language-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; width: min(100%, 20rem); margin: 0 0 8px; }
   .language-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #e0e5e0; border-radius: 6px; font-size: .875rem; }
