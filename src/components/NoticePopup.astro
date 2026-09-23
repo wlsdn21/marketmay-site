@@ -1,375 +1,165 @@
 ---
-// 공지/이벤트 팝업 — 2장 캐러셀(① 채용 포스터 → ② 원두 라인업).
-// 좌우 슬라이드(트랙 translateX) + 높이 애니메이션, 모바일 스와이프 / 데스크톱 좌우버튼, 점, 5초 자동전환.
-// ①번 내용은 src/data/notice.yaml, ②번(원두 라인업)은 아래 .beans 마크업에서 편집.
 import { notice } from '../lib/data';
+import { getMenu } from '../lib/menu';
 
 const version = notice.version ?? 1;
-const hasContent = Boolean(notice.image || notice.title || notice.body);
-const show = notice.enabled && hasContent;
-const hasButton = Boolean(notice.button && notice.button.url && notice.button.label);
+const { sections, formatPrice } = getMenu('ko');
+const brunchItems = sections.find(section => section.id === 'brunch')?.items ?? [];
+const featuredItems = (notice.featuredMenuIds ?? [])
+  .map(id => brunchItems.find(item => item.id === id))
+  .filter((item): item is (typeof brunchItems)[number] => item !== undefined);
+const featuredPhotos = featuredItems.filter(item => notice.featuredImages?.[item.id]);
+const show = notice.enabled && Boolean(notice.image || notice.title || featuredItems.length);
+const hasButton = Boolean(notice.button?.url && notice.button?.label);
 ---
 {show && (
-  <div class="notice-overlay" data-version={version} aria-hidden="true">
-    <div class="notice-card" role="dialog" aria-modal="true" aria-label="market may 안내">
-      <button class="notice-close" type="button" aria-label="닫기">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="6" y1="6" x2="18" y2="18" />
-          <line x1="18" y1="6" x2="6" y2="18" />
+  <dialog class="notice-dialog" data-version={version} aria-label={notice.title || '마켓메이 소식'}>
+    <div class="notice-topbar">
+      <img src="/images/market-may-menu-logo.png" alt="마켓메이" width="1800" height="400" />
+      <button class="notice-close" type="button" aria-label="팝업 닫기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M5 5l14 14M19 5L5 19" />
         </svg>
       </button>
-
-      <div class="notice-slides">
-        <div class="notice-viewport">
-          <div class="notice-track">
-            {/* ① 채용 포스터 */}
-            <div class="notice-slide" data-slide="0">
-              {notice.image && <img class="notice-img" src={notice.image} alt={notice.imageAlt ?? ''} />}
-              {hasButton && (
-                <div class="notice-slide-foot">
-                  <a class="notice-btn" href={notice.button!.url} target="_blank" rel="noopener noreferrer">{notice.button!.label}</a>
-                </div>
-              )}
-            </div>
-
-            {/* ② 원두 라인업 */}
-            <div class="notice-slide" data-slide="1">
-              <div class="beans">
-                <div class="beans-eyebrow">BEAN LINEUP · 원두 라인업</div>
-                <svg class="beans-ridge" viewBox="0 0 560 16" preserveAspectRatio="none" aria-hidden="true">
-                  <polyline points="0,14 80,2 160,14 240,2 320,14 400,2 480,14 560,2" fill="none" stroke="#0cb14b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
-                </svg>
-                <ul class="bean-list">
-                  <li class="bean">
-                    <div class="bean-cat">SIGNATURE · 시그니처</div>
-                    <div class="bean-name">리치 블랙</div>
-                    <p class="bean-desc">고소한 견과류 풍미와 부드러운 단맛이 어우러진 깔끔하고 편안한 블렌드</p>
-                    <div class="bean-compo">브라질 50% · 과테말라 30% · 콜롬비아 20%</div>
-                  </li>
-                  <li class="bean">
-                    <div class="bean-cat">SINGLE ORIGIN · 싱글 오리진</div>
-                    <div class="bean-name">에티오피아 예가체프</div>
-                    <p class="bean-desc">부드러운 산미에 꽃향과 꿀 같은 은은한 단맛이 어우러진 싱글 오리진</p>
-                    <div class="bean-compo">게데오 이디도 G2 · 워시드</div>
-                  </li>
-                  <li class="bean">
-                    <div class="bean-cat">DECAF · 디카페인</div>
-                    <div class="bean-name">디카페인</div>
-                    <p class="bean-desc">고소한 견과류 풍미와 부드러운 바디감을 살린, 카페인 부담 없는 데일리 커피</p>
-                    <div class="bean-compo">브라질 100% 디카페인</div>
-                  </li>
-                </ul>
-                <div class="beans-brand">MARKET&nbsp;MAY COFFEE</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button class="notice-arrow notice-arrow-prev" type="button" aria-label="이전" disabled>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 5 8 12 15 19" /></svg>
-        </button>
-        <button class="notice-arrow notice-arrow-next" type="button" aria-label="다음">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 5 16 12 9 19" /></svg>
-        </button>
-      </div>
-
-      <div class="notice-dots" role="tablist" aria-label="슬라이드">
-        <button class="notice-dot" type="button" data-dot="0" aria-current="true" aria-label="1번째 슬라이드"></button>
-        <button class="notice-dot" type="button" data-dot="1" aria-current="false" aria-label="2번째 슬라이드"></button>
-      </div>
-
-      <label class="notice-dismiss">
-        <input type="checkbox" class="notice-dismiss-check" />
-        오늘 하루 보지 않기
-      </label>
     </div>
-  </div>
+
+    {notice.image && (
+      <figure class="notice-photo">
+        <img src={notice.image} alt={notice.imageAlt ?? ''} width="1600" height="1200" loading="eager" decoding="async" />
+        {notice.imageNote && <figcaption>{notice.imageNote}</figcaption>}
+      </figure>
+    )}
+    {featuredPhotos.length > 0 && (
+      <figure class="notice-photo-grid">
+        {featuredPhotos.map(item => (
+          <img
+            src={notice.featuredImages![item.id]}
+            alt={`${item.name} 포스터`}
+            width={item.id === 'chili-egg' ? '1080' : '1122'}
+            height={item.id === 'chili-egg' ? '1350' : '1402'}
+            loading="eager"
+            decoding="async"
+          />
+        ))}
+        {notice.imageNote && <figcaption>{notice.imageNote}</figcaption>}
+      </figure>
+    )}
+
+    <div class="notice-content">
+      {notice.title && <h2>{notice.title}</h2>}
+      {notice.body && <p class="notice-body">{notice.body}</p>}
+      {featuredItems.length > 0 && (
+        <ul class="notice-menu-list">
+          {featuredItems.map(item => (
+            <li>
+              <span>{item.name}</span>
+              <strong>{formatPrice(item.price)}</strong>
+            </li>
+          ))}
+        </ul>
+      )}
+      {hasButton && <a class="notice-link" href={notice.button!.url}>{notice.button!.label}</a>}
+    </div>
+
+    <label class="notice-dismiss">
+      <input type="checkbox" class="notice-dismiss-check" />
+      <span>오늘 하루 보지 않기</span>
+    </label>
+  </dialog>
 )}
 
 <script>
   import { shouldShowNotice, dismissValue, dateKey } from '../lib/notice-visibility';
 
-  const STORAGE_KEY = 'mm-notice-dismissed';
-  const overlay = document.querySelector('.notice-overlay');
-
-  if (overlay) {
-    const card = overlay.querySelector('.notice-card');
-    const closeBtn = overlay.querySelector('.notice-close');
-    const check = overlay.querySelector('.notice-dismiss-check');
-    const img = overlay.querySelector('.notice-img');
-    const viewport = overlay.querySelector('.notice-viewport');
-    const track = overlay.querySelector('.notice-track');
-    const slides = Array.from(overlay.querySelectorAll('.notice-slide'));
-    const dots = Array.from(overlay.querySelectorAll('.notice-dot'));
-    const prevBtn = overlay.querySelector('.notice-arrow-prev');
-    const nextBtn = overlay.querySelector('.notice-arrow-next');
-    const version = Number(overlay.getAttribute('data-version')) || 1;
+  const dialog = document.querySelector<HTMLDialogElement>('.notice-dialog');
+  if (dialog) {
+    const closeButton = dialog.querySelector<HTMLButtonElement>('.notice-close');
+    const dismissCheck = dialog.querySelector<HTMLInputElement>('.notice-dismiss-check');
+    const version = Number(dialog.dataset.version) || 1;
     const today = dateKey(new Date());
-    let lastFocused = null;
-    let index = 0;
-    let autoTimer = null;
-    let interacted = false;
+    const storageKey = 'mm-notice-dismissed';
+    let stored: string | null = null;
+    try { stored = localStorage.getItem(storageKey); } catch { /* Storage may be disabled. */ }
 
-    function setHeight() {
-      if (viewport && slides[index]) viewport.style.height = slides[index].offsetHeight + 'px';
-    }
-    function setSlide(i, userAction) {
-      index = Math.max(0, Math.min(slides.length - 1, i));
-      if (track) track.style.transform = `translateX(${-index * 100}%)`;
-      setHeight();
-      dots.forEach((d, di) => d.setAttribute('aria-current', di === index ? 'true' : 'false'));
-      if (prevBtn) prevBtn.disabled = index === 0;
-      if (nextBtn) nextBtn.disabled = index === slides.length - 1;
-      if (userAction) cancelAuto();
-    }
-    function cancelAuto() {
-      interacted = true;
-      if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
-    }
-    function startAuto() {
-      autoTimer = setTimeout(() => { if (!interacted && index === 0) setSlide(1); }, 5000);
-    }
+    if (shouldShowNotice(stored, version, today)) dialog.showModal();
 
-    if (img) {
-      img.addEventListener('load', setHeight);
-      img.addEventListener('error', () => { img.style.display = 'none'; setHeight(); });
-    }
-
-    function read() { try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; } }
-    function persistDismiss() { try { localStorage.setItem(STORAGE_KEY, dismissValue(version, today)); } catch (e) {} }
-
-    function open() {
-      lastFocused = document.activeElement;
-      overlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      requestAnimationFrame(() => {
-        overlay.classList.add('is-open');
-        if (viewport) { viewport.style.transition = 'none'; setHeight(); void viewport.offsetHeight; viewport.style.transition = ''; }
-        else setHeight();
-      });
-      if (closeBtn && typeof closeBtn.focus === 'function') closeBtn.focus();
-      startAuto();
-    }
-    function close() {
-      if (check && check.checked) persistDismiss();
-      cancelAuto();
-      overlay.classList.remove('is-open');
-      overlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-    }
-
-    if (shouldShowNotice(read(), version, today)) open();
-
-    if (closeBtn) closeBtn.addEventListener('click', close);
-    if (prevBtn) prevBtn.addEventListener('click', () => setSlide(index - 1, true));
-    if (nextBtn) nextBtn.addEventListener('click', () => setSlide(index + 1, true));
-    overlay.addEventListener('click', (e) => { if (card && !card.contains(e.target)) close(); });
-    document.addEventListener('keydown', (e) => {
-      if (!overlay.classList.contains('is-open')) return;
-      if (e.key === 'Escape') close();
-      else if (e.key === 'ArrowRight') setSlide(index + 1, true);
-      else if (e.key === 'ArrowLeft') setSlide(index - 1, true);
+    closeButton?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const rect = dialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
     });
-
-    dots.forEach((d, di) => d.addEventListener('click', () => setSlide(di, true)));
-
-    // 터치 스와이프
-    let startX = null;
-    if (viewport) {
-      viewport.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; cancelAuto(); }, { passive: true });
-      viewport.addEventListener('touchend', (e) => {
-        if (startX === null) return;
-        const dx = e.changedTouches[0].clientX - startX;
-        if (dx <= -40) setSlide(index + 1, true);
-        else if (dx >= 40) setSlide(index - 1, true);
-        startX = null;
-      }, { passive: true });
-    }
-
-    window.addEventListener('resize', setHeight, { passive: true });
+    dialog.addEventListener('close', () => {
+      if (!dismissCheck?.checked) return;
+      try { localStorage.setItem(storageKey, dismissValue(version, today)); } catch { /* Storage may be disabled. */ }
+    });
   }
 </script>
 
 <style>
-  .notice-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.55);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-  }
-  .notice-overlay.is-open { opacity: 1; pointer-events: auto; }
-  .notice-card {
-    position: relative;
-    width: calc(100vw - 40px);
-    max-width: 380px;
-    max-height: calc(100vh - 80px);
-    overflow-y: auto;
+  .notice-dialog {
+    width: min(480px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    padding: 0;
+    border: 0;
+    border-radius: 16px;
     background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
-    transform: scale(0.92);
-    transition: transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: #25372d;
+    box-shadow: 0 18px 48px rgba(13, 32, 19, .22);
+    overflow-y: auto;
   }
-  .notice-overlay.is-open .notice-card { transform: scale(1); }
-
-  /* ===== 캐러셀 ===== */
-  .notice-slides { position: relative; }
-  .notice-viewport {
-    overflow: hidden;
-    transition: height 0.34s ease;
-  }
-  .notice-track {
-    display: flex;
-    align-items: flex-start;
-    transition: transform 0.34s ease;
-  }
-  .notice-slide { flex: 0 0 100%; box-sizing: border-box; }
-  .notice-img {
-    width: 100%;
-    aspect-ratio: 1080 / 1527;
-    object-fit: cover;
-    border-radius: 14px 14px 0 0;
-    display: block;
-  }
-  .notice-slide-foot { padding: 14px 20px 4px; }
-  .notice-btn {
-    display: block;
-    padding: 11px 16px;
-    background: var(--brand);
-    color: #fff;
-    text-align: center;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    transition: opacity 0.15s;
-  }
-  .notice-btn:hover { opacity: 0.88; }
-
-  /* ===== 좌우 화살표 (데스크톱 전용) ===== */
-  .notice-arrow {
-    display: none;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 34px;
-    height: 34px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.42);
-    color: #fff;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-    z-index: 2;
-    transition: background 0.15s, opacity 0.2s;
-  }
-  .notice-arrow:hover { background: rgba(0, 0, 0, 0.65); }
-  .notice-arrow:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
-  .notice-arrow svg { width: 18px; height: 18px; }
-  .notice-arrow-prev { left: 8px; }
-  .notice-arrow-next { right: 8px; }
-  .notice-arrow:disabled { opacity: 0; pointer-events: none; }
-  @media (hover: hover) and (pointer: fine) {
-    .notice-arrow { display: flex; }
-  }
-
-  /* ===== 원두 라인업 슬라이드 ===== */
-  .beans { padding: 22px 20px 6px; }
-  .beans-eyebrow {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-    color: #0cb14b;
-    margin-bottom: 8px;
-  }
-  .beans-ridge { width: 100%; height: 12px; display: block; margin-bottom: 14px; }
-  .bean-list { list-style: none; margin: 0; padding: 0; }
-  .bean { padding: 13px 0; border-bottom: 1px solid var(--border); }
-  .bean:first-child { padding-top: 0; }
-  .bean-cat {
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    color: #0cb14b;
-    margin-bottom: 5px;
-  }
-  .bean-name {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1.2;
-    margin-bottom: 5px;
-  }
-  .bean-desc { font-size: 12.5px; line-height: 1.55; color: var(--text-mute); margin: 0 0 5px; }
-  .bean-compo { font-size: 11px; color: #999; letter-spacing: 0.2px; }
-  .beans-brand {
-    text-align: center;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-    color: var(--text);
-    padding: 16px 0 4px;
-  }
-
-  /* ===== 점 인디케이터 ===== */
-  .notice-dots { display: flex; justify-content: center; gap: 8px; padding: 12px 0 2px; }
-  .notice-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: none;
-    background: var(--border);
-    padding: 0;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .notice-dot[aria-current='true'] { background: var(--brand); transform: scale(1.15); }
-
-  .notice-dismiss {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 6px;
-    padding: 12px 20px;
-    border-top: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--text-mute);
-    cursor: pointer;
-  }
-  .notice-dismiss-check { cursor: pointer; }
-
+  .notice-dialog::backdrop { background: rgba(13, 25, 17, .62); }
+  .notice-topbar { display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 6px 16px 6px 24px; }
+  .notice-topbar img { width: 112px; height: auto; }
   .notice-close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 30px;
-    height: 30px;
-    border: none;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
     padding: 0;
-    z-index: 3;
-    transition: background 0.15s;
+    border: 0;
+    border-radius: 50%;
+    background: #edf1ed;
+    color: #25372d;
+    cursor: pointer;
   }
-  .notice-close:hover { background: rgba(0, 0, 0, 0.7); }
-  .notice-close:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
-  .notice-close svg { width: 14px; height: 14px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .notice-overlay, .notice-card, .notice-viewport, .notice-track { transition: none; }
+  .notice-close svg { width: 19px; height: 19px; }
+  .notice-close:hover { background: #dfe9df; }
+  .notice-close:focus-visible, .notice-link:focus-visible, .notice-dismiss-check:focus-visible { outline: 3px solid #9ac79c; outline-offset: 3px; }
+  .notice-photo { margin: 0; }
+  .notice-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: min(34dvh, 260px);
+    object-fit: cover;
+    object-position: center;
+  }
+  .notice-photo figcaption { padding: 8px 24px 0; color: #59695e; font-size: 12px; line-height: 1.4; }
+  .notice-photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: 0; }
+  .notice-photo-grid img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: contain; }
+  .notice-photo-grid figcaption { grid-column: 1 / -1; padding: 6px 24px 0; color: #59695e; font-size: 12px; line-height: 1.4; }
+  .notice-content { padding: 18px 24px 24px; }
+  .notice-content h2 { margin: 0; color: #25372d; font-family: var(--font-body); font-size: 1.5rem; font-weight: 700; line-height: 1.3; word-break: keep-all; }
+  .notice-content h2 + .notice-menu-list { margin-top: 18px; }
+  .notice-body { margin: 8px 0 18px; color: #59695e; font-size: .9375rem; line-height: 1.5; }
+  .notice-menu-list { list-style: none; margin: 0 0 22px; padding: 0; border-top: 1px solid #e2e8e1; }
+  .notice-menu-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e2e8e1; font-size: .9375rem; line-height: 1.5; }
+  .notice-menu-list li span { font-weight: 600; word-break: keep-all; }
+  .notice-menu-list li strong { font-size: .9375rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .notice-link { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 11px 16px; border-radius: 8px; background: #254536; color: #fff; font-size: .9375rem; font-weight: 700; line-height: 1.4; text-align: center; }
+  .notice-link:hover { background: #173325; }
+  .notice-dismiss { display: flex; align-items: center; gap: 9px; min-height: 50px; padding: 10px 24px; border-top: 1px solid #e2e8e1; color: #47594d; font-size: .875rem; cursor: pointer; }
+  .notice-dismiss-check { width: 17px; height: 17px; margin: 0; accent-color: #254536; cursor: pointer; }
+  @media (max-width: 390px) {
+    .notice-content { padding-inline: 20px; }
+    .notice-photo figcaption { padding-inline: 20px; }
+    .notice-photo-grid figcaption { padding-inline: 20px; }
+    .notice-dismiss { padding-inline: 20px; }
+  }
+  @media (max-width: 420px) and (max-height: 600px) {
+    .notice-photo img { max-height: 28dvh; }
+    .notice-content { padding-top: 14px; padding-bottom: 16px; }
+    .notice-menu-list { margin-bottom: 16px; }
   }
 </style>

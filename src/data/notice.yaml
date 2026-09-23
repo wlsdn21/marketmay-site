@@ -1,20 +1,15 @@
-# 공지/이벤트 팝업 — 이 파일만 수정하면 팝업 내용이 바뀝니다.
-# - 팝업을 끄려면: enabled: false
-# - 내용을 새로 바꿔서 '오늘 하루 보지 않기' 누른 사람에게도 다시 띄우려면: version 숫자를 +1
-enabled: false  # 2026-06-25 채용 마감으로 팝업 비활성화. 다음 공지 게시 시 true 로 변경하세요.
-version: 5      # 채용 링크 갱신(새 공고 adid=145101448) — 닫았던 사람에게도 재노출
+# 홈페이지 공지 팝업. 새로운 공지로 바꿀 때 version을 올리면 이전에 닫은 손님에게도 표시됩니다.
+enabled: true
+version: 10
 
-# 포스터 이미지. public/images/ 안에 넣고 경로를 적으세요. 이미지가 없으면 image: "" (텍스트만 나옴).
-image: /images/notice-hiring-v3.png
-imageAlt: "마켓메이 바리스타 채용공고 — 2026 정직원 모집 (6.4~6.25). 자세한 내용은 알바천국 공고 참고."
+title: "New Brunch"
+featuredMenuIds:
+  - chili-egg
+  - fig-jambon
+featuredImages:
+  chili-egg: /images/brunch-chili-egg-poster.jpg
+  fig-jambon: /images/brunch-fig-jambon-poster.jpg
 
-# 제목 (없으면 title: "") — 포스터 이미지에 모든 내용이 있어 비워둠
-title: ""
-
-# 본문 (여러 줄 가능, 없으면 body: "")
-body: ""
-
-# 버튼이 필요 없으면 아래 button 블록 전체를 삭제하세요.
 button:
-  label: "공고로 바로가기"
-  url: "https://m.alba.co.kr/job/JobDetail.asp?adid=145101448&provider=SHARE"
+  label: "브런치 메뉴 보기"
+  url: "/menu/#brunch"

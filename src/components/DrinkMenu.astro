@@ -122,9 +122,9 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
     font-weight: 700;
     font-display: swap;
   }
-  :global(body) { background: #eeece4; color: #25372d; }
+  :global(body) { background: #fff; color: #25372d; }
   :global(::selection) { background: #c9d7c6; color: #25372d; }
-  .menu-page { max-width: 50rem; min-height: 100vh; margin: 0 auto; padding: 34px clamp(24px, 5vw, 44px) 88px; background: #faf9f4; }
+  .menu-page { max-width: 50rem; min-height: 100vh; margin: 0 auto; padding: 34px clamp(24px, 5vw, 44px) 88px; background: #fff; }
   .menu-page-ko { font-family: 'Spoqa Han Sans Neo', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
   .menu-page-en { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
   h1, h2, h3 { font-family: inherit; letter-spacing: normal; word-break: keep-all; overflow-wrap: anywhere; }
@@ -166,7 +166,6 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
   .price { color: #25372d; font-size: 1.0625rem; font-weight: 700; line-height: 1.5; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
   .detail { margin: 5px 0 0; color: #59665d; font-size: .90625rem; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
   @media (max-width: 640px) {
-    :global(body) { background: #faf9f4; }
     .menu-page { padding: 24px 18px 64px; }
     .menu-logo { flex-basis: clamp(142px, 43vw, 180px); }
     .language-nav a { min-width: 62px; }

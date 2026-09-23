@@ -79,8 +79,11 @@ export interface Notice {
   version?: number;
   image?: string;
   imageAlt?: string;
+  imageNote?: string;
   title?: string;
   body?: string;
+  featuredMenuIds?: string[];
+  featuredImages?: Record<string, string>;
   button?: NoticeButton | null;
 }
 
