@@ -26,7 +26,6 @@ describe('multilingual QR menu', () => {
       expect(menu.options.find(option => option.refill)?.detail).toBeTruthy();
       if (language.code !== 'ko') {
         expect(menu.options.map(option => option.name + (option.detail ?? '')).join(' ')).not.toMatch(/[가-힣]/);
-        expect(menu.copy.currency).toContain('KRW');
         expect(menu.formatPrice(5000)).toBe('₩5,000');
       }
     });
