@@ -11,7 +11,7 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
     {languages.map(language => <link rel="alternate" hreflang={language.tag} href={'https://marketmay.com' + language.href} />)}
     <link rel="alternate" hreflang="x-default" href="https://marketmay.com/menu/" />
   </Fragment>
-  <main class="menu-page">
+  <main class={`menu-page menu-page-${locale}`}>
     <h1 class="menu-title" aria-label={copy.title}>
       <a href="/" aria-label={locale === 'ko' ? '마켓메이 홈페이지로 이동' : 'Go to MARKET MAY homepage'}>
         <img src="/images/market-may-menu-logo.png" alt="MARKET MAY" width="1800" height="400" />
@@ -58,12 +58,27 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
 </BaseLayout>
 
 <style>
+  @font-face {
+    font-family: 'Spoqa Han Sans Neo';
+    src: url('/fonts/SpoqaHanSansNeo-Regular.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Spoqa Han Sans Neo';
+    src: url('/fonts/SpoqaHanSansNeo-Bold.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+  }
   :global(body) {
     background: #fff;
     color: #171717;
-    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   }
   .menu-page { max-width: 42rem; margin: 0 auto; padding: 28px 20px 48px; }
+  .menu-page-ko { font-family: 'Spoqa Han Sans Neo', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .menu-page-en { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
   h1, h2, h3 { font-family: inherit; letter-spacing: normal; word-break: keep-all; overflow-wrap: anywhere; }
   .menu-title { margin: 0 0 12px; line-height: 0; }
   .menu-title a { display: inline-block; }
