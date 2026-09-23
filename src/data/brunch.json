@@ -20,10 +20,10 @@
     { "id": "brunch-plate", "name": "마켓메이 브런치 플레이트 (M.M.B.P)", "price": 14000 },
     { "id": "burrata-salad", "name": "부라타 치즈 샐러드", "price": 16000 },
     { "id": "jambon-bagel", "name": "잠봉뵈르 베이글 샌드위치", "price": 10000 },
+    { "id": "mushroom-sandwich", "name": "버섯 그릴드 치즈 샌드위치", "price": 13000 },
     { "id": "ricotta-pasta", "name": "리코타 바질 콜드 파스타", "price": 17000 },
     { "id": "pumpkin-soup", "name": "단호박 스프", "price": 8000 },
     { "id": "tomato-stew", "name": "토마토 비프 스튜", "price": 13000 },
-    { "id": "mushroom-sandwich", "name": "버섯 그릴드 치즈 샌드위치", "price": 13000 },
     { "id": "margherita-pizza", "name": "마르게리따 화덕피자", "price": 18000 },
     { "id": "gorgonzola-pizza", "name": "고르곤졸라 화덕피자", "price": 22000 }
   ]

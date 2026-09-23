@@ -9,7 +9,7 @@ export const languages = [
 export type MenuLocale = typeof languages[number]['code'];
 type Copy = { name: string; detail?: string };
 type Translation = {
-  title: string; description: string; languageLabel: string; navLabel: string;
+  title: string; description: string; menuTagline: string; languageLabel: string; navLabel: string;
   decaf: string; freeChange: string; free: string; brunchOrderNote: string; newLabel: string;
   optionsTitle: string; hotOnly: string;
   sections: Record<string, string[]>; items: Record<string, Copy>; options: Record<string, Copy>;
@@ -23,20 +23,28 @@ const koreanDetails: Record<string, string> = {
 };
 const korean: Translation = {
   title: '마켓메이 메뉴', description: '마켓메이 커피, 음료와 브런치 메뉴 및 가격.',
+  menuTagline: '브런치 · 커피 · 음료',
   languageLabel: '메뉴 언어', navLabel: '메뉴 종류 바로가기',
   decaf: '모든 커피 디카페인 변경', freeChange: '무료', free: '무료',
   optionsTitle: '커피 추가 옵션', hotOnly: 'HOT ONLY', brunchOrderNote: '브런치는 오후 3시까지 주문 가능합니다.', newLabel: '신메뉴',
-  sections: { coffee: ['커피', '커피'], fruit: ['에이드 · 과일차', '에이드'], tea: ['티 · 밀크티', '티'], drinks: ['라떼 · 음료', '음료'], brunch: ['브런치', '브런치'] },
+  sections: { coffee: ['커피', '커피'], fruit: ['에이드 · 과일차', '에이드·차'], tea: ['티 · 밀크티', '티'], drinks: ['라떼 · 음료', '라떼·음료'], brunch: ['브런치', '브런치'] },
   items: {}, options: {},
 };
 
 // The printed menu keeps its own source; this removal applies to the QR menu.
+const sectionOrder = ['brunch', 'coffee', 'drinks', 'fruit', 'tea'];
 export const webSections = [
   ...drinks.sections
     .map(section => ({ ...section, items: section.items.filter(item => item.id !== 'passion-fruit') }))
     .filter(section => section.items.length > 0),
   brunch,
-];
+].sort((a, b) => {
+  const order = (id: string) => {
+    const index = sectionOrder.indexOf(id);
+    return index === -1 ? sectionOrder.length : index;
+  };
+  return order(a.id) - order(b.id);
+});
 
 export function getMenu(locale: MenuLocale) {
   const copy: Translation = locale === 'ko' ? korean : translations[locale];

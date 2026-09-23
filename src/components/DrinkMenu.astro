@@ -12,21 +12,24 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
     <link rel="alternate" hreflang="x-default" href="https://marketmay.com/menu/" />
   </Fragment>
   <main class={`menu-page menu-page-${locale}`}>
-    <h1 class="menu-title" aria-label={copy.title}>
-      <a href="/" aria-label={locale === 'ko' ? '마켓메이 홈페이지로 이동' : 'Go to MARKET MAY homepage'}>
-        <img src="/images/market-may-menu-logo.png" alt="MARKET MAY" width="1800" height="400" />
-      </a>
-    </h1>
-    <nav class="language-nav" aria-label={copy.languageLabel}>
-      {languages.map(language => (
-        <a href={language.href} lang={language.tag} hreflang={language.tag} aria-current={language.code === locale ? 'page' : undefined}>{language.label}</a>
-      ))}
-    </nav>
+    <header class="menu-header">
+      <h1 class="menu-title" aria-label={copy.title}>
+        <a href="/" aria-label={locale === 'ko' ? '마켓메이 홈페이지로 이동' : 'Go to MARKET MAY homepage'}>
+          <img src="/images/market-may-menu-logo.png" alt="MARKET MAY" width="1800" height="400" />
+        </a>
+      </h1>
+      <nav class="language-nav" aria-label={copy.languageLabel}>
+        {languages.map(language => (
+          <a href={language.href} lang={language.tag} hreflang={language.tag} aria-current={language.code === locale ? 'page' : undefined}>{language.label}</a>
+        ))}
+      </nav>
+    </header>
+    <p class="menu-tagline">{copy.menuTagline}</p>
     <nav class="menu-nav" aria-label={copy.navLabel}>
       {sections.map(section => <a href={'#' + section.id} aria-label={section.name}>{section.nav}</a>)}
     </nav>
     {sections.map(section => (
-      <section id={section.id} aria-labelledby={'heading-' + section.id}>
+      <section class="menu-section" id={section.id} aria-labelledby={'heading-' + section.id}>
         <h2 id={'heading-' + section.id}>{section.name}</h2>
         {section.note && <p class="section-note">{section.note}</p>}
         {section.id === 'coffee' && decafPrice !== undefined && (
@@ -34,7 +37,7 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
         )}
         <ul>
           {section.items.map(item => (
-            <li data-menu-id={item.id}>
+            <li class={item.isNew ? 'featured-item' : undefined} data-menu-id={item.id}>
               <div class="menu-row">
                 <h3>{item.name}{item.isNew && <span class="new-badge">{copy.newLabel}</span>}</h3>
                 <span class="price">{formatPrice(item.price)}</span>
@@ -61,6 +64,33 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
   </main>
 </BaseLayout>
 
+<script>
+  const menuLinks = [...document.querySelectorAll<HTMLAnchorElement>('.menu-nav a')];
+  const menuSections = menuLinks
+    .map(link => document.getElementById(link.hash.slice(1)))
+    .filter((section): section is HTMLElement => section !== null);
+  let scheduled = false;
+  function updateCurrentSection() {
+    let current = menuSections[0]?.id;
+    for (const section of menuSections) {
+      if (section.getBoundingClientRect().top <= 110) current = section.id;
+    }
+    for (const link of menuLinks) {
+      if (link.hash.slice(1) === current) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    }
+    scheduled = false;
+  }
+  function scheduleUpdate() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(updateCurrentSection);
+  }
+  window.addEventListener('scroll', scheduleUpdate, { passive: true });
+  window.addEventListener('hashchange', scheduleUpdate);
+  updateCurrentSection();
+</script>
+
 <style>
   @font-face {
     font-family: 'Spoqa Han Sans Neo';
@@ -76,46 +106,57 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
     font-weight: 700;
     font-display: swap;
   }
-  :global(body) {
-    background: #fff;
-    color: #171717;
-  }
-  .menu-page { max-width: 42rem; margin: 0 auto; padding: 28px 20px 48px; }
+  :global(body) { background: #f4f3ee; color: #1e2823; }
+  .menu-page { max-width: 50rem; min-height: 100vh; margin: 0 auto; padding: 32px clamp(24px, 5vw, 44px) 72px; background: #fff; box-shadow: 0 12px 48px #243b2f0d; }
   .menu-page-ko { font-family: 'Spoqa Han Sans Neo', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
   .menu-page-en { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
   h1, h2, h3 { font-family: inherit; letter-spacing: normal; word-break: keep-all; overflow-wrap: anywhere; }
-  .menu-title { margin: 0 0 12px; line-height: 0; }
+  .menu-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .menu-title { margin: 0; line-height: 0; }
   .menu-title a { display: inline-block; }
-  .menu-title img { display: block; width: 240px; max-width: 100%; height: auto; }
-  a:focus-visible { outline: 2px solid #171717; outline-offset: 5px; }
-  .language-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; width: min(100%, 20rem); margin: 0 0 8px; }
-  .language-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #e0e5e0; border-radius: 6px; font-size: .875rem; }
-  .language-nav a[aria-current="page"] { background: #254536; color: #fff; border-color: #254536; font-weight: 700; }
-  .menu-nav { position: sticky; top: 0; z-index: 10; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 8px 0; margin-bottom: 24px; background: #fff; border-bottom: 1px solid #dce3dc; }
-  .menu-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 4px; border-radius: 6px; font-size: .875rem; font-weight: 600; color: #254536; }
-  .menu-nav a:hover, .menu-nav a:focus-visible { background: #edf2ed; }
-  section { scroll-margin-top: 84px; }
-  section + section { margin-top: 36px; }
-  .decaf-note { margin: 12px 0 4px; color: #254536; font-size: .9375rem; }
-  .section-note { margin: 12px 0 4px; color: #254536; font-size: .9375rem; }
-  .coffee-options { margin-top: 20px; padding: 16px; background: #f5f7f4; border-radius: 8px; }
+  .menu-title img { display: block; width: 228px; max-width: 100%; height: auto; }
+  .menu-tagline { margin: 14px 0 28px; color: #66736a; font-size: .875rem; letter-spacing: .02em; }
+  a:focus-visible { outline: 2px solid #254536; outline-offset: 3px; }
+  .language-nav { display: flex; gap: 3px; padding: 3px; background: #f0f3ee; border-radius: 999px; }
+  .language-nav a { display: flex; align-items: center; justify-content: center; min-width: 72px; min-height: 44px; padding: 8px 10px; border-radius: 999px; color: #405348; font-size: .8125rem; }
+  .language-nav a[aria-current="page"] { background: #254536; color: #fff; font-weight: 700; }
+  .menu-nav { position: sticky; top: 0; z-index: 10; display: flex; gap: 6px; overflow-x: auto; padding: 10px 0 12px; margin-bottom: 30px; background: #fff; border-bottom: 1px solid #dce5dd; scrollbar-width: none; }
+  .menu-nav::-webkit-scrollbar { display: none; }
+  .menu-nav a { display: flex; flex: 1 0 auto; align-items: center; justify-content: center; min-height: 44px; padding: 9px 12px; border-radius: 999px; background: #f3f5f1; color: #315042; font-size: .875rem; font-weight: 600; white-space: nowrap; }
+  .menu-nav a:hover, .menu-nav a:focus-visible { background: #e6eee6; }
+  .menu-nav a[aria-current="location"] { background: #254536; color: #fff; }
+  .menu-section { scroll-margin-top: 90px; }
+  .menu-section + .menu-section { margin-top: 48px; }
+  .decaf-note, .section-note { margin: 12px 0 10px; padding: 11px 14px; background: #eef4ed; color: #254536; border-left: 3px solid #254536; border-radius: 4px; font-size: .875rem; line-height: 1.55; }
+  .coffee-options { margin-top: 24px; padding: 18px 20px; background: #f5f7f4; border-radius: 10px; }
   .coffee-options h3 { margin-bottom: 4px; font-size: 1rem; }
   .coffee-options .option:last-child { border-bottom: 0; padding-bottom: 0; }
-  .temperature { margin: 6px 0 0 8px; }
+  .temperature { margin: 6px 0 0; }
   .temperature span { display: inline-block; padding: 1px 6px; border: 1px solid #e2c9c3; border-radius: 3px; font-size: .75rem; font-weight: 600; color: #89443b; }
   @media (prefers-reduced-motion: no-preference) { :global(html) { scroll-behavior: smooth; } }
-  h2 { margin: 0; padding-bottom: 10px; border-bottom: 1px solid #333; font-size: 1.25rem; font-weight: 700; line-height: 1.5; }
+  h2 { margin: 0; padding-bottom: 12px; border-bottom: 2px solid #254536; color: #254536; font-size: 1.5rem; font-weight: 700; line-height: 1.4; }
   ul, dl { list-style: none; margin: 0; padding: 0; }
-  li, .option { padding: 14px 0; border-bottom: 1px solid #e7e7e7; }
-  .menu-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: baseline; }
-  .option { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; align-items: baseline; }
+  li, .option { padding: 15px 0; border-bottom: 1px solid #e7ece6; }
+  li.featured-item { margin: 12px 0; padding: 14px 16px; background: #f5f8f3; border: 1px solid #dbe7d9; border-radius: 10px; }
+  .menu-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: start; }
+  .option { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; align-items: start; }
   .option .detail { grid-column: 1 / -1; }
-  h3, dt { margin: 0; font-size: 1.125rem; font-weight: 650; line-height: 1.55; }
-  .new-badge { display: inline-block; margin-left: 8px; padding: 1px 5px; border-radius: 3px; background: #edf2ed; color: #254536; font-size: .6875rem; font-weight: 700; line-height: 1.5; vertical-align: 2px; }
+  h3, dt { margin: 0; font-size: 1.0625rem; font-weight: 700; line-height: 1.5; }
+  .new-badge { display: inline-block; margin-left: 8px; padding: 2px 6px; border-radius: 4px; background: #254536; color: #fff; font-size: .6875rem; font-weight: 700; line-height: 1.4; vertical-align: 2px; }
   dt { word-break: keep-all; overflow-wrap: anywhere; }
   dd { margin: 0; }
-  .price { font-size: 1.125rem; font-weight: 600; line-height: 1.55; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
-  .detail { margin: 6px 0 0 8px; font-weight: 400; color: #555; font-size: .9375rem; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
-  @media (max-width: 360px) { .menu-page { padding-inline: 16px; } .menu-row { gap: 12px; } }
-  @media print { .menu-nav, .language-nav { display: none; } .menu-page { max-width: none; padding: 0; } li, .option { break-inside: avoid; } }
+  .price { color: #1d2c24; font-size: 1.0625rem; font-weight: 700; line-height: 1.5; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+  .detail { margin: 5px 0 0; color: #5b665d; font-size: .875rem; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
+  @media (max-width: 640px) {
+    :global(body) { background: #fff; }
+    .menu-page { padding: 24px 16px 56px; box-shadow: none; }
+    .menu-title img { width: clamp(145px, 44vw, 190px); }
+    .language-nav a { min-width: 62px; }
+    .menu-tagline { margin-bottom: 18px; }
+    .menu-nav { margin-inline: -16px; padding-inline: 16px; }
+    .menu-nav a { flex: 0 0 auto; }
+    .menu-section + .menu-section { margin-top: 40px; }
+    .menu-row, .option { gap: 10px; }
+  }
+  @media print { .menu-nav, .language-nav { display: none; } .menu-page { max-width: none; padding: 0; box-shadow: none; } li, .option { break-inside: avoid; } }
 </style>
