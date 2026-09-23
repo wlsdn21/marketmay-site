@@ -1,7 +1,7 @@
 {
   "en": {
     "title": "MARKET MAY Menu",
-    "description": "Coffee, drinks, prices and add-ons at MARKET MAY.",
+    "description": "Coffee, drinks, brunch, prices and add-ons at MARKET MAY.",
     "languageLabel": "Menu language",
     "navLabel": "Jump to a category",
     "decaf": "Decaf available for all coffees",
@@ -9,6 +9,8 @@
     "free": "Free",
     "optionsTitle": "Coffee add-ons",
     "hotOnly": "HOT ONLY",
+    "brunchOrderNote": "Brunch orders are available until 3 PM.",
+    "newLabel": "NEW",
     "sections": {
       "coffee": [
         "Coffee",
@@ -25,6 +27,10 @@
       "drinks": [
         "Lattes & Other Drinks",
         "Drinks"
+      ],
+      "brunch": [
+        "Brunch",
+        "Brunch"
       ]
     },
     "options": {
@@ -149,6 +155,41 @@
       "belgian": {
         "name": "Belgian Dark Hot Chocolate",
         "detail": "Belgian dark chocolate melted into milk"
+      },
+      "chili-egg": {
+        "name": "Chili Egg",
+        "detail": "Sourdough, two soft-boiled eggs, house-made Greek yogurt and chili oil"
+      },
+      "fig-jambon": {
+        "name": "Fig Jambon Sandwich",
+        "detail": "Seasonal organic figs, jambon, arugula and plenty of house-made ricotta cheese"
+      },
+      "brunch-plate": {
+        "name": "Market May Brunch Plate (M.M.B.P)"
+      },
+      "burrata-salad": {
+        "name": "Burrata Cheese Salad"
+      },
+      "jambon-bagel": {
+        "name": "Jambon Beurre Bagel Sandwich"
+      },
+      "ricotta-pasta": {
+        "name": "Cold Basil Pesto Pasta with Ricotta Cheese"
+      },
+      "pumpkin-soup": {
+        "name": "Pumpkin Soup"
+      },
+      "tomato-stew": {
+        "name": "Tomato Beef Stew"
+      },
+      "mushroom-sandwich": {
+        "name": "Mushroom Grilled Cheese Sandwich"
+      },
+      "margherita-pizza": {
+        "name": "Margherita Pizza"
+      },
+      "gorgonzola-pizza": {
+        "name": "Gorgonzola Cheese Pizza"
       }
     }
   }

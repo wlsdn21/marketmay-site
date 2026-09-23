@@ -28,13 +28,17 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
     {sections.map(section => (
       <section id={section.id} aria-labelledby={'heading-' + section.id}>
         <h2 id={'heading-' + section.id}>{section.name}</h2>
+        {section.note && <p class="section-note">{section.note}</p>}
         {section.id === 'coffee' && decafPrice !== undefined && (
           <p class="decaf-note">{copy.decaf} · <strong>{decafPrice === 0 ? copy.freeChange : '+' + formatPrice(decafPrice)}</strong></p>
         )}
         <ul>
           {section.items.map(item => (
             <li data-menu-id={item.id}>
-              <div class="menu-row"><h3>{item.name}</h3><span class="price">{formatPrice(item.price)}</span></div>
+              <div class="menu-row">
+                <h3>{item.name}{item.isNew && <span class="new-badge">{copy.newLabel}</span>}</h3>
+                <span class="price">{formatPrice(item.price)}</span>
+              </div>
               {item.hotOnly && <p class="temperature"><span>{copy.hotOnly}</span></p>}
               {item.detail && <p class="detail">{item.detail}</p>}
             </li>
@@ -87,12 +91,13 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
   .language-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; width: min(100%, 20rem); margin: 0 0 8px; }
   .language-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #e0e5e0; border-radius: 6px; font-size: .875rem; }
   .language-nav a[aria-current="page"] { background: #254536; color: #fff; border-color: #254536; font-weight: 700; }
-  .menu-nav { position: sticky; top: 0; z-index: 10; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; padding: 8px 0; margin-bottom: 24px; background: #fff; border-bottom: 1px solid #dce3dc; }
-  .menu-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 4px; border-radius: 6px; font-size: 1rem; font-weight: 600; color: #254536; }
+  .menu-nav { position: sticky; top: 0; z-index: 10; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 8px 0; margin-bottom: 24px; background: #fff; border-bottom: 1px solid #dce3dc; }
+  .menu-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 4px; border-radius: 6px; font-size: .875rem; font-weight: 600; color: #254536; }
   .menu-nav a:hover, .menu-nav a:focus-visible { background: #edf2ed; }
   section { scroll-margin-top: 84px; }
   section + section { margin-top: 36px; }
   .decaf-note { margin: 12px 0 4px; color: #254536; font-size: .9375rem; }
+  .section-note { margin: 12px 0 4px; color: #254536; font-size: .9375rem; }
   .coffee-options { margin-top: 20px; padding: 16px; background: #f5f7f4; border-radius: 8px; }
   .coffee-options h3 { margin-bottom: 4px; font-size: 1rem; }
   .coffee-options .option:last-child { border-bottom: 0; padding-bottom: 0; }
@@ -106,6 +111,7 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
   .option { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; align-items: baseline; }
   .option .detail { grid-column: 1 / -1; }
   h3, dt { margin: 0; font-size: 1.125rem; font-weight: 650; line-height: 1.55; }
+  .new-badge { display: inline-block; margin-left: 8px; padding: 1px 5px; border-radius: 3px; background: #edf2ed; color: #254536; font-size: .6875rem; font-weight: 700; line-height: 1.5; vertical-align: 2px; }
   dt { word-break: keep-all; overflow-wrap: anywhere; }
   dd { margin: 0; }
   .price { font-size: 1.125rem; font-weight: 600; line-height: 1.55; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
