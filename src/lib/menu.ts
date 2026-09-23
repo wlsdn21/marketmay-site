@@ -9,7 +9,7 @@ export const languages = [
 export type MenuLocale = typeof languages[number]['code'];
 type Copy = { name: string; detail?: string };
 type Translation = {
-  title: string; description: string; menuTagline: string; languageLabel: string; navLabel: string;
+  title: string; description: string; menuHeading: string; menuTagline: string; languageLabel: string; navLabel: string;
   decaf: string; freeChange: string; free: string; brunchOrderNote: string; newLabel: string;
   optionsTitle: string; hotOnly: string;
   sections: Record<string, string[]>; items: Record<string, Copy>; options: Record<string, Copy>;
@@ -23,6 +23,7 @@ const koreanDetails: Record<string, string> = {
 };
 const korean: Translation = {
   title: '마켓메이 메뉴', description: '마켓메이 커피, 음료와 브런치 메뉴 및 가격.',
+  menuHeading: '메뉴',
   menuTagline: '브런치 · 커피 · 음료',
   languageLabel: '메뉴 언어', navLabel: '메뉴 종류 바로가기',
   decaf: '모든 커피 디카페인 변경', freeChange: '무료', free: '무료',
