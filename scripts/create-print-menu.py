@@ -83,8 +83,15 @@ def item(item_id,x,y,width=280,label=None,show_price=True):
     if show_price: text(x+width,y,f"{item['price']/1000:.1f}",13.2,'KR-Bold',align='right')
 
 
-def lines(x,y,values,size=10.5,leading=13):
-    for n,value in enumerate(values): text(x,y+n*leading,value,size)
+def lines(x,y,values,size=10.5,leading=15):
+    # Descriptions sit below bold menu names in a quieter regular weight.
+    for n,value in enumerate(values):
+        text(x,y+n*leading,value,size,'KR',color='#586159')
+
+
+def choices(x,y,values):
+    # A small indent and regular gray type distinguish choices from menu names.
+    lines(x+6,y,values,size=10.5,leading=16)
 
 
 def signature(x,y):
@@ -92,7 +99,7 @@ def signature(x,y):
     text(x+67,y,'(only hot)',13,'Helvetica-Oblique',RED)
 
 
-page('커피')
+page('COFFEE')
 left=50
 item('americano',left,190)
 item('latte-8',left,237,label='카페라떼 8부(기본)')
@@ -134,7 +141,7 @@ text(edge,566,'+2.5',11,align='right')
 lines(right,591,['1인 1음료,','커피류 주문 시 가능'],size=10,leading=16)
 c.showPage()
 
-page('티 · 음료')
+page('NON COFFEE')
 left,right,width=50,313,232
 item('omija-ade',left,185,width)
 item('lemon-ade',left,219,width,show_price=False)
@@ -144,22 +151,22 @@ item('lemon-tea',left,340,width,show_price=False)
 item('grapefruit-tea',left,374,width,show_price=False)
 item('peach',left,426,width)
 item('ashotchu',left,460,width)
-lines(left,480,['(아샷추 제로 +0.5)'])
+lines(left,480,['아샷추 제로 +0.5'])
 line(left,505,left+width)
 item('herbal',left,535,width)
-lines(left,557,['(캐모마일/페퍼민트/','로즈마리/자스민/제주 녹차)'],leading=16)
+choices(left,557,['캐모마일 / 페퍼민트 /','로즈마리 / 자스민 / 제주 녹차'])
 item('black-tea',left,613,width,label='포트넘앤메이슨 홍차')
-lines(left,634,['(실론/피치/쥬빌레)'])
+choices(left,634,['실론 / 피치 / 쥬빌레'])
 item('earl-grey',left,673,width)
-lines(left,694,['시트러스 과육이 살아있는','달콤 시원한 과일 홍차 티'])
+lines(left+6,694,['시트러스 과육이 살아있는','달콤 시원한 과일 홍차 티'])
 item('yogurt',left,749,width)
-lines(left,770,['(블루베리/딸기)'])
+choices(left,770,['블루베리 / 딸기'])
 
 item('royal-milk-tea',right,185,width)
 signature(right,210)
-lines(right,241,['로얄 블렌드 홍차를 우유에 천천히','끓이고, 은은한 꿀 향을 더한 밀크티'])
+lines(right+6,241,['로얄 블렌드 홍차를 우유에 천천히','끓이고, 은은한 꿀 향을 더한 밀크티'])
 item('iced-milk-tea',right,305,width,show_price=False)
-lines(right,326,['블렌딩 홍차를 냉침해 깔끔 달콤한 맛'],size=10)
+lines(right+6,326,['블렌딩 홍차를 냉침해 깔끔 달콤한 맛'],size=10)
 line(right,354,right+width)
 item('chocolate',right,387,width,label='핫초코/아이스초코')
 item('matcha',right,421,width)
@@ -170,9 +177,9 @@ item('belgian',right,582,width)
 signature(right,608)
 lines(right,640,['벨지안 다크초콜릿을 우유에 직접 녹여,','진한 풍미를 그대로 살린 리얼 핫초코'],size=10)
 line(right,690,right+width)
-text(right,726,'시즌 한정 메뉴',12.5)
+text(right+width,726,'시즌 한정 메뉴',12.5,align='right')
 seasonal=items['passion-fruit'];printed.append(seasonal['id'])
-text(right,758,seasonal['name'],13)
+text(right+width-48,758,seasonal['name'],13,align='right')
 text(right+width,758,f"{seasonal['price']/1000:.1f}",13.2,align='right')
 assert sorted(printed)==sorted(items),printed
 c.showPage();c.save()
