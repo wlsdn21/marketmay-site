@@ -3,13 +3,14 @@ import drinks from '../data/drinks.json';
 import brunch from '../data/brunch.json';
 import { getMenu, languages } from './menu';
 const available = [
-  ...drinks.sections.flatMap(section => section.items).filter(item => item.id !== 'passion-fruit'),
   ...brunch.items,
+  ...['coffee', 'drinks', 'fruit', 'tea'].flatMap(id => drinks.sections.find(section => section.id === id)!.items),
 ];
 describe('multilingual QR menu', () => {
   for (const language of languages) {
     it(language.code + ': translates the full menu while preserving prices and conditions', () => {
       const menu = getMenu(language.code);
+      expect(menu.sections.map(section => section.id)).toEqual(['brunch', 'coffee', 'drinks', 'fruit', 'tea']);
       const items = menu.sections.flatMap(section => section.items);
       expect(items.map(item => [item.id, item.price])).toEqual(available.map(item => [item.id, item.price]));
       expect(items).toHaveLength(42);

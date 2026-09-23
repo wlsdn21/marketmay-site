@@ -2,6 +2,7 @@
   "en": {
     "title": "MARKET MAY Menu",
     "description": "Coffee, drinks, brunch, prices and add-ons at MARKET MAY.",
+    "menuTagline": "Brunch · Coffee · Drinks",
     "languageLabel": "Menu language",
     "navLabel": "Jump to a category",
     "decaf": "Decaf available for all coffees",
@@ -18,7 +19,7 @@
       ],
       "fruit": [
         "Fruit Sodas & Fruit Teas",
-        "Fruit"
+        "Sodas & Tea"
       ],
       "tea": [
         "Tea & Milk Tea",
@@ -26,7 +27,7 @@
       ],
       "drinks": [
         "Lattes & Other Drinks",
-        "Drinks"
+        "Lattes & More"
       ],
       "brunch": [
         "Brunch",
