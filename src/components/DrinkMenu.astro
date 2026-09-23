@@ -64,12 +64,10 @@ const { copy, sections, options, decafPrice, formatPrice } = getMenu(locale);
   h1, h2, h3 { font-family: inherit; letter-spacing: normal; word-break: keep-all; overflow-wrap: anywhere; }
   h1 { margin: 0 0 12px; font-size: 1.5rem; font-weight: 700; line-height: 1.4; }
   a:focus-visible { outline: 2px solid #171717; outline-offset: 5px; }
-  .language-nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin: 0 0 8px; }
+  .language-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; width: min(100%, 20rem); margin: 0 0 8px; }
   .language-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #e0e5e0; border-radius: 6px; font-size: .875rem; }
   .language-nav a[aria-current="page"] { background: #254536; color: #fff; border-color: #254536; font-weight: 700; }
   .currency-note { color: #555; font-size: .8125rem; margin: 4px 0 8px; }
-  :global(html[lang="ja"]) h2, :global(html[lang="ja"]) h3, :global(html[lang="ja"]) dt,
-  :global(html[lang="zh-Hans"]) h2, :global(html[lang="zh-Hans"]) h3, :global(html[lang="zh-Hans"]) dt { word-break: normal; }
   .menu-nav { position: sticky; top: 0; z-index: 10; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; padding: 8px 0; margin-bottom: 24px; background: #fff; border-bottom: 1px solid #dce3dc; }
   .menu-nav a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 4px; border-radius: 6px; font-size: 1rem; font-weight: 600; color: #254536; }
   .menu-nav a:hover, .menu-nav a:focus-visible { background: #edf2ed; }
