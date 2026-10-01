@@ -150,8 +150,12 @@
       "strawberry-matcha": {
         "name": "Strawberry Matcha Latte"
       },
-      "ginger": {
-        "name": "Ginger Tea / Ginger Latte",
+      "ginger-tea": {
+        "name": "Ginger Tea",
+        "detail": "Made with house-made ginger concentrate"
+      },
+      "ginger-latte": {
+        "name": "Ginger Latte",
         "detail": "Made with house-made ginger concentrate"
       },
       "belgian": {

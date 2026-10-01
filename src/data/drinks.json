@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-11",
+  "updated": "2026-10-01",
   "source": "사용자가 제공한 새 음료 메뉴판 IMG_3566.jpeg. 묶음 가격은 원본의 에이드 6.7, 과일차 6.5, 밀크티 6.7 표기를 따름.",
   "url": "https://marketmay.com/menu",
   "sections": [
@@ -39,11 +39,9 @@
       {"id": "chocolate", "name": "핫초코 / 아이스초코", "price": 5900},
       {"id": "matcha", "name": "유기농 제주말차라떼", "price": 5900},
       {"id": "strawberry-matcha", "name": "딸기말차라떼", "price": 6700},
-      {"id": "ginger", "name": "생강차 / 생강라떼", "price": 6700, "detail": "직접 만든 생강 진액"},
+      {"id": "ginger-tea", "name": "생강차", "price": 6700, "detail": "직접 만든 생강 진액"},
+      {"id": "ginger-latte", "name": "생강라떼", "price": 6700, "detail": "직접 만든 생강 진액"},
       {"id": "belgian", "name": "벨지안 다크핫초코", "price": 6400, "signature": true, "hotOnly": true, "detail": "벨지안 다크초콜릿을 우유에 직접 녹여, 진한 풍미를 그대로 살린 리얼 핫초코"}
-    ]},
-    {"id": "seasonal", "name": "시즌 한정", "english": "Seasonal", "items": [
-      {"id": "passion-fruit", "name": "생 백향과 주스", "price": 7000}
     ]}
   ],
   "options": [

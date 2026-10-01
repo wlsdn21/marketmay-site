@@ -13,7 +13,12 @@ describe('multilingual QR menu', () => {
       expect(menu.sections.map(section => section.id)).toEqual(['brunch', 'coffee', 'drinks', 'fruit', 'tea']);
       const items = menu.sections.flatMap(section => section.items);
       expect(items.map(item => [item.id, item.price])).toEqual(available.map(item => [item.id, item.price]));
-      expect(items).toHaveLength(42);
+      expect(items).toHaveLength(43);
+      expect(items.filter(item => item.id === 'ginger-tea' || item.id === 'ginger-latte').map(item => [item.id, item.name, item.price])).toEqual(
+        language.code === 'ko'
+          ? [['ginger-tea', '생강차', 6700], ['ginger-latte', '생강라떼', 6700]]
+          : [['ginger-tea', 'Ginger Tea', 6700], ['ginger-latte', 'Ginger Latte', 6700]],
+      );
       expect(menu.sections.some(section => section.id === 'seasonal')).toBe(false);
       expect(items.filter(item => item.hotOnly)).toHaveLength(3);
       const brunchSection = menu.sections.find(section => section.id === 'brunch')!;

@@ -32,12 +32,9 @@ const korean: Translation = {
   items: {}, options: {},
 };
 
-// The printed menu keeps its own source; this removal applies to the QR menu.
 const sectionOrder = ['brunch', 'coffee', 'drinks', 'fruit', 'tea'];
 export const webSections = [
-  ...drinks.sections
-    .map(section => ({ ...section, items: section.items.filter(item => item.id !== 'passion-fruit') }))
-    .filter(section => section.items.length > 0),
+  ...drinks.sections,
   brunch,
 ].sort((a, b) => {
   const order = (id: string) => {
