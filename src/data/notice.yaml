@@ -9,7 +9,3 @@ featuredMenuIds:
 featuredImages:
   chili-egg: /images/brunch-chili-egg-poster.jpg
   fig-jambon: /images/brunch-fig-jambon-poster.jpg
-
-button:
-  label: "브런치 메뉴 보기"
-  url: "/menu/#brunch"
