@@ -9,8 +9,8 @@ interface Props {
   lang?: string;
 }
 const {
-  title = 'market may',
-  description = 'market may | 구미시 카페 · 베이커리. 직접 볶아 더 신선한 커피, 따뜻한 브런치, 모닝 베이글, 신선한 드립백. 10:00–22:00 (매주 월요일 휴무)',
+  title = '마켓메이 | 구미 금오산 카페 · 커피와 브런치',
+  description = '구미 금오산에서 쉬어가는 카페 마켓메이. 창가 풍경과 직접 볶은 커피, 빵과 브런치를 즐겨보세요. 경북 구미시 공원로 22 · 10:00–22:00 · 매주 월요일 및 매월 마지막 주 화요일 휴무.',
   ogImage = '/images/exterior.jpg',
   lang = 'ko',
 } = Astro.props;
@@ -19,11 +19,13 @@ const siteUrl = 'https://marketmay.com';
 const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 const canonical = `${siteUrl}${Astro.url.pathname}`;
 
-// Schema.org LocalBusiness 구조화 데이터 - Google 검색 결과에서 카페 정보 풍부하게 표시
+// 공개 매장 정보를 검색 엔진에 전달하는 구조화 데이터.
 const localBusiness = {
   '@context': 'https://schema.org',
   '@type': 'CafeOrCoffeeShop',
-  name: info.name,
+  '@id': `${siteUrl}/#cafe`,
+  name: info.localName,
+  alternateName: info.name,
   description,
   url: siteUrl,
   telephone: `+82-${info.phone.replace(/^0/, '')}`,
@@ -32,10 +34,10 @@ const localBusiness = {
   servesCuisine: ['커피', '브런치', '베이커리'],
   hasMenu: `${siteUrl}/menu`,
   currenciesAccepted: 'KRW',
-  petsAllowed: info.amenities.pets,
   amenityFeature: [
     { '@type': 'LocationFeatureSpecification', name: '주차', value: info.amenities.parking },
     { '@type': 'LocationFeatureSpecification', name: '무료 와이파이', value: info.amenities.wifi },
+    { '@type': 'LocationFeatureSpecification', name: '반려동물 동반 (외부 좌석 한정, 실내 출입 불가)', value: info.amenities.pets },
   ],
   address: {
     '@type': 'PostalAddress',
@@ -52,7 +54,7 @@ const localBusiness = {
       closes: '22:00',
     },
   ],
-  sameAs: [info.instagram],
+  sameAs: [info.instagram, info.naverPlace, info.googleMaps, info.kakaoMap.directionsUrl],
 };
 ---
 <html lang={lang}>
@@ -74,12 +76,12 @@ const localBusiness = {
 
     <!-- Open Graph (KakaoTalk, Facebook 등) -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="market may" />
+    <meta property="og:site_name" content={`${info.localName} · ${info.name}`} />
     <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'ko_KR'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={absoluteOgImage} />
-    <meta property="og:image:alt" content="market may 카페 외관" />
+    <meta property="og:image:alt" content="구미 금오산 카페 마켓메이 외관" />
     <meta property="og:url" content={canonical} />
 
     <!-- Twitter Card -->

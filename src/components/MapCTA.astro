@@ -12,10 +12,14 @@ const directionsUrl = kakaoMap.directionsUrl || `https://map.kakao.com/?q=${enco
     <div class="map-frame">
       <div id={containerId} class="root_daum_roughmap root_daum_roughmap_landing"></div>
       <p class="map-fallback" data-map-fallback hidden>
-        지도를 불러오지 못했습니다. 아래 길찾기 버튼을 이용해 주세요.
+        지도를 불러오지 못했습니다. 아래 지도 버튼을 이용해 주세요.
       </p>
     </div>
-    <a class="map-cta" href={directionsUrl} target="_blank" rel="noopener">카카오맵에서 길찾기 →</a>
+    <div class="map-links" aria-label="마켓메이 지도 보기">
+      <a class="map-cta" href={info.naverPlace} target="_blank" rel="noopener">네이버 지도 →</a>
+      <a class="map-cta" href={directionsUrl} target="_blank" rel="noopener">카카오맵 →</a>
+      <a class="map-cta" href={info.googleMaps} target="_blank" rel="noopener">구글 지도 →</a>
+    </div>
   </div>
 </section>
 
@@ -101,6 +105,12 @@ const directionsUrl = kakaoMap.directionsUrl || `https://map.kakao.com/?q=${enco
   border: 1px solid var(--border);
 }
 .map-fallback[hidden] { display: none; }
+.map-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
 .map-cta {
   display: inline-block;
   background: var(--brand);

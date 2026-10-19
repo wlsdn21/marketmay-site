@@ -12,11 +12,14 @@ export interface MenuLink {
 
 export interface SiteInfo {
   name: string;
+  localName: string;
   tagline: string;
   address: string;
   phone: string;
   hours: { weekday: string; closed: string };
   instagram: string;
+  naverPlace: string;
+  googleMaps: string;
   amenities: { parking: boolean; wifi: boolean; pets: boolean };
   seasonal: string[];
   faq: { q: string; a: string }[];
